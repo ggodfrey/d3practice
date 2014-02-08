@@ -10,6 +10,7 @@
 #include "Shifter.h"
 #include "Shooter.h"
 #include "FunctionRegistry.h"
+#include "Sensors.h"
 
 class main_robot: public IterativeRobot
 {
@@ -32,6 +33,8 @@ public:
     DriveTrain* drive;
     Shooter* shoot;
     FunctionRegistry* update;
+    Sensors* SensorObj;
 };
+
 
 #endif // MAIN_H
