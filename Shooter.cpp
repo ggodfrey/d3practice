@@ -8,7 +8,9 @@ const float Shooter::SPEED_AXISPOWER = 0.5f;
 Shooter::Shooter(uint8_t axisMod,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB)
+                 uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB,
+                 uint8_t wormMod, uint32_t wormChan,
+                 unit8_t punchMod,unit32_t punchFChan,unit32_t punchRChan)
 {
     axis = new CANJaguar(axisMod);
     attractor = new Talon(attractMod, attractChan);
@@ -18,6 +20,8 @@ Shooter::Shooter(uint8_t axisMod,
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     bobTheEncoder = new Encoder(bobModA, bobChanA, bobModB, bobChanB);
     bobTheEncoder->Start();
+    wormDrive = new Talon(wormMod,wormChan);
+    puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     isPickingUp = false;
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -27,6 +31,9 @@ Shooter::~Shooter()
     delete axis;
     delete attractor;
     delete clamper;
+    delete bobTheEncoder;
+    delete wormGear;
+    delete puncher;
 }
 
 void Shooter::pitchUp()
@@ -97,6 +104,26 @@ void Shooter::clampUp()
     clamp = up;
 }
 
+void Shooter::wormPull()
+{
+    wormGear -> Set(-SPEED_WORM);
+    wormIsPulling = true;
+}
+
+void Shooter::wormStop()
+{
+    wormGear -> Set(0);	
+    wormIsPulling = false;
+}
+
+void Shooter::punch()
+{
+	if(isLoaded){
+		pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
+		isLoaded = false;
+	}
+}
+
 //X to fire
 void Shooter::buttonHelper(void* objPtr, uint32_t button){
     Shooter* shooterObj=(Shooter*)objPtr;
@@ -146,14 +173,22 @@ void Shooter::update()
     else
     {
         if(isPickingUp){
-        	pitchAngle(SHOOTING_POSITION);
-        	isPickingUp = false;
+            pitchAngle(SHOOTING_POSITION);
+            isPickingUp = false;
         }
-    	if (!isPitchingUp){
-    	    clampUp();
-    	}
+        if (!isPitchingUp){
+            clampUp();
+        }
+    }
+    if (wormIsPulling){
+        if (Sensors::getInfraredLoad())
+        {
+           	wormStop();
+           	isLoaded = true;
+        }
     }
 }
+
 
 void Shooter::updateHelper(void* instName)
 {
