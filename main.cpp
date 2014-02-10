@@ -34,7 +34,9 @@ void main_robot::RobotInit()
     shoot = new Shooter(SHOOT_JAG_MODULE,
                         SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
                         SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
-                        SHOOT_ENCODE_MOD_A, SHOOT_ENCODE_CHAN_A, SHOOT_ENCODE_MOD_B, SHOOT_ENCODE_CHAN_B);
+                        SHOOT_ENCODE_MOD_A, SHOOT_ENCODE_CHAN_A, SHOOT_ENCODE_MOD_B, SHOOT_ENCODE_CHAN_B,
+                        WORM_TALON_MODULE, WORM_TALON_CHANNEL,
+                        PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN);
     SensorObj = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
     printf("robot init exit\n");
 }

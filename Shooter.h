@@ -34,7 +34,7 @@ public:
     void wormPull();
     void wormStop();
     void punch();
-    
+
     CANJaguar* axis;
     Talon* attractor;
     DoubleSolenoid* clamper;
@@ -43,12 +43,13 @@ public:
     Encoder* bobTheEncoder;
     Talon* wormGear;
     DoubleSolenoid* puncher;
-   
+    Sensors* sensor;
+
     const static float SPEED_AXISPOWER;
     const static float SPEED_ATTRACTOR = 0.5f;
     const static double TIME = 0.1;
     const static double PUNCH_TIME = 0.1;
-    
+
     bool isPickingUp;
     bool isPitchingUp;
     bool isPitchingDown;

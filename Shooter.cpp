@@ -10,7 +10,7 @@ Shooter::Shooter(uint8_t axisMod,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
                  uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB,
                  uint8_t wormMod, uint32_t wormChan,
-                 unit8_t punchMod,unit32_t punchFChan,unit32_t punchRChan)
+                 uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan)
 {
     axis = new CANJaguar(axisMod);
     attractor = new Talon(attractMod, attractChan);
@@ -20,7 +20,7 @@ Shooter::Shooter(uint8_t axisMod,
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     bobTheEncoder = new Encoder(bobModA, bobChanA, bobModB, bobChanB);
     bobTheEncoder->Start();
-    wormDrive = new Talon(wormMod,wormChan);
+    wormGear = new Talon(wormMod,wormChan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     isPickingUp = false;
     robot -> update -> addFunctions(&updateHelper, (void*)this);
@@ -112,7 +112,7 @@ void Shooter::wormPull()
 
 void Shooter::wormStop()
 {
-    wormGear -> Set(0);	
+    wormGear -> Set(0);
     wormIsPulling = false;
 }
 
@@ -182,7 +182,7 @@ void Shooter::update()
         }
     }
     if (wormIsPulling){
-        if (Sensors::getInfraredLoad())
+        if (sensor -> getInfraredLoad())
         {
            	wormStop();
            	isLoaded = true;

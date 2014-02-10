@@ -35,12 +35,17 @@ const static uint8_t  SHOOT_ENCODE_MOD_A  = 1;
 const static uint32_t SHOOT_ENCODE_CHAN_A = 2;
 const static uint8_t  SHOOT_ENCODE_MOD_B  = 1;
 const static uint32_t SHOOT_ENCODE_CHAN_B = 4;
-// Encoder Modules
+const static uint32_t WORM_TALON_CHANNEL  = 4;
+const static uint32_t WORM_TALON_MODULE   = 1;
+const static uint32_t PUNCH_SLNOID_FCHAN  = 7;
+const static uint32_t PUNCH_SLNOID_RCHAN  = 8;
+const static uint8_t  PUNCH_SLNOID_MODULE = 1;
+// Drive Train Encoder Modules
 const uint8_t  ENCODER_LMODULE_A  = 1;
 const uint8_t  ENCODER_RMODULE_A  = 1;
 const uint8_t  ENCODER_LMODULE_B  = 1;
 const uint8_t  ENCODER_RMODULE_B  = 1;
-// Encoder Channels
+// Drive Train Encoder Channels
 const uint32_t ENCODER_LCHANNEL_A = 1;
 const uint32_t ENCODER_RCHANNEL_A = 2;
 const uint32_t ENCODER_LCHANNEL_B = 3;
