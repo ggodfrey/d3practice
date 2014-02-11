@@ -1,32 +1,30 @@
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableProvider.h>
 #include "Netcom.h"
-#include "Sensors.h"
 
-Netcom::Netcom(path, NetworkTableProvider &provider)
+/*
+Netcom::Netcom(std::string path, NetworkTableProvider &provider)
 {
     nwt612 = new NetworkTable(path, &provider);
-    path = "DriveToRio";
-
 }
 
-Netcom::Netcom()
+Netcom::~Netcom()
 {
 
 }
 
 bool Netcom::primeLocation(double distance)
 {
-    distance = nwt612->GetNumbher(path, double value);
+    distance = nwt612->GetNumber(path, double value);
     if(distance >= (-1 * (buffer + primeDistance)) && distance <= (buffer + primeDistance))
     {
         bool idealDistance = true;
-        return (nwt612 -> GetBoolean(path, idealDistance));
+        return (nwt612 -> PutBoolean(path, idealDistance));
     }
     else
     {
         bool idealDistance = false;
-        return (nwt612 -> GetBoolean(path, idealDistance));
+        return (nwt612 -> PutBoolean(path, idealDistance));
     }
 }
 
@@ -51,3 +49,5 @@ bool Netcom::getHotGoal(bool goalHot)
 {
     nwt612 -> GetBoolean(std::string key, goalHot);
 }
+*/
+//don't even know what' wrong!!!
