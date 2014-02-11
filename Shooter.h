@@ -4,7 +4,8 @@
 #include <CANJaguar.h>
 #include <Talon.h>
 #include <DoubleSolenoid.h>
-#include <Encoder.h>
+#include <ADXL345_I2C.h>
+#include <cmath>
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
@@ -15,14 +16,14 @@ public:
     Shooter(uint8_t axisMod,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB);
+                 uint8_t bobMod);
     ~Shooter();
     enum Clamp {down, up};
     Clamp clamp;
     void pitchUp();
     void pitchDown();
     void pitchStop();
-    void pitchAngle(double newPosition);
+    void pitchAngle(double newPitch);
     void pull();//Wheel pulls ball
     void pullStop();
     void autoClamp();
@@ -33,7 +34,7 @@ public:
     DoubleSolenoid* clamper;
     Pneumatics* pneumatics;
     SmoothJoystick* shooterJoy;
-    Encoder* bobTheEncoder;
+    ADXL345_I2C* bobTheAccelerometer;
     //Blah* puncher;
     const static float SPEED_AXISPOWER;
     const static float SPEED_ATTRACTOR = 0.5f;
@@ -41,11 +42,13 @@ public:
     bool isPickingUp;
     bool isPitchingUp;
     bool isPitchingDown;
-    double currentPos;
-    double destinationPos;
-    double originPos;
+    double currentPitch;
+    double destinationPitch;
+    double originPitch;
+    static const double PI = 3.14159;
+    static const double CATCHING_POSITION = 85;
     static const double SHOOTING_POSITION = 45;
-    static const double PICKUP_POSITION = 135;
+    static const double PICKUP_POSITION = -45;
 
     static void buttonHelper(void* objPtr, uint32_t button);
 

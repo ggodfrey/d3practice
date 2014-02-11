@@ -8,7 +8,7 @@ const float Shooter::SPEED_AXISPOWER = 0.5f;
 Shooter::Shooter(uint8_t axisMod,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB)
+                 uint8_t bobMod)
 {
     axis = new CANJaguar(axisMod);
     attractor = new Talon(attractMod, attractChan);
@@ -16,8 +16,7 @@ Shooter::Shooter(uint8_t axisMod,
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
-    bobTheEncoder = new Encoder(bobModA, bobChanA, bobModB, bobChanB);
-    bobTheEncoder->Start();
+    bobTheAccelerometer = new ADXL345_I2C(bobMod);
     isPickingUp = false;
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -44,16 +43,16 @@ void Shooter::pitchStop()
     axis->Set(0);
 }
 
-void Shooter::pitchAngle(double newPosition)
+void Shooter::pitchAngle(double newPitch)
 {
-    originPos = currentPos;
-    destinationPos = newPosition;
-    if (newPosition < originPos)
+    originPitch = currentPitch;
+    destinationPitch = newPitch;
+    if (newPitch < originPitch)
     {
         pitchUp();
         isPitchingUp = true;
     }
-    if (newPosition > originPos)
+    if (newPitch > originPitch)
     {
         pitchDown();
         isPitchingDown = true;
@@ -105,7 +104,10 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
 
 void Shooter::update()
 {
-    currentPos = bobTheEncoder->Get();
+    double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
+    double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
+    double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+    currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
     if(shooterJoy -> GetTriggerState() == TRIG_L)
     {
         pitchUp();
@@ -121,7 +123,7 @@ void Shooter::update()
 
     if (isPitchingUp)
     {
-        if (currentPos <= destinationPos)
+        if (currentPitch <= destinationPitch)
         {
             pitchStop();
             isPitchingUp = false;
@@ -129,7 +131,7 @@ void Shooter::update()
     }
     if (isPitchingDown)
     {
-        if (currentPos >= destinationPos)
+        if (currentPitch >= destinationPitch)
         {
             pitchStop();
             isPitchingDown = false;
