@@ -146,6 +146,7 @@ void DriveTrain::update()
 
 void DriveTrain::updateHelper(void* instName)
 {
+    printf("DriveTrain update\n");
     DriveTrain* driveObj = (DriveTrain*)instName;
     driveObj->update();
 }
