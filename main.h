@@ -33,7 +33,7 @@ public:
     DriveTrain* drive;
     Shooter* shoot;
     FunctionRegistry* update;
-    Sensors* SensorObj;
+    Sensors* sensors;
 };
 
 

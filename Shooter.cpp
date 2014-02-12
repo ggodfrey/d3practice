@@ -117,7 +117,7 @@ void Shooter::wormStop()
 
 void Shooter::punch()
 {
-	if(sensor -> getInfraredLoad()){
+	if(robot -> sensor -> getInfraredLoad()){
 		pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
 	}
 }

@@ -9,7 +9,6 @@
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
-#include "Sensors.h"
 
 class Shooter
 {
@@ -43,7 +42,6 @@ public:
     SmoothJoystick* shooterJoy;
     Talon* wormGear;
     DoubleSolenoid* puncher;
-    Sensors* sensor;
     ADXL345_I2C* bobTheAccelerometer;
     //Blah* puncher;
 
