@@ -9,7 +9,6 @@
 
 SmoothJoystick::SmoothJoystick(uint32_t port): Joystick(port)
 {
-     TRIGGER_TOLERANCE = 0.1;
      addButtons();
      robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -50,16 +49,11 @@ void SmoothJoystick::updateJoyFunctions()
 
 void SmoothJoystick::addButtons()
 {
-    int m = 0;
-
-    std::bitset<3>* newButton = new std::bitset<3>();
-
-    do
+    for(int m = 0; m < NUMBUTTONS; m++)
     {
+        std::bitset<3>* newButton = new std::bitset<3>();
         buttons.push_back(newButton);
-        m = m + 1;
     }
-    while (m < amountOfButtons);//don't know where this goes :P
 }
 
 bool SmoothJoystick::GetSmoothButton(int Button_number)

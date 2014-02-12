@@ -12,7 +12,7 @@ class SmoothJoystick: public Joystick
 private:
     static const int amountOfButtons = 12;
     static const double deadZone = 0.1;
-    double TRIGGER_TOLERANCE;
+    static const double TRIGGER_TOLERANCE = 0.1;
 public:
     SmoothJoystick(uint32_t port);
     ~SmoothJoystick();
