@@ -3,23 +3,25 @@
 
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableProvider.h>
+#include <string>
 
-/*
 class Netcom
 {
 public:
-    const static double primeDistance = 1.0;
-    const static double buffer = 0.1;
-    NetworkTableProvider* provider;
+    const static double PRIMEDISTANCE = 1.0;
+    const static double BUFFER = 0.1;
+    const static std::string PATH;
+    const static std::string PRIMEKEY;
+    const static std::string RUMBLEKEY;
+    const static std::string HOTKEY;
 
-    Netcom(std::string path, NetworkTableProvider &provider);
+    Netcom();
     ~Netcom();
 
-    bool primeLocation(double distance);
+    void primeLocation(double distance);
     void joyRumble(bool rumble);
     NetworkTable* nwt612;
-    bool getHotGoal(bool goalHot);
+    bool getHotGoal();
 };
-*/
 
 #endif

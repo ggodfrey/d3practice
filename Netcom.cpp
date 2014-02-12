@@ -2,10 +2,14 @@
 #include <networktables/NetworkTableProvider.h>
 #include "Netcom.h"
 
-/*
-Netcom::Netcom(std::string path, NetworkTableProvider &provider)
+const std::string Netcom::PATH = "612NetworkVariables";
+const std::string Netcom::PRIMEKEY = "PrimeLocation";
+const std::string Netcom::RUMBLEKEY = "ShouldRumble";
+const std::string Netcom::HOTKEY = "HotGoalOn";
+
+Netcom::Netcom()
 {
-    nwt612 = new NetworkTable(path, &provider);
+    nwt612 = NetworkTable::GetTable(PATH);
 }
 
 Netcom::~Netcom()
@@ -13,41 +17,28 @@ Netcom::~Netcom()
 
 }
 
-bool Netcom::primeLocation(double distance)
+void Netcom::primeLocation(double distance)
 {
-    distance = nwt612->GetNumber(path, double value);
-    if(distance >= (-1 * (buffer + primeDistance)) && distance <= (buffer + primeDistance))
+    if(distance >= ((PRIMEDISTANCE - BUFFER)) && distance <= (PRIMEDISTANCE + BUFFER))
     {
         bool idealDistance = true;
-        return (nwt612 -> PutBoolean(path, idealDistance));
+        nwt612 -> PutBoolean(PRIMEKEY, idealDistance);
     }
     else
     {
         bool idealDistance = false;
-        return (nwt612 -> PutBoolean(path, idealDistance));
+        nwt612 -> PutBoolean(PRIMEKEY, idealDistance);
     }
 }
 
 void Netcom::joyRumble(bool rumble)
 {
-    if(nwt612 -> GetBoolean(Netcom::path, bool closeToGoal))
-    {
-        nwt612 -> PutBoolean(std::string key, rumble = true);
-    }
-    else
-    {
-        nwt612 -> PutBoolean(std::string key, rumble = false);
-    }
+    nwt612 -> PutBoolean(RUMBLEKEY, rumble);
 }
 
-void Netcom::sendSweetSpot()
+bool Netcom::getHotGoal()
 {
-    nwt612 -> PutNumber(std::string key, double SWEETSPOT);
+    return (nwt612 -> GetBoolean(HOTKEY, false));
 }
 
-bool Netcom::getHotGoal(bool goalHot)
-{
-    nwt612 -> GetBoolean(std::string key, goalHot);
-}
-*/
 //don't even know what' wrong!!!
