@@ -19,15 +19,16 @@ public:
     bool isAuto();
     void stopAuto();
     EncodeDistance* encode;
-    static bool isMovingL;
-    static bool isMovingR;
-    static bool isTurningL;
-    static bool isTurningR;
+    bool isMovingL;
+    bool isMovingR;
+    bool isTurningL;
+    bool isTurningR;
     double NeededDist;
-    static const float SPEED;
-    static const double PI;
-    static const double ROBOTRAD = 1;
+    static const float SPEED=0.8f;
+    static const double PI=3.14159265;
+    static const double ROBOTRAD = 3.0;
     static const double CIRCUMROBOT;
+    static const double ZEROTEST = 0.001;
 };
 
 #endif // DRIVETRAIN_H
