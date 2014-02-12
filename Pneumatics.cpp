@@ -38,7 +38,7 @@ void Pneumatics::updateSolenoid()
         Timer* timerObj = timerObject[i];
         if(timerObj->Get() >= time[i])
         {
-            delete timerObject;
+            delete timerObj;
             solenoid[i]->Set(DoubleSolenoid::kOff);
             solenoid.erase(solenoid.begin()+i);
             time.erase(time.begin()+i);

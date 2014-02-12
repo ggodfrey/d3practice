@@ -18,10 +18,10 @@ SmoothJoystick::~SmoothJoystick()
 
 }
 
-void SmoothJoystick::addJoyFunctions(joyFunctions controlFunctions, joyfuncObjects controlObjects, uint32_t btn)
+void SmoothJoystick::addJoyFunctions(joyFunctions controlFunction, joyfuncObjects controlObject, uint32_t btn)
 {
-    Objects.push_back(controlObjects);
-    joystickFuncs.push_back(controlFunctions);
+    Objects.push_back(controlObject);
+    joystickFuncs.push_back(controlFunction);
     joyfuncButtons.push_back(btn);
     funcBools.push_back(false);
 }
@@ -74,7 +74,7 @@ bool SmoothJoystick::GetSmoothButton(int Button_number)
 
 void SmoothJoystick::buttonUpdate()
 {
-    for(int k = 0; k < amountOfButtons; k++)
+    for(int k = 0; k < NUMBUTTONS; k++)
     {
         std::bitset<3>* btnSet = buttons.at(k);
         btnSet->at(2) = btnSet->at(1);
@@ -109,7 +109,7 @@ trigStates SmoothJoystick::GetTriggerState()//accepts axis port, returns 1 or -1
 
 bool SmoothJoystick::isAxisZero(uint32_t axis)
 {
-    if(GetRawAxis(axis) >= (deadZone * -1) || GetRawAxis(axis) <= (deadZone))
+    if(GetRawAxis(axis) >= (DEADZONE* -1) || GetRawAxis(axis) <= (DEADZONE))
     {
         return true;
     }
