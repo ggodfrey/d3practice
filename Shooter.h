@@ -4,7 +4,8 @@
 #include <CANJaguar.h>
 #include <Talon.h>
 #include <DoubleSolenoid.h>
-#include <Encoder.h>
+#include <ADXL345_I2C.h>
+#include <cmath>
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
@@ -16,16 +17,16 @@ public:
     Shooter(uint8_t axisMod,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t bobModA, uint32_t bobChanA, uint8_t bobModB, uint32_t bobChanB,
                  uint8_t wormMod, uint32_t wormChan,
-                 uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan);
+                 uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
+                 uint8_t bobMod);
     ~Shooter();
     enum Clamp {down, up};
     Clamp clamp;
     void pitchUp();
     void pitchDown();
     void pitchStop();
-    void pitchAngle(double newPosition);
+    void pitchAngle(double newPitch);
     void pull();//Wheel pulls ball
     void pullStop();
     void autoClamp();
@@ -40,27 +41,31 @@ public:
     DoubleSolenoid* clamper;
     Pneumatics* pneumatics;
     SmoothJoystick* shooterJoy;
-    Encoder* bobTheEncoder;
     Talon* wormGear;
     DoubleSolenoid* puncher;
     Sensors* sensor;
-
-    const static float SPEED_AXISPOWER;
-    const static float SPEED_ATTRACTOR = 0.5f;
-    const static double TIME = 0.1;
-    const static double PUNCH_TIME = 0.1;
+    ADXL345_I2C* bobTheAccelerometer;
+    //Blah* puncher;
 
     bool isPickingUp;
     bool isPitchingUp;
     bool isPitchingDown;
     bool wormIsPulling;
     bool isLoaded;
-    double currentPos;
-    double destinationPos;
-    double originPos;
+    double currentPitch;
+    double destinationPitch;
+    double originPitch;
+
+    static const float SPEED_AXISPOWER;
+    static const float SPEED_ATTRACTOR = 0.5f;
+    static const double TIME = 0.1;
+    static const double PUNCH_TIME = 0.1;
+    static const double PI = 3.14159;
+    static const double CATCHING_POSITION = 85;
     static const double SHOOTING_POSITION = 45;
-    static const double PICKUP_POSITION = 135;
+    static const double PICKUP_POSITION = -45;
     static const float SPEED_WORM = 1.0f;
+
     static void buttonHelper(void* objPtr, uint32_t button);
     void update();
     static void updateHelper(void* instName);
