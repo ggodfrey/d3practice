@@ -107,7 +107,7 @@ trigStates SmoothJoystick::GetTriggerState()//accepts axis port, returns 1 or -1
     }
 }
 
-bool SmoothJoystick::isAxisZero(uint32_t axis)
+bool SmoothJoystick::IsAxisZero(uint32_t axis)
 {
     if(GetRawAxis(axis) >= (DEADZONE* -1) || GetRawAxis(axis) <= (DEADZONE))
     {

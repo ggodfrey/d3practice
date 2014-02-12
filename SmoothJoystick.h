@@ -32,7 +32,7 @@ public:
     void buttonUpdate();
     bool GetSmoothButton(int Button_number);
     trigStates GetTriggerState();
-    bool isAxisZero(uint32_t axis);
+    bool IsAxisZero(uint32_t axis);
     static void updateHelper(void* instName);
 };
 
