@@ -51,7 +51,6 @@ public:
     bool isPitchingUp;
     bool isPitchingDown;
     bool wormIsPulling;
-    bool isLoaded;
     double currentPitch;
     double destinationPitch;
     double originPitch;
