@@ -15,8 +15,7 @@ Pneumatics::Pneumatics(uint8_t digitalMod, uint32_t digitalChannel,
 {
     switchObject = new DigitalInput(digitalMod, digitalChannel);
     compressor = new Relay(compModuleNumber, compChannel, Relay::kForwardOnly);
-    robot -> update -> addFunctions(&UpdateHelper, (void*) this);
-    printf("Phhhhooooooooooomatics have been updated\n");
+    robot -> update -> addFunctions(&updateHelper, (void*) this);
 }
 
 void Pneumatics::checkPressure()
@@ -36,8 +35,10 @@ void Pneumatics::updateSolenoid()
     //This function checks if the solenoid has expired
     for(unsigned int i = 0; i < time.size();)
     {
-        if(timerObject[i]->Get() >= time[i])
+        Timer* timerObj = timerObject[i];
+        if(timerObj->Get() >= time[i])
         {
+            delete timerObject;
             solenoid[i]->Set(DoubleSolenoid::kOff);
             solenoid.erase(solenoid.begin()+i);
             time.erase(time.begin()+i);
@@ -50,17 +51,17 @@ void Pneumatics::updateSolenoid()
     }
 }
 
-void Pneumatics::setVectorValues(double timerValues, DoubleSolenoid* startSolenoid, DoubleSolenoid::Value value)
+void Pneumatics::setVectorValues(double timerValue, DoubleSolenoid* startSolenoid, DoubleSolenoid::Value value)
 {
     Timer* solenoidTimer = new Timer();
-    time.push_back(timerValues);
+    time.push_back(timerValue);
     timerObject.push_back(solenoidTimer);
     solenoid.push_back(startSolenoid);
     startSolenoid->Set(value);
     solenoidTimer->Start();
 }
 
-void Pneumatics::UpdateHelper(void* instName)
+void Pneumatics::updateHelper(void* instName)
 {
     Pneumatics* pnumObj = (Pneumatics*)instName;
     pnumObj -> checkPressure();
