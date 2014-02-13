@@ -37,7 +37,7 @@ void main_robot::RobotInit()
                         WORM_TALON_MODULE, WORM_TALON_CHANNEL,
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
-    SensorObj = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
+    sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
     printf("robot init exit\n");
 }
 void main_robot::TeleopInit()
@@ -58,13 +58,12 @@ void main_robot::DisabledInit()
 }
 void main_robot::TeleopPeriodic()
 {
-    printf("Teleop periodic 1\n");
+    printf("Teleop start\n");
     update->updateFunctions();
-    printf("Teleop periodic 2\n");
+    printf("Teleop registry updated\n");
     float left = driverJoy->GetRawAxis(2);
-    printf("Teleop periodic 3\n");
     float right = driverJoy->GetRawAxis(5);
-    printf("Teleop periodic 4\n");
+    printf("Teleop joysticks\n");
     drive->TankDrive(left, right);
     printf("Teleop periodic end :)\n");
 }

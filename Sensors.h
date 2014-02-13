@@ -18,7 +18,8 @@ public:
     float getInfraredShooter();
     bool getInfraredLoad();
     float getUltrasonic();
-    static void updateHelper(void* instName);
+
+    static const float LOAD_THRESHOLD = 10;
 };
 
 #endif

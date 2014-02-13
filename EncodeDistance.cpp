@@ -10,8 +10,8 @@ EncodeDistance::EncodeDistance(uint8_t modLA, uint32_t chanLA,
                            modLB, chanLB);
     EncoderR = new Encoder(modRA, chanRA,
                            modRB, chanRB);
-    EncoderL->SetDistancePerPulse(dist);
-    EncoderR->SetDistancePerPulse(dist);
+    EncoderL->SetDistancePerPulse(DISTPERPULSE);
+    EncoderR->SetDistancePerPulse(DISTPERPULSE);
 }
 
 EncodeDistance::~EncodeDistance()
@@ -36,13 +36,12 @@ double EncodeDistance::getAvgDistance()
 }
 double EncodeDistance::convertTickToDist(double pulse)
 {
-    return (pulse/EncoderR->GetRate());
+    return (pulse*DISTPERPULSE);
 }
 
 double EncodeDistance::convertDistToTick(double distance)
 {
-    // TODO
-    return (EncoderR->GetRate());
+    return (distance/DISTPERPULSE);
 }
 
 

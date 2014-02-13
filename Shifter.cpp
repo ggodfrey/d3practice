@@ -43,7 +43,6 @@ void Shifter::buttonHelper(void* objPtr, uint32_t button){
     if(button == SHIFT_LOW)
     {
         ShifterObj->setLow();
-        
     }
     else if(button == SHIFT_HIGH)
     {

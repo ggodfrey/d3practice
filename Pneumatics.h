@@ -17,7 +17,7 @@ class Pneumatics
         void checkPressure();
         void setVectorValues(double timerValues, DoubleSolenoid* startSolenoid, DoubleSolenoid::Value value);
         void updateSolenoid();
-        static void UpdateHelper(void* instName);
+        static void updateHelper(void* instName);
     private:
         DigitalInput* switchObject;
         Relay* compressor;
