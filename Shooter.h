@@ -13,10 +13,10 @@
 class Shooter
 {
 public:
-    Shooter(uint8_t axisMod,
+    Shooter(uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t wormMod, uint32_t wormChan,
+                 uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod);
     ~Shooter();
@@ -40,7 +40,7 @@ public:
     DoubleSolenoid* clamper;
     Pneumatics* pneumatics;
     SmoothJoystick* shooterJoy;
-    Talon* wormGear;
+    CANJaguar* wormGear;
     DoubleSolenoid* puncher;
     ADXL345_I2C* bobTheAccelerometer;
     //Blah* puncher;

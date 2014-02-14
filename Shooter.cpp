@@ -3,17 +3,17 @@
 #include "main.h"
 #include "SmoothJoystick.h"
 
-Shooter::Shooter(uint8_t axisMod,
+Shooter::Shooter(uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t wormMod, uint32_t wormChan,
+                 uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod)
 {
-    axis = new CANJaguar(axisMod);
+    axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
     clamper = new DoubleSolenoid(clampMod, clampFChan, clampRChan);
-    wormGear = new Talon(wormMod,wormChan);
+    wormGear = new CANJaguar(wormCan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     bobTheAccelerometer = new ADXL345_I2C(bobMod);
     isPickingUp = false;
