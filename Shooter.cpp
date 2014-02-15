@@ -103,7 +103,6 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    wormGear -> Set(currentSpeed);
     currentSpeed = SPEED_WORM;
     pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     wormIsPulling = true;
@@ -118,7 +117,8 @@ void Shooter::wormStop()
 
 void Shooter::punch()
 {
-    if(robot -> sensors -> getInfraredLoad()){
+    if(robot -> sensors -> getInfraredLoad())
+    {
         pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
     }
 }
@@ -208,7 +208,7 @@ void Shooter::update()
         if(currentSpeed <= WORM_LIMIT)
         {
             currentSpeed += INCREMENT;
-            wormPull();
+            wormGear->Set(currentSpeed);
         }
         else if(currentSpeed > WORM_LIMIT)
         {
