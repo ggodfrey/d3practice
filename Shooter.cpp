@@ -93,20 +93,20 @@ void Shooter::autoClamp()
 
 void Shooter::clampDown()
 {
-    pneumatics->setVectorValues(TIME, clamper, DoubleSolenoid::kForward);
+    robot -> pnum->setVectorValues(TIME, clamper, DoubleSolenoid::kForward);
     clamp = down;
 }
 
 void Shooter::clampUp()
 {
-    pneumatics->setVectorValues(TIME, clamper, DoubleSolenoid::kReverse);
+    robot -> pnum->setVectorValues(TIME, clamper, DoubleSolenoid::kReverse);
     clamp = up;
 }
 
 void Shooter::wormPull()
 {
     currentSpeed = SPEED_WORM;
-    pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     wormIsPulling = true;
 }
 
@@ -119,7 +119,7 @@ void Shooter::wormStop()
 
 void Shooter::punch()
 {
-    pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
 }
 
 void Shooter::buttonHelper(void* objPtr, uint32_t button)

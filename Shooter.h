@@ -38,7 +38,6 @@ public:
     CANJaguar* axis;
     Talon* attractor;
     DoubleSolenoid* clamper;
-    Pneumatics* pneumatics;
     SmoothJoystick* shooterJoy;
     CANJaguar* wormGear;
     DoubleSolenoid* puncher;
