@@ -22,8 +22,6 @@ Shooter::Shooter(uint8_t axisCan,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
-    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PISTON_L);
-    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PISTON_R);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
@@ -121,10 +119,7 @@ void Shooter::wormStop()
 
 void Shooter::punch()
 {
-    if(robot -> sensors -> getInfraredLoad())
-    {
-        pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
-    }
+    pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
 }
 
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
@@ -133,14 +128,6 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     if(button==CLAMP)
     {
         shooterObj->autoClamp();
-    }
-    else if(button==PISTON_L)
-    {
-        robot -> pnum -> setVectorValues(PUNCH_TIME, shooterObj -> puncher, DoubleSolenoid::kReverse);
-    }
-    else if(button==PISTON_R)
-    {
-        robot -> pnum -> setVectorValues(PUNCH_TIME, shooterObj -> puncher, DoubleSolenoid::kReverse);
     }
 }
 
