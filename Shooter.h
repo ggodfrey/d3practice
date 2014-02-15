@@ -62,7 +62,7 @@ public:
     static const double CATCHING_POSITION = 85;
     static const double SHOOTING_POSITION = 45;
     static const double PICKUP_POSITION   = -20;
-    static const double SPEED_WORM = 0.4; //What we start at
+    static const double SPEED_WORM; //What we start at
     static const double INCREMENT  = 0.0000001;
     static const double WORM_LIMIT = 1.0;
 

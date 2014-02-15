@@ -4,6 +4,7 @@
 #include <Relay.h>
 #include <Joystick.h>
 #include "ports.h"
+#include "Netcom.h"
 
 main_robot* robot=NULL;
 

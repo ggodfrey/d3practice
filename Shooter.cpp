@@ -4,7 +4,7 @@
 #include "SmoothJoystick.h"
 
 const double Shooter::SPEED_AXISPOWER = 0.5;
-const double Shooter::SPEED_WORM = 1.0;
+const double Shooter::SPEED_WORM = 0.4;
 
 Shooter::Shooter(uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
@@ -136,11 +136,11 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     }
     else if(button==PISTON_L)
     {
-        pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+        robot -> pnum -> setVectorValues(PUNCH_TIME, shooterObj -> puncher, DoubleSolenoid::kReverse);
     }
     else if(button==PISTON_R)
     {
-        pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+        robot -> pnum -> setVectorValues(PUNCH_TIME, shooterObj -> puncher, DoubleSolenoid::kReverse);
     }
 }
 

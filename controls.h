@@ -36,8 +36,8 @@ const static trigStates TILT_UP   = TRIG_R;
 const static uint8_t CLAMP        = BUTTON_A;
 const static uint8_t ROLLERS      = BUTTON_X;
 const static uint8_t WORMDRIVE    = BUTTON_Y;
-const static uint8_t PISTON_L     = BUTTON_L1;
-const static uint8_t PISTON_R     = BUTTON_R1;
+const static uint8_t PISTON_L     = BUTTON_LB;
+const static uint8_t PISTON_R     = BUTTON_RB;
 
 //Shooter pickup
 const static uint8_t PICKUP = BUTTON_B;
