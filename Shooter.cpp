@@ -22,6 +22,7 @@ Shooter::Shooter(uint8_t axisCan,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
+    currentSpeed = SPEED_WORM;
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -106,7 +107,7 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    wormGear -> Set(-SPEED_WORM);
+    wormGear -> Set(currentSpeed);
     wormIsPulling = true;
 }
 
@@ -114,6 +115,7 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
+    currentSpeed = 0.0;
 }
 
 void Shooter::punch()
@@ -203,15 +205,28 @@ void Shooter::update()
         }
     }
 
+    if(wormIsPulling)
+    {
+        if(currentSpeed <= WORM_LIMIT)
+        {
+            currentSpeed += INCREMENT;
+            wormPull();
+        }
+        else if(currentSpeed > WORM_LIMIT)
+        {
+            wormStop();
+        }
+    }
+}
+
     // FIXME whoever wrote this, what was its intended purpose?
 /*    if (wormIsPulling){
         if (robot -> sensors -> getInfraredLoad())
         {
             wormStop();
         }
-    }*/
-}
-
+    }
+*/
 
 void Shooter::updateHelper(void* instName)
 {
