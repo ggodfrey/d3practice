@@ -13,6 +13,14 @@ Autonomous::~Autonomous()
 void Autonomous::moveForward()
 {
     robot->drive->autoDrive(DISTANCE);
+    if (stage == DRIVING)
+        {
+            drive();
+        }
+    else
+    {
+        set previousStage = DRIVING
+    }
 }
 void Autonomous::turn()
 {
