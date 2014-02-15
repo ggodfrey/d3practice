@@ -3,10 +3,10 @@
 
 
 // DriveTrain Channels
-const static uint32_t TALON_FL_CHANNEL = 1;
-const static uint32_t TALON_FR_CHANNEL = 6;
-const static uint32_t TALON_RL_CHANNEL = 2;
-const static uint32_t TALON_RR_CHANNEL = 7;
+const static uint32_t TALON_FL_CHANNEL = 3;
+const static uint32_t TALON_FR_CHANNEL = 1;
+const static uint32_t TALON_RL_CHANNEL = 4;
+const static uint32_t TALON_RR_CHANNEL = 2;
 // DriveTrain Modules
 const static uint8_t  TALON_FL_MODULE  = 1;
 const static uint8_t  TALON_FR_MODULE  = 1;
@@ -25,18 +25,23 @@ const static uint32_t SHIFT_RCHAN = 8;
 const static uint8_t  SHIFT_MOD   = 1;
 
 // Shooter
-const static uint32_t SHOOT_TALON_CHANNEL = 3;
-const static uint8_t  SHOOT_TALON_MODULE  = 1;
-const static uint8_t  SHOOT_JAG_MODULE    = 1;
+const static uint8_t  SHOOT_JAG_CAN       = 1; // tilt
+
+const static uint8_t  SHOOT_TALON_MODULE  = 1; // grabber/rollers
+const static uint32_t SHOOT_TALON_CHANNEL = 5;
+
+const static uint8_t  SHOOT_SLNOID_MODULE = 1; // clamp
 const static uint32_t SHOOT_SLNOID_FCHAN  = 5;
 const static uint32_t SHOOT_SLNOID_RCHAN  = 6;
-const static uint8_t  SHOOT_SLNOID_MODULE = 1;
-const static uint32_t WORM_TALON_CHANNEL  = 4;
-const static uint32_t WORM_TALON_MODULE   = 1;
-const static uint32_t PUNCH_SLNOID_FCHAN  = 7;
-const static uint32_t PUNCH_SLNOID_RCHAN  = 8;
-const static uint8_t  PUNCH_SLNOID_MODULE = 1;
-const static uint8_t  SHOOT_ACCEL_MODULE  = 1;
+
+const static uint32_t WORM_JAG_CAN        = 2; // worm drive
+
+const static uint8_t  PUNCH_SLNOID_MODULE = 1; // dog clutch piston
+const static uint32_t PUNCH_SLNOID_FCHAN  = 3;
+const static uint32_t PUNCH_SLNOID_RCHAN  = 4;
+
+const static uint8_t  SHOOT_ACCEL_MODULE  = 1; // accelerometer I2C sidecar module
+
 // Encoder Modules
 const uint8_t  ENCODER_LMODULE_A  = 1;
 const uint8_t  ENCODER_RMODULE_A  = 1;
@@ -54,11 +59,11 @@ const uint32_t GUNNER_JOY_PORT = 2;
 
 // Sensors
 const static uint8_t USMODNUMBER = 1; //ultrasonic modual number
-const static uint32_t USCHANNEL  = 1; //ultrasonic Channel
+const static uint32_t USCHANNEL  = 2; //ultrasonic Channel
 const static uint8_t ISMODNUMBER = 1; //infrared Shooter Modual Number
-const static uint32_t ISCHANNEL  = 1; //Infrared Shooter Channel
+const static uint32_t ISCHANNEL  = 3; //Infrared Shooter Channel
 const static uint8_t ILMODNUMBER = 1; //Infrared Load Modual Number
-const static uint32_t ILCHANNEL  = 1; //Infrared Load Channel
+const static uint32_t ILCHANNEL  = 4; //Infrared Load Channel
 //have no idea how this is supposed to work...
 
 #endif

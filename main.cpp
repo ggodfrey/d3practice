@@ -31,10 +31,10 @@ void main_robot::RobotInit()
                            TALON_RL_MODULE, TALON_RL_CHANNEL,
                            TALON_FR_MODULE, TALON_FR_CHANNEL,
                            TALON_RR_MODULE, TALON_RR_CHANNEL);
-    shoot = new Shooter(SHOOT_JAG_MODULE,
+    shoot = new Shooter(SHOOT_JAG_CAN,
                         SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
                         SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
-                        WORM_TALON_MODULE, WORM_TALON_CHANNEL,
+                        WORM_JAG_CAN,
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
     sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
