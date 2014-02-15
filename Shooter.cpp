@@ -111,6 +111,7 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
+    currentSpeed = 0.0;
 }
 
 void Shooter::punch()
