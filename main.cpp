@@ -39,6 +39,7 @@ void main_robot::RobotInit()
                         SHOOT_ACCEL_MODULE);
     sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
     printf("robot init exit\n");
+    netcom = new Netcom();
 }
 void main_robot::TeleopInit()
 {
