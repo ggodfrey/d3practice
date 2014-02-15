@@ -19,6 +19,7 @@ Shooter::Shooter(uint8_t axisMod,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
+    currentSpeed = SPEED_WORM;
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
