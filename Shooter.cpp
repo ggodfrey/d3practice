@@ -219,11 +219,13 @@ void Shooter::update()
         {
             pitchAngle(SHOOTING_POSITION);
             isPickingUp = false;
+            isPickingUpStopping = true;
         }
-        if (!isPitchingUp) // tilt at shooting position
+        if (!isPitchingUp && isPickingUpStopping) // tilt at shooting position
         {
             clampUp();
             pullStop();
+            isPickingUpStopping = false;
         }
     }
 
