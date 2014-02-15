@@ -31,15 +31,12 @@ const static uint8_t SHIFT_LOW  = BUTTON_LB;
 const static uint8_t SHIFT_HIGH = BUTTON_RB;
 
 //Manual shooter controls
-const static trigStates TILT_DOWN = TRIG_L;
-const static trigStates TILT_UP   = TRIG_R;
-const static uint8_t CLAMP        = BUTTON_A;
-const static uint8_t ROLLERS      = BUTTON_X;
-const static uint8_t WORMDRIVE    = BUTTON_Y;
-const static uint8_t PISTON_L     = BUTTON_LB;
-const static uint8_t PISTON_R     = BUTTON_RB;
+const static trigStates TILT_DOWN = AXIS_L_Y;
+const static uint8_t CLAMP        = BUTTON_B;
+const static uint8_t ROLLERS      = BUTTON_Y;
 
-//Shooter pickup
-const static uint8_t PICKUP = BUTTON_B;
+//Automatic shooter controls
+const static uint8_t PICKUP = BUTTON_X;
+const static uint8_t LOCKANDLOAD  = TRIG_R;
 
 #endif

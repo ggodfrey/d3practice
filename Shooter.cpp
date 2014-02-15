@@ -156,17 +156,17 @@ void Shooter::update()
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
 
     // manual controls
-    if(shooterJoy -> GetTriggerState() == TILT_UP)
+    if(shooterJoy -> IsAxisZero(TILT))
     {
-        pitchUp();
+        pitchStop();
     }
-    else if(shooterJoy -> GetTriggerState() == TILT_DOWN)
+    else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
     {
         pitchDown();
     }
     else
     {
-        pitchStop();
+        pitchUp();
     }
     if(shooterJoy -> GetSmoothButton(ROLLERS))
     {
@@ -176,19 +176,22 @@ void Shooter::update()
     {
         pullStop();
     }
-    if(shooterJoy -> GetSmoothButton(WORMDRIVE))
+    if(shooterJoy -> GetTriggerState() == LOCKANDLOAD)
     {
+        autoPulling = true;
         wormPull();
     }
-    else
+    else if(autoPulling)
     {
+        autoPulling = false;
         wormStop();
+        punch();
     }
 
     // auto pitch angle
     if (isPitchingUp)
     {
-        if (currentPitch <= destinationPitch)
+        if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
         {
             pitchStop();
             isPitchingUp = false;
@@ -196,7 +199,7 @@ void Shooter::update()
     }
     if (isPitchingDown)
     {
-        if (currentPitch >= destinationPitch)
+        if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
         {
             pitchStop();
             isPitchingDown = false;
@@ -245,7 +248,7 @@ void Shooter::update()
             currentSpeed += INCREMENT;
             wormGear->Set(currentSpeed);
         }
-        else if(currentSpeed > WORM_LIMIT)
+        else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
         {
             wormStop();
         }
