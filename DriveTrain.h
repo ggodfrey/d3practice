@@ -24,7 +24,7 @@ public:
     bool isTurningL;
     bool isTurningR;
     double NeededDist;
-    static const float SPEED=0.8f;
+    static const double SPEED;
     static const double PI=3.14159265;
     static const double ROBOTRAD = 3.0;
     static const double CIRCUMROBOT;

@@ -53,15 +53,15 @@ public:
     double destinationPitch;
     double originPitch;
 
-    static const float SPEED_AXISPOWER = 0.5f;
-    static const float SPEED_ATTRACTOR = 0.5f;
+    static const double SPEED_AXISPOWER;
+    static const double SPEED_ATTRACTOR = 0.5;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
     static const double PI = 3.14159;
     static const double CATCHING_POSITION = 85;
     static const double SHOOTING_POSITION = 45;
     static const double PICKUP_POSITION = -20;
-    static const float SPEED_WORM = 1.0f;
+    static const double SPEED_WORM;
 
     static void buttonHelper(void* objPtr, uint32_t button);
     void update();

@@ -3,6 +3,8 @@
 #include "612.h"
 #include "main.h"
 
+const double DriveTrain::SPEED=0.8;
+
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
 
