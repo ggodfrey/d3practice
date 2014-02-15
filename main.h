@@ -34,6 +34,7 @@ public:
     Shooter* shoot;
     FunctionRegistry* update;
     Sensors* sensors;
+    Netcom* netcom;
 };
 
 
