@@ -19,7 +19,6 @@ Shooter::Shooter(uint8_t axisMod,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
-    currentSpeed = SPEED_WORM;
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -105,6 +104,7 @@ void Shooter::clampUp()
 void Shooter::wormPull()
 {
     wormGear -> Set(currentSpeed);
+    currentSpeed = SPEED_WORM;
     wormIsPulling = true;
 }
 
@@ -112,7 +112,7 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
-    currentSpeed = 0.0;
+    currentSpeed = SPEED_WORM;
 }
 
 void Shooter::punch()
