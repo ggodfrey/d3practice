@@ -21,8 +21,9 @@ Shooter::Shooter(uint8_t axisCan,
     bobTheAccelerometer = new ADXL345_I2C(bobMod);
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
-    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
-    //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PISTON_L);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PISTON_R);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
@@ -126,10 +127,21 @@ void Shooter::punch()
     }
 }
 
-//X to fire
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
-    //Shooter* shooterObj=(Shooter*)objPtr;
+    Shooter* shooterObj=(Shooter*)objPtr;
+    if(button==CLAMP)
+    {
+        shooterObj->autoClamp();
+    }
+    else if(button==PISTON_L)
+    {
+        pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    }
+    else if(button==PISTON_R)
+    {
+        pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    }
 }
 
 // TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
@@ -143,11 +155,12 @@ void Shooter::update()
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
 
-    if(shooterJoy -> GetTriggerState() == TRIG_L)
+    // manual controls
+    if(shooterJoy -> GetTriggerState() == TILT_UP)
     {
         pitchUp();
     }
-    else if(shooterJoy -> GetTriggerState() == TRIG_R)
+    else if(shooterJoy -> GetTriggerState() == TILT_DOWN)
     {
         pitchDown();
     }
@@ -155,7 +168,24 @@ void Shooter::update()
     {
         pitchStop();
     }
+    if(shooterJoy -> GetSmoothButton(ROLLERS))
+    {
+        pull();
+    }
+    else
+    {
+        pullStop();
+    }
+    if(shooterJoy -> GetSmoothButton(WORMDRIVE))
+    {
+        wormPull();
+    }
+    else
+    {
+        wormStop();
+    }
 
+    // auto pitch angle
     if (isPitchingUp)
     {
         if (currentPitch <= destinationPitch)
@@ -173,6 +203,7 @@ void Shooter::update()
         }
     }
 
+    // smart pickup control
     // sequence:
     // clamp up, tilt down
     // when tilt at pickup position, clamp down, rollers pull
@@ -206,6 +237,7 @@ void Shooter::update()
         }
     }
 
+    // increasing worm drive speed
     if(wormIsPulling)
     {
         if(currentSpeed <= WORM_LIMIT)
