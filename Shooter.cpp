@@ -22,7 +22,6 @@ Shooter::Shooter(uint8_t axisCan,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
-    currentSpeed = SPEED_WORM;
     //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -107,7 +106,8 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    wormGear -> Set(currentSpeed);
+    currentSpeed = SPEED_WORM;
+    pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     wormIsPulling = true;
 }
 
@@ -115,12 +115,13 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
-    currentSpeed = 0.0;
+    currentSpeed = SPEED_WORM;
 }
 
 void Shooter::punch()
 {
-    if(robot -> sensors -> getInfraredLoad()){
+    if(robot -> sensors -> getInfraredLoad())
+    {
         pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
     }
 }
@@ -210,7 +211,7 @@ void Shooter::update()
         if(currentSpeed <= WORM_LIMIT)
         {
             currentSpeed += INCREMENT;
-            wormPull();
+            wormGear->Set(currentSpeed);
         }
         else if(currentSpeed > WORM_LIMIT)
         {
