@@ -105,6 +105,7 @@ void Shooter::wormPull()
 {
     wormGear -> Set(currentSpeed);
     currentSpeed = SPEED_WORM;
+    pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     wormIsPulling = true;
 }
 
