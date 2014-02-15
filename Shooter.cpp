@@ -103,7 +103,7 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    wormGear -> Set(-SPEED_WORM);
+    wormGear -> Set(currentSpeed);
     wormIsPulling = true;
 }
 
@@ -200,15 +200,28 @@ void Shooter::update()
         }
     }
 
+    if(wormIsPulling)
+    {
+        if(currentSpeed <= WORM_LIMIT)
+        {
+            currentSpeed += INCREMENT;
+            wormPull();
+        }
+        else if(currentSpeed > WORM_LIMIT)
+        {
+            wormStop();
+        }
+    }
+}
+
     // FIXME whoever wrote this, what was its intended purpose?
 /*    if (wormIsPulling){
         if (robot -> sensors -> getInfraredLoad())
         {
             wormStop();
         }
-    }*/
-}
-
+    }
+*/
 
 void Shooter::updateHelper(void* instName)
 {
