@@ -45,7 +45,6 @@ public:
     DoubleSolenoid* puncher;
     Sensors* sensor;
     ADXL345_I2C* bobTheAccelerometer;
-    //Blah* puncher;
 
     bool isPickingUp;
     bool isPitchingUp;
