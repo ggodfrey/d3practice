@@ -122,7 +122,7 @@ void DriveTrain::update()
         }
         TankDrive(-speedL, speedR);
     }
-    else
+    else if (isTurningR)
     {
         speedL = SPEED;
         if (encode->getLDistance() >= -NeededDist)
