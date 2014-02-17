@@ -9,15 +9,14 @@
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
-#include "Sensors.h"
 
 class Shooter
 {
 public:
-    Shooter(uint8_t axisMod,
+    Shooter(uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t wormMod, uint32_t wormChan,
+                 uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod);
     ~Shooter();
@@ -39,30 +38,33 @@ public:
     CANJaguar* axis;
     Talon* attractor;
     DoubleSolenoid* clamper;
-    Pneumatics* pneumatics;
     SmoothJoystick* shooterJoy;
-    Talon* wormGear;
+    CANJaguar* wormGear;
     DoubleSolenoid* puncher;
-    Sensors* sensor;
     ADXL345_I2C* bobTheAccelerometer;
 
     bool isPickingUp;
     bool isPitchingUp;
     bool isPitchingDown;
     bool wormIsPulling;
+    bool autoPulling;
+    bool isPickingUpStopping;
     double currentPitch;
     double destinationPitch;
     double originPitch;
+    double currentSpeed;
 
-    static const float SPEED_AXISPOWER;
-    static const float SPEED_ATTRACTOR = 0.5f;
+    static const double SPEED_AXISPOWER;
+    static const double SPEED_ATTRACTOR = 0.5;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
     static const double PI = 3.14159;
     static const double CATCHING_POSITION = 85;
     static const double SHOOTING_POSITION = 45;
-    static const double PICKUP_POSITION = -45;
-    static const float SPEED_WORM = 1.0f;
+    static const double PICKUP_POSITION   = -20;
+    static const double SPEED_WORM; //What we start at
+    static const double INCREMENT  = 0.0000001;
+    static const double WORM_LIMIT = 1.0;
 
     static void buttonHelper(void* objPtr, uint32_t button);
     void update();

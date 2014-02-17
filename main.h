@@ -11,6 +11,7 @@
 #include "Shooter.h"
 #include "FunctionRegistry.h"
 #include "Sensors.h"
+#include "Netcom.h"
 
 class main_robot: public IterativeRobot
 {
@@ -33,7 +34,8 @@ public:
     DriveTrain* drive;
     Shooter* shoot;
     FunctionRegistry* update;
-    Sensors* SensorObj;
+    Sensors* sensors;
+    Netcom* netcom;
 };
 
 

@@ -3,22 +3,21 @@
 #include "612.h"
 #include "main.h"
 
-const double DriveTrain::PI = 3.141592653;
+const double DriveTrain::SPEED=0.8;
+
+// all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
-bool DriveTrain::isMovingL = false;
-bool DriveTrain::isMovingR = false;
-bool DriveTrain::isTurningL = false;
-bool DriveTrain::isTurningR = false;
-const float DriveTrain::SPEED = 1.0f;
 
 DriveTrain::DriveTrain(uint8_t modFL,uint32_t chanFL,
-                        uint8_t modRL,uint32_t chanRL,
-                        uint8_t modFR,uint32_t chanFR,
-                        uint8_t modRR,uint32_t chanRR)
+                       uint8_t modRL,uint32_t chanRL,
+                       uint8_t modFR,uint32_t chanFR,
+                       uint8_t modRR,uint32_t chanRR)
            :RobotDrive(new Talon(modFL,chanFL),
-                        new Talon(modRL,chanRL),
-                        new Talon(modFR,chanFR),
-                        new Talon(modRR,chanRR))
+                       new Talon(modRL,chanRL),
+                       new Talon(modFR,chanFR),
+                       new Talon(modRR,chanRR)),
+            isMovingL(false),isMovingR(false),
+            isTurningL(false),isTurningR(false)
 {
     encode = new EncodeDistance(ENCODER_LMODULE_A, ENCODER_LCHANNEL_A,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,
@@ -35,6 +34,7 @@ DriveTrain::~DriveTrain()
 
 void DriveTrain::autoDrive(double distance)
 {
+    stopAuto();
     NeededDist = distance;
     TankDrive(SPEED, SPEED);
     isMovingL = true;
@@ -42,10 +42,11 @@ void DriveTrain::autoDrive(double distance)
     encode->EncoderL->Start();
     encode->EncoderR->Start();
 }
-void DriveTrain::autoTurn(double degrees)                         // any degrees less than zero (0) will turn right; basically the unit circle
+void DriveTrain::autoTurn(double degrees)           // any degrees less than zero (0) will turn right; basically the unit circle
 {
+    stopAuto();
     double degrees2Radians = degrees * (PI/180);
-    double arcLength = CIRCUMROBOT * (degrees2Radians/(2 * PI));  // checks the length of the arc in feet
+    double arcLength = ROBOTRAD * degrees2Radians;  // checks the length of the arc in feet
     NeededDist = arcLength;
     if (degrees > 0){
         TankDrive(-SPEED, SPEED);
@@ -115,7 +116,10 @@ void DriveTrain::update()
             encode->EncoderR->Reset();
             speedR = 0.0f;
         }
-        isTurningL = false;
+        if(speedL < ZEROTEST && speedR < ZEROTEST)
+        {
+            isTurningL = false;
+        }
         TankDrive(-speedL, speedR);
     }
     else
@@ -134,13 +138,17 @@ void DriveTrain::update()
             encode->EncoderR->Reset();
             speedR = 0.0f;
         }
-        isTurningR = false;
+        if(speedL < ZEROTEST && speedR < ZEROTEST)
+        {
+            isTurningR = false;
+        }
         TankDrive(-speedL, speedR);
     }
 }
 
 void DriveTrain::updateHelper(void* instName)
 {
+    printf("DriveTrain update\n");
     DriveTrain* driveObj = (DriveTrain*)instName;
     driveObj->update();
 }

@@ -9,7 +9,6 @@
 
 SmoothJoystick::SmoothJoystick(uint32_t port): Joystick(port)
 {
-     TRIGGER_TOLERANCE = 0.1;
      addButtons();
      robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -19,10 +18,10 @@ SmoothJoystick::~SmoothJoystick()
 
 }
 
-void SmoothJoystick::addJoyFunctions(joyFunctions controlFunctions, joyfuncObjects controlObjects, uint32_t btn)
+void SmoothJoystick::addJoyFunctions(joyFunctions controlFunction, joyfuncObjects controlObject, uint32_t btn)
 {
-    Objects.push_back(controlObjects);
-    joystickFuncs.push_back(controlFunctions);
+    Objects.push_back(controlObject);
+    joystickFuncs.push_back(controlFunction);
     joyfuncButtons.push_back(btn);
     funcBools.push_back(false);
 }
@@ -50,16 +49,11 @@ void SmoothJoystick::updateJoyFunctions()
 
 void SmoothJoystick::addButtons()
 {
-    int m = 0;
-
-    std::bitset<3>* newButton = new std::bitset<3>();
-
-    do
+    for(int m = 0; m < NUMBUTTONS; m++)
     {
+        std::bitset<3>* newButton = new std::bitset<3>();
         buttons.push_back(newButton);
-        m = m + 1;
     }
-    while (m < amountOfButtons);//don't know where this goes :P
 }
 
 bool SmoothJoystick::GetSmoothButton(int Button_number)
@@ -80,7 +74,7 @@ bool SmoothJoystick::GetSmoothButton(int Button_number)
 
 void SmoothJoystick::buttonUpdate()
 {
-    for(int k = 0; k < amountOfButtons; k++)
+    for(int k = 0; k < NUMBUTTONS; k++)
     {
         std::bitset<3>* btnSet = buttons.at(k);
         btnSet->at(2) = btnSet->at(1);
@@ -113,9 +107,9 @@ trigStates SmoothJoystick::GetTriggerState()//accepts axis port, returns 1 or -1
     }
 }
 
-bool SmoothJoystick::isAxisZero(uint32_t axis)
+bool SmoothJoystick::IsAxisZero(uint32_t axis)
 {
-    if(GetRawAxis(axis) >= (deadZone * -1) || GetRawAxis(axis) <= (deadZone))
+    if(GetRawAxis(axis) >= (DEADZONE* -1) || GetRawAxis(axis) <= (DEADZONE))
     {
         return true;
     }
@@ -127,6 +121,7 @@ bool SmoothJoystick::isAxisZero(uint32_t axis)
 
 void SmoothJoystick::updateHelper(void* instName)
 {
+    printf("SmoothJoystick update\n");
     SmoothJoystick* smoothObj = (SmoothJoystick*)instName;
     smoothObj -> updateJoyFunctions();
     smoothObj -> buttonUpdate();

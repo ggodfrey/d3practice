@@ -3,25 +3,25 @@
 #include "main.h"
 #include "SmoothJoystick.h"
 
-const float Shooter::SPEED_AXISPOWER = 0.5f;
+const double Shooter::SPEED_AXISPOWER = 0.5;
+const double Shooter::SPEED_WORM = 0.4;
 
-Shooter::Shooter(uint8_t axisMod,
+Shooter::Shooter(uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t wormMod, uint32_t wormChan,
+                 uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod)
 {
-    axis = new CANJaguar(axisMod);
+    axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
     clamper = new DoubleSolenoid(clampMod, clampFChan, clampRChan);
-    shooterJoy = robot -> gunnerJoy;
-    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,PICKUP);
-    //shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP_DOWN);
-    wormGear = new Talon(wormMod,wormChan);
+    wormGear = new CANJaguar(wormCan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     bobTheAccelerometer = new ADXL345_I2C(bobMod);
     isPickingUp = false;
+    shooterJoy = robot -> gunnerJoy;
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
@@ -54,6 +54,8 @@ void Shooter::pitchAngle(double newPitch)
 {
     originPitch = currentPitch;
     destinationPitch = newPitch;
+    isPickingUp = false;
+    isPitchingDown = false;
     if (newPitch < originPitch)
     {
         pitchUp();
@@ -91,21 +93,20 @@ void Shooter::autoClamp()
 
 void Shooter::clampDown()
 {
-    pneumatics->setVectorValues(TIME, clamper, DoubleSolenoid::kForward);
-    pull();
+    robot -> pnum->setVectorValues(TIME, clamper, DoubleSolenoid::kForward);
     clamp = down;
 }
 
 void Shooter::clampUp()
 {
-    pneumatics->setVectorValues(TIME, clamper, DoubleSolenoid::kReverse);
-    pullStop();
+    robot -> pnum->setVectorValues(TIME, clamper, DoubleSolenoid::kReverse);
     clamp = up;
 }
 
 void Shooter::wormPull()
 {
-    wormGear -> Set(-SPEED_WORM);
+    currentSpeed = SPEED_WORM;
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     wormIsPulling = true;
 }
 
@@ -113,20 +114,26 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
+    currentSpeed = SPEED_WORM;
 }
 
 void Shooter::punch()
 {
-	if(sensor -> getInfraredLoad()){
-		pneumatics -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
-	}
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
 }
 
-//X to fire
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
-    //Shooter* shooterObj=(Shooter*)objPtr;
+    Shooter* shooterObj=(Shooter*)objPtr;
+    if(button==CLAMP)
+    {
+        shooterObj->autoClamp();
+    }
 }
+
+// TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
+//                 there because we hit the frame? Somehow we need to detect that
+//                 and set isPitchingDown to false if it hard stops
 
 void Shooter::update()
 {
@@ -134,22 +141,44 @@ void Shooter::update()
     double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
-    if(shooterJoy -> GetTriggerState() == TRIG_L)
+
+    // manual controls
+    if(shooterJoy -> IsAxisZero(TILT))
     {
-        pitchUp();
+        pitchStop();
     }
-    else if(shooterJoy -> GetTriggerState() == TRIG_R)
+    else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
     {
         pitchDown();
     }
     else
     {
-        pitchStop();
+        pitchUp();
+    }
+    if(shooterJoy -> GetSmoothButton(ROLLERS))
+    {
+        pull();
+    }
+    else
+    {
+        pullStop();
+    }
+    if(shooterJoy -> GetTriggerState() == LOCKANDLOAD)
+    {
+        autoPulling = true;
+        wormPull();
+    }
+    else if(autoPulling)
+    {
+        autoPulling = false;
+        wormStop();
+        punch();
     }
 
+    // auto pitch angle
     if (isPitchingUp)
     {
-        if (currentPitch <= destinationPitch)
+        if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
         {
             pitchStop();
             isPitchingUp = false;
@@ -157,42 +186,76 @@ void Shooter::update()
     }
     if (isPitchingDown)
     {
-        if (currentPitch >= destinationPitch)
+        if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
         {
             pitchStop();
             isPitchingDown = false;
         }
     }
-    if(shooterJoy -> GetSmoothButton(PICKUP))
+
+    // smart pickup control
+    // sequence:
+    // clamp up, tilt down
+    // when tilt at pickup position, clamp down, rollers pull
+    // when let go, tilt up
+    // when tilt at shoot position, clamp up, rollers stop
+    if(shooterJoy -> GetSmoothButton(PICKUP)) // holding down button
     {
-        if (!isPickingUp)
+        if (!isPickingUp) // hasn't started sequence yet
         {
             isPickingUp = true;
             pitchAngle(PICKUP_POSITION);
-            clampDown();
-        }
-    }
-    else
-    {
-        if(isPickingUp){
-            pitchAngle(SHOOTING_POSITION);
-            isPickingUp = false;
-        }
-        if (!isPitchingUp){
             clampUp();
         }
-    }
-    if (wormIsPulling){
-        if (sensor -> getInfraredLoad())
+        if(!isPitchingDown) // tilt at pickup position
         {
-           	wormStop();
+            clampDown();
+            pull();
+        }
+    }
+    else // let go of button
+    {
+        if(isPickingUp) // was picking up, so now should stop picking up
+        {
+            pitchAngle(SHOOTING_POSITION);
+            isPickingUp = false;
+            isPickingUpStopping = true;
+        }
+        if (!isPitchingUp && isPickingUpStopping) // tilt at shooting position
+        {
+            clampUp();
+            pullStop();
+            isPickingUpStopping = false;
+        }
+    }
+
+    // increasing worm drive speed
+    if(wormIsPulling)
+    {
+        if(currentSpeed <= WORM_LIMIT)
+        {
+            currentSpeed += INCREMENT;
+            wormGear->Set(currentSpeed);
+        }
+        else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
+        {
+            wormStop();
         }
     }
 }
 
+    // FIXME whoever wrote this, what was its intended purpose?
+/*    if (wormIsPulling){
+        if (robot -> sensors -> getInfraredLoad())
+        {
+            wormStop();
+        }
+    }
+*/
 
 void Shooter::updateHelper(void* instName)
 {
+    printf("Shooter update\n");
     Shooter* shooterObj = (Shooter*)instName;
     shooterObj -> update();
 }

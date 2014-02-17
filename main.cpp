@@ -4,6 +4,7 @@
 #include <Relay.h>
 #include <Joystick.h>
 #include "ports.h"
+#include "Netcom.h"
 
 main_robot* robot=NULL;
 
@@ -31,14 +32,15 @@ void main_robot::RobotInit()
                            TALON_RL_MODULE, TALON_RL_CHANNEL,
                            TALON_FR_MODULE, TALON_FR_CHANNEL,
                            TALON_RR_MODULE, TALON_RR_CHANNEL);
-    shoot = new Shooter(SHOOT_JAG_MODULE,
+    shoot = new Shooter(SHOOT_JAG_CAN,
                         SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
                         SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
-                        WORM_TALON_MODULE, WORM_TALON_CHANNEL,
+                        WORM_JAG_CAN,
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
-    SensorObj = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
+    sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
     printf("robot init exit\n");
+    netcom = new Netcom();
 }
 void main_robot::TeleopInit()
 {
@@ -58,14 +60,14 @@ void main_robot::DisabledInit()
 }
 void main_robot::TeleopPeriodic()
 {
-    printf("Teleop periodic 1\n");
+    printf("Teleop start\n");
     update->updateFunctions();
-    printf("Teleop periodic 2\n");
+    printf("Teleop registry updated\n");
     float left = driverJoy->GetRawAxis(2);
-    printf("Teleop periodic 3\n");
     float right = driverJoy->GetRawAxis(5);
-    printf("Teleop periodic 4\n");
-    drive->TankDrive(left, right);
+    printf("Teleop joysticks\n");
+    // up is negative, down is positive
+    drive->TankDrive(-left, -right);
     printf("Teleop periodic end :)\n");
 }
 
@@ -79,28 +81,8 @@ void main_robot::DisabledPeriodic()
 }
 void main_robot::TestPeriodic()
 {
-    static int output=0;
-    if(output%20==0)
-    {
-        printf("test periodic\n");
-    }
-    output++;
     pnum->checkPressure();
     pnum->updateSolenoid();
-    if(gunnerJoy->GetRawButton(5))
-    {
-        if(shift->gear!=Shifter::low)
-        {
-            shift->setLow();
-        }
-    }
-    else if(gunnerJoy->GetRawButton(6))
-    {
-        if(shift->gear!=Shifter::high)
-        {
-            shift->setHigh();
-        }
-    }
 }
 
 START_ROBOT_CLASS(main_robot)
