@@ -4,6 +4,7 @@
 #include <Relay.h>
 #include <Joystick.h>
 #include "ports.h"
+#include "Netcom.h"
 
 main_robot* robot=NULL;
 
@@ -65,7 +66,8 @@ void main_robot::TeleopPeriodic()
     float left = driverJoy->GetRawAxis(2);
     float right = driverJoy->GetRawAxis(5);
     printf("Teleop joysticks\n");
-    drive->TankDrive(left, right);
+    // up is negative, down is positive
+    drive->TankDrive(-left, -right);
     printf("Teleop periodic end :)\n");
 }
 
@@ -79,28 +81,8 @@ void main_robot::DisabledPeriodic()
 }
 void main_robot::TestPeriodic()
 {
-    static int output=0;
-    if(output%20==0)
-    {
-        printf("test periodic\n");
-    }
-    output++;
     pnum->checkPressure();
     pnum->updateSolenoid();
-    if(gunnerJoy->GetRawButton(5))
-    {
-        if(shift->gear!=Shifter::low)
-        {
-            shift->setLow();
-        }
-    }
-    else if(gunnerJoy->GetRawButton(6))
-    {
-        if(shift->gear!=Shifter::high)
-        {
-            shift->setHigh();
-        }
-    }
 }
 
 START_ROBOT_CLASS(main_robot)

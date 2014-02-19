@@ -19,6 +19,8 @@ const static uint8_t AXIS_TRIGGERS = 3;
 const static uint8_t AXIS_R_X = 4;
 const static uint8_t AXIS_R_Y = 5;
 const static uint8_t DPAD_X   = 6;
+//Trigger State
+enum trigStates {TRIG_L, TRIG_R, TRIG_NONE};
 
 //Driving
 const static uint8_t LEFT_DRIVE  = AXIS_L_Y;
@@ -28,9 +30,13 @@ const static uint8_t RIGHT_DRIVE = AXIS_R_Y;
 const static uint8_t SHIFT_LOW  = BUTTON_LB;
 const static uint8_t SHIFT_HIGH = BUTTON_RB;
 
-//Clamping
-const static uint8_t PICKUP = BUTTON_B;
+//Manual shooter controls
+const static uint8_t TILT         = AXIS_L_Y;
+const static uint8_t CLAMP        = BUTTON_B;
+const static uint8_t ROLLERS      = BUTTON_Y;
 
-//Trigger State
-enum trigStates {TRIG_L, TRIG_R, TRIG_NONE};
+//Automatic shooter controls
+const static uint8_t PICKUP = BUTTON_X;
+const static trigStates LOCKANDLOAD  = TRIG_R;
+
 #endif

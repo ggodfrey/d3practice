@@ -12,6 +12,8 @@ Sensors::Sensors(uint8_t USMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, u
     ultrasonic = new AnalogChannel(USMODNUMBER, USCHANNEL);
     infraredShooter = new AnalogChannel(ISMODNUMBER, ISCHANNEL);
     infraredLoad = new AnalogChannel(ILMODNUMBER, ILCHANNEL);
+
+    robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
 Sensors::~Sensors()
@@ -44,4 +46,10 @@ float Sensors::getUltrasonic()
 {
     // 9.8mV/in = 0.0098V/in
     return ((ultrasonic->GetVoltage()) / 0.0098);
+}
+
+void Sensors::updateHelper(void* instName)
+{
+    Sensors* sensorsObj = (Sensors*)instName;
+    robot -> netcom -> primeLocation(sensorsObj -> getUltrasonic());
 }

@@ -11,6 +11,7 @@
 #include "Shooter.h"
 #include "FunctionRegistry.h"
 #include "Sensors.h"
+#include "Netcom.h"
 
 class main_robot: public IterativeRobot
 {
