@@ -4,7 +4,8 @@
 #include <RobotDrive.h>
 #include "EncodeDistance.h"
 #include "ports.h"
-#include "main.h"
+
+class main_robot;
 
 class DriveTrain : public RobotDrive
 {

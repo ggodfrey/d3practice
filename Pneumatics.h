@@ -8,7 +8,8 @@
 #include <Timer.h>
 #include <DoubleSolenoid.h>
 #include "DriveTrain.h"
-#include "main.h"
+
+class main_robot;
 
 class Pneumatics
 {
