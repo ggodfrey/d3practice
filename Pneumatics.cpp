@@ -63,7 +63,6 @@ void Pneumatics::setVectorValues(double timerValue, DoubleSolenoid* startSolenoi
 
 void Pneumatics::updateHelper(void* instName)
 {
-    printf("Pneumatics update\n");
     Pneumatics* pnumObj = (Pneumatics*)instName;
     pnumObj -> checkPressure();
     pnumObj -> updateSolenoid();

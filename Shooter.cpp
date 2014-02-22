@@ -255,7 +255,6 @@ void Shooter::update()
 
 void Shooter::updateHelper(void* instName)
 {
-    printf("Shooter update\n");
     Shooter* shooterObj = (Shooter*)instName;
     shooterObj -> update();
 }

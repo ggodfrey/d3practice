@@ -10,8 +10,8 @@ main_robot* robot=NULL;
 
 main_robot::main_robot()
 {
-    printf("hello\n");
-    printf("world\n");
+    printf("Hello\n");
+    printf("World\n");
     robot=this;
 }
 
@@ -21,7 +21,6 @@ main_robot::~main_robot()
 
 void main_robot::RobotInit()
 {
-    printf("robot init\n");
     update = new FunctionRegistry();
     driverJoy = new SmoothJoystick(DRIVER_JOY_PORT);
     gunnerJoy = new SmoothJoystick(GUNNER_JOY_PORT);
@@ -39,7 +38,7 @@ void main_robot::RobotInit()
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
     sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
-    printf("robot init exit\n");
+    printf("Welcome to 612-2014 AERIAL ASSIST\n");
     netcom = new Netcom();
 }
 void main_robot::TeleopInit()
@@ -60,15 +59,11 @@ void main_robot::DisabledInit()
 }
 void main_robot::TeleopPeriodic()
 {
-    printf("Teleop start\n");
     update->updateFunctions();
-    printf("Teleop registry updated\n");
     float left = driverJoy->GetRawAxis(2);
     float right = driverJoy->GetRawAxis(5);
-    printf("Teleop joysticks\n");
     // up is negative, down is positive
     drive->TankDrive(-left, -right);
-    printf("Teleop periodic end :)\n");
 }
 
 void main_robot::AutonomousPeriodic()

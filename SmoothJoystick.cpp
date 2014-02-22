@@ -121,7 +121,6 @@ bool SmoothJoystick::IsAxisZero(uint32_t axis)
 
 void SmoothJoystick::updateHelper(void* instName)
 {
-    printf("SmoothJoystick update\n");
     SmoothJoystick* smoothObj = (SmoothJoystick*)instName;
     smoothObj -> updateJoyFunctions();
     smoothObj -> buttonUpdate();
