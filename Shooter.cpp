@@ -56,6 +56,7 @@ void Shooter::pitchAngle(double newPitch)
     destinationPitch = newPitch;
     isPickingUp = false;
     isPitchingDown = false;
+    hasTilted = false;
     if (newPitch < originPitch)
     {
         pitchUp();
@@ -144,25 +145,16 @@ void Shooter::update()
 
     // manual controls
     if(shooterJoy -> IsAxisZero(TILT))
-    {
         pitchStop();
-    }
     else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
-    {
         pitchDown();
-    }
     else
-    {
         pitchUp();
-    }
+
     if(shooterJoy -> GetSmoothButton(ROLLERS))
-    {
         pull();
-    }
     else
-    {
         pullStop();
-    }
     if(shooterJoy -> GetTriggerState() == LOCKANDLOAD)
     {
         autoPulling = true;
@@ -192,6 +184,8 @@ void Shooter::update()
             isPitchingDown = false;
         }
     }
+    if (!isPitchingDown && !isPitchingUp)
+        hasTilted = true;
 
     // smart pickup control
     // sequence:
@@ -219,13 +213,13 @@ void Shooter::update()
         {
             pitchAngle(SHOOTING_POSITION);
             isPickingUp = false;
-            isPickingUpStopping = true;
+            //isPickingUpStopping = true;
         }
-        if (!isPitchingUp && isPickingUpStopping) // tilt at shooting position
+        if (!isPitchingUp /*&& isPickingUpStopping*/) // tilt at shooting position
         {
             clampUp();
             pullStop();
-            isPickingUpStopping = false;
+            //isPickingUpStopping = false;
         }
     }
 
@@ -238,9 +232,7 @@ void Shooter::update()
             wormGear->Set(currentSpeed);
         }
         else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
-        {
             wormStop();
-        }
     }
 }
 

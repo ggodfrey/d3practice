@@ -17,8 +17,8 @@ public:
     bool timePassed(float time);        //time measured in seconds
 //  void vision();                      //probably connected to tilt
 //  double getTime();                   // might not be needed at the moment
-    DriveTrain* drive;
-    Shooter* shoot;
+//    DriveTrain* drive;
+//    Shooter* shoot;
     Timer* timer;
     enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE};
     State stage;

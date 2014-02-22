@@ -48,7 +48,8 @@ void main_robot::TeleopInit()
 }
 void main_robot::AutonomousInit()
 {
-
+    autoBot = new Autonomous();
+    autoBot->stage = Autonomous::IDLE;
 }
 void main_robot::TestInit()
 {
@@ -73,6 +74,14 @@ void main_robot::TeleopPeriodic()
 
 void main_robot::AutonomousPeriodic()
 {
+    update -> updateFunctions();
+    autoBot->stage = Autonomous::DRIVING;
+    if (drive->hasDriven)
+        autoBot->stage = Autonomous::TURNING;
+    if (drive->hasTurned)
+        autoBot->stage = Autonomous::AIMING;
+    if (shoot->hasTilted)
+        autoBot->stage = Autonomous::SHOOTING;
 }
 
 void main_robot::DisabledPeriodic()
