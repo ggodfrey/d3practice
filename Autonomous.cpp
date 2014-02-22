@@ -6,6 +6,16 @@
 
 Autonomous::Autonomous()
 {
+    drive = new DriveTrain(TALON_FL_MODULE, TALON_FL_CHANNEL,
+                           TALON_RL_MODULE, TALON_RL_CHANNEL,
+                           TALON_FR_MODULE, TALON_FR_CHANNEL,
+                           TALON_RR_MODULE, TALON_RR_CHANNEL);
+    shoot = new Shooter(SHOOT_JAG_CAN,
+                        SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
+                        SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
+                        WORM_JAG_CAN, PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
+                        BOBMOD);
+    timer = new Timer();
 }
 Autonomous::~Autonomous()
 {
@@ -17,6 +27,7 @@ void Autonomous::moveForward()
         robot->drive->autoDrive(DISTANCE);
         previousStage = DRIVING;
     }
+}
 
 void Autonomous::turn()
 {
