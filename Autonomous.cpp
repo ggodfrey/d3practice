@@ -12,30 +12,43 @@ Autonomous::~Autonomous()
 }
 void Autonomous::moveForward()
 {
-    robot->drive->autoDrive(DISTANCE);
-    if (stage == DRIVING)
-        {
-            drive();
-        }
-    else
+    if (previousStage == IDLE)
     {
-        set previousStage = DRIVING
+        robot->drive->autoDrive(DISTANCE);
+        previousStage = DRIVING;
     }
-}
+
 void Autonomous::turn()
 {
-    robot->drive->autoTurn(DEGREES_TURN);
+    if (previousStage == DRIVING)
+    {
+        robot->drive->autoTurn(DEGREES_TURN);
+        previousStage = TURNING;
+    }
 }
 void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
 {
-    robot->shoot->pitchAngle(POSITION_TILT);
+    if (previousStage == TURNING)
+    {
+        robot->shoot->pitchAngle(POSITION_TILT);
+        previousStage = AIMING;
+    }
 }
 void Autonomous::releaseClamp()
 {
-    robot->shoot->clampUp();
+    if (previousStage == AIMING)
+    {
+        robot->shoot->clampUp();
+        previousStage = SHOOTING;
+    }
 }
 void Autonomous::shootBall()
 {
+    if (previousStage == SHOOTING)
+    {
+        robot->shoot->wormPull();
+        previousStage = IDLE;
+    }
 }
 /*
 void Autonomous::vision()
