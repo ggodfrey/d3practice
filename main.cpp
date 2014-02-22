@@ -23,22 +23,22 @@ void main_robot::RobotInit()
 {
     printf("robot init\n");
     update = new FunctionRegistry();
-    driverJoy = new SmoothJoystick(DRIVER_JOY_PORT);
-    gunnerJoy = new SmoothJoystick(GUNNER_JOY_PORT);
-    pnum = new Pneumatics(PNUM_DIGIN_MODULE, PNUM_DIGIN_CHANNEL, PNUM_RELAY_MODULE, PNUM_RELAY_CHANNEL);
-    shift = new Shifter(SHIFT_MOD, SHIFT_FCHAN, SHIFT_RCHAN);
+    driverJoy = new SmoothJoystick(this, DRIVER_JOY_PORT);
+    gunnerJoy = new SmoothJoystick(this, GUNNER_JOY_PORT);
+    pnum = new Pneumatics(this, PNUM_DIGIN_MODULE, PNUM_DIGIN_CHANNEL, PNUM_RELAY_MODULE, PNUM_RELAY_CHANNEL);
+    shift = new Shifter(this, SHIFT_MOD, SHIFT_FCHAN, SHIFT_RCHAN);
     shift->setHigh();
-    drive = new DriveTrain(TALON_FL_MODULE, TALON_FL_CHANNEL,
+    drive = new DriveTrain(this, TALON_FL_MODULE, TALON_FL_CHANNEL,
                            TALON_RL_MODULE, TALON_RL_CHANNEL,
                            TALON_FR_MODULE, TALON_FR_CHANNEL,
                            TALON_RR_MODULE, TALON_RR_CHANNEL);
-    shoot = new Shooter(SHOOT_JAG_CAN,
+    shoot = new Shooter(this, SHOOT_JAG_CAN,
                         SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
                         SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
                         WORM_JAG_CAN,
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
-    sensors = new Sensors(USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
+    sensors = new Sensors(this, USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
     printf("robot init exit\n");
     netcom = new Netcom();
 }
@@ -48,7 +48,7 @@ void main_robot::TeleopInit()
 }
 void main_robot::AutonomousInit()
 {
-    autoBot = new Autonomous();
+    autoBot = new Autonomous(this);
     autoBot->stage = Autonomous::IDLE;
 }
 void main_robot::TestInit()

@@ -4,29 +4,18 @@
 #include "612.h"
 
 
-Autonomous::Autonomous()
+Autonomous::Autonomous(main_robot* robot)
 {
-    /*drive = new DriveTrain(TALON_FL_MODULE, TALON_FL_CHANNEL,
-                           TALON_RL_MODULE, TALON_RL_CHANNEL,
-                           TALON_FR_MODULE, TALON_FR_CHANNEL,
-                           TALON_RR_MODULE, TALON_RR_CHANNEL);
-    shoot = new Shooter(SHOOT_JAG_CAN,
-                        SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
-                        SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
-                        WORM_JAG_CAN, PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
-                        BOBMOD);*/
     timer = new Timer();
     previousStage = IDLE;
 }
 Autonomous::~Autonomous()
 {
-    //delete drive;
-    //delete shoot;
     delete timer;
 }
 void Autonomous::moveForward()
 {
-    if (previousStage == IDLE)
+    if (previousStage != DRIVING)
     {
         robot->drive->autoDrive(DISTANCE);
         previousStage = DRIVING;
@@ -35,7 +24,7 @@ void Autonomous::moveForward()
 
 void Autonomous::turn()
 {
-    if (previousStage == DRIVING)
+    if (previousStage != TURNING)
     {
         robot->drive->autoTurn(DEGREES_TURN);
         previousStage = TURNING;
@@ -43,7 +32,7 @@ void Autonomous::turn()
 }
 void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
 {
-    if (previousStage == TURNING)
+    if (previousStage != AIMING)
     {
         robot->shoot->pitchAngle(POSITION_TILT);
         previousStage = AIMING;
@@ -51,7 +40,7 @@ void Autonomous::tilt()        // needs to tilt a certain degrees, probably star
 }
 void Autonomous::releaseClamp()
 {
-    if (previousStage == AIMING)
+    if (previousStage != SHOOTING)
     {
         robot->shoot->clampUp();
         previousStage = SHOOTING;
@@ -59,7 +48,7 @@ void Autonomous::releaseClamp()
 }
 void Autonomous::shootBall()
 {
-    if (previousStage == SHOOTING)
+    if (previousStage != IDLE)
     {
         robot->shoot->wormPull();
         previousStage = IDLE;

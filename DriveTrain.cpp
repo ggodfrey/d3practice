@@ -1,14 +1,14 @@
 #include "DriveTrain.h"
 #include <Talon.h>
 #include "612.h"
-#include "main.h"
 
 const double DriveTrain::SPEED=0.8;
 
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
 
-DriveTrain::DriveTrain(uint8_t modFL,uint32_t chanFL,
+DriveTrain::DriveTrain(main_robot* robot,
+                       uint8_t modFL,uint32_t chanFL,
                        uint8_t modRL,uint32_t chanRL,
                        uint8_t modFR,uint32_t chanFR,
                        uint8_t modRR,uint32_t chanRR)

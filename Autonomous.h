@@ -6,7 +6,7 @@
 class Autonomous
 {
 public:
-    Autonomous();
+    Autonomous(main_robot* robot);
     ~Autonomous();
     void moveForward();
     void turn();

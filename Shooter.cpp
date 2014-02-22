@@ -1,12 +1,11 @@
 #include "Shooter.h"
 #include "612.h"
-#include "main.h"
 #include "SmoothJoystick.h"
 
 const double Shooter::SPEED_AXISPOWER = 0.5;
 const double Shooter::SPEED_WORM = 0.4;
 
-Shooter::Shooter(uint8_t axisCan,
+Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
                  uint8_t wormCan,
