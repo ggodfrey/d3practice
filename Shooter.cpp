@@ -1,6 +1,7 @@
 #include "Shooter.h"
 #include "612.h"
 #include "SmoothJoystick.h"
+#include "main.h"
 
 const double Shooter::SPEED_AXISPOWER = 0.5;
 const double Shooter::SPEED_WORM = 0.4;

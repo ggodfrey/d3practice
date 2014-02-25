@@ -4,6 +4,8 @@
 #include <AnalogChannel.h>
 #include "ports.h"
 
+class main_robot;
+
 class Sensors
 {
 public:

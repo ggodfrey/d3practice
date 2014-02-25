@@ -7,6 +7,7 @@
 #include "Pneumatics.h"
 #include "DriveTrain.h"
 #include "612.h"
+#include "main.h"
 
 
 Pneumatics::Pneumatics(main_robot* r,

@@ -1,6 +1,7 @@
 #include "DriveTrain.h"
 #include <Talon.h>
 #include "612.h"
+#include "main.h"
 
 const double DriveTrain::SPEED=0.8;
 

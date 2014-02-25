@@ -4,8 +4,8 @@
 #include <Timer.h>
 #include "Pneumatics.h"
 #include "controls.h"
-#include "main.h"
-#include "612.h"
+
+class main_robot;
 
 class Shifter
 {

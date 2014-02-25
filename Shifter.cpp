@@ -1,5 +1,6 @@
 #include "Shifter.h"
 #include "612.h"
+#include "main.h"
 
 Shifter::Shifter(main_robot* r, uint8_t mod,uint32_t chanF,uint32_t chanR)
 {

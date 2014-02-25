@@ -9,7 +9,6 @@
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
-#include "main.h"
 
 class Shooter
 {
