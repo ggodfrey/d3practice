@@ -22,6 +22,7 @@ public:
     Timer* timer;
     enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE};
     State stage;
+    State previousStage;
 
     void update();
 

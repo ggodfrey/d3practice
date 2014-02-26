@@ -27,7 +27,7 @@ const static uint8_t  SHIFT_MOD   = 1;
 // Shooter
 const static uint8_t  SHOOT_JAG_CAN       = 1; // tilt
 
-const static uint8_t  SHOOT_TALON_MODULE  = 1; // grabber/rollers
+const static uint8_t  SHOOT_TALON_MODULE  = 1; // grabber/rollers/attractor
 const static uint32_t SHOOT_TALON_CHANNEL = 5;
 
 const static uint8_t  SHOOT_SLNOID_MODULE = 1; // clamp
@@ -39,6 +39,8 @@ const static uint32_t WORM_JAG_CAN        = 2; // worm drive
 const static uint8_t  PUNCH_SLNOID_MODULE = 1; // dog clutch piston
 const static uint32_t PUNCH_SLNOID_FCHAN  = 3;
 const static uint32_t PUNCH_SLNOID_RCHAN  = 4;
+
+const static uint8_t  BOBMOD              = 6;
 
 const static uint8_t  SHOOT_ACCEL_MODULE  = 1; // accelerometer I2C sidecar module
 

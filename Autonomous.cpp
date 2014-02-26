@@ -6,28 +6,60 @@
 
 Autonomous::Autonomous()
 {
+    drive = new DriveTrain(TALON_FL_MODULE, TALON_FL_CHANNEL,
+                           TALON_RL_MODULE, TALON_RL_CHANNEL,
+                           TALON_FR_MODULE, TALON_FR_CHANNEL,
+                           TALON_RR_MODULE, TALON_RR_CHANNEL);
+    shoot = new Shooter(SHOOT_JAG_CAN,
+                        SHOOT_TALON_MODULE, SHOOT_TALON_CHANNEL,
+                        SHOOT_SLNOID_MODULE, SHOOT_SLNOID_FCHAN, SHOOT_SLNOID_RCHAN,
+                        WORM_JAG_CAN, PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
+                        BOBMOD);
+    timer = new Timer();
 }
 Autonomous::~Autonomous()
 {
 }
 void Autonomous::moveForward()
 {
-    robot->drive->autoDrive(DISTANCE);
+    if (previousStage == IDLE)
+    {
+        robot->drive->autoDrive(DISTANCE);
+        previousStage = DRIVING;
+    }
 }
+
 void Autonomous::turn()
 {
-    robot->drive->autoTurn(DEGREES_TURN);
+    if (previousStage == DRIVING)
+    {
+        robot->drive->autoTurn(DEGREES_TURN);
+        previousStage = TURNING;
+    }
 }
 void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
 {
-    robot->shoot->pitchAngle(POSITION_TILT);
+    if (previousStage == TURNING)
+    {
+        robot->shoot->pitchAngle(POSITION_TILT);
+        previousStage = AIMING;
+    }
 }
 void Autonomous::releaseClamp()
 {
-    robot->shoot->clampUp();
+    if (previousStage == AIMING)
+    {
+        robot->shoot->clampUp();
+        previousStage = SHOOTING;
+    }
 }
 void Autonomous::shootBall()
 {
+    if (previousStage == SHOOTING)
+    {
+        robot->shoot->wormPull();
+        previousStage = IDLE;
+    }
 }
 /*
 void Autonomous::vision()
