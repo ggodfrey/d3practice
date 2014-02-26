@@ -8,7 +8,8 @@ const double DriveTrain::SPEED=0.8;
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
 
-DriveTrain::DriveTrain(uint8_t modFL,uint32_t chanFL,
+DriveTrain::DriveTrain(main_robot* robot,
+                       uint8_t modFL,uint32_t chanFL,
                        uint8_t modRL,uint32_t chanRL,
                        uint8_t modFR,uint32_t chanFR,
                        uint8_t modRR,uint32_t chanRR)
@@ -17,7 +18,8 @@ DriveTrain::DriveTrain(uint8_t modFL,uint32_t chanFL,
                        new Talon(modFR,chanFR),
                        new Talon(modRR,chanRR)),
             isMovingL(false),isMovingR(false),
-            isTurningL(false),isTurningR(false)
+            isTurningL(false),isTurningR(false),
+            hasDriven(false), hasTurned(false)
 {
     encode = new EncodeDistance(ENCODER_LMODULE_A, ENCODER_LCHANNEL_A,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,
@@ -63,17 +65,11 @@ void DriveTrain::autoTurn(double degrees)           // any degrees less than zer
 void DriveTrain::teleTurn(Dir direction, double power)
 {
     if (isAuto())
-    {
         stopAuto();
-    }
     if (direction == RIGHT)
-    {
         TankDrive(power,-1*power);
-    }
     else if (direction == LEFT)
-    {
         TankDrive(-1*power,power);
-    }
 }
 
 void DriveTrain::update()
@@ -98,6 +94,8 @@ void DriveTrain::update()
             isMovingR = false;
             speedR = 0.0f;
         }
+        if (speedL == 0.0f && speedR == 0.0f)
+            hasDriven = true;
         TankDrive(speedL, speedR);
     }
     if (isTurningL) // NeededDist is positive
@@ -117,9 +115,9 @@ void DriveTrain::update()
             speedR = 0.0f;
         }
         if(speedL < ZEROTEST && speedR < ZEROTEST)
-        {
             isTurningL = false;
-        }
+        if (speedL == 0.0f && speedR == 0.0f)
+            hasTurned = true;
         TankDrive(-speedL, speedR);
     }
     else if (isTurningR)
@@ -139,9 +137,9 @@ void DriveTrain::update()
             speedR = 0.0f;
         }
         if(speedL < ZEROTEST && speedR < ZEROTEST)
-        {
             isTurningR = false;
-        }
+        if (speedL == 0.0f && speedR == 0.0f)
+            hasTurned = true;
         TankDrive(-speedL, speedR);
     }
 }

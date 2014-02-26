@@ -12,6 +12,7 @@
 #include "FunctionRegistry.h"
 #include "Sensors.h"
 #include "Netcom.h"
+#include "Autonomous.h"
 
 class main_robot: public IterativeRobot
 {
@@ -36,6 +37,7 @@ public:
     FunctionRegistry* update;
     Sensors* sensors;
     Netcom* netcom;
+    Autonomous* autoBot;
 };
 
 

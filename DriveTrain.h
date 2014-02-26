@@ -5,10 +5,16 @@
 #include "EncodeDistance.h"
 #include "ports.h"
 
+class main_robot;
+
 class DriveTrain : public RobotDrive
 {
 public:
-    DriveTrain(uint8_t modFL,uint32_t chanFL,uint8_t modRL,uint32_t chanRL,uint8_t modFR,uint32_t chanFR,uint8_t modRR,uint32_t chanRR);
+    DriveTrain(main_robot* robot,
+               uint8_t modFL,uint32_t chanFL,
+               uint8_t modRL,uint32_t chanRL,
+               uint8_t modFR,uint32_t chanFR,
+               uint8_t modRR,uint32_t chanRR);
     ~DriveTrain();
     enum Dir{RIGHT, LEFT};
     void autoDrive(double distance);
@@ -23,6 +29,8 @@ public:
     bool isMovingR;
     bool isTurningL;
     bool isTurningR;
+    bool hasDriven;
+    bool hasTurned;
     double NeededDist;
     static const double SPEED;
     static const double PI=3.14159265;

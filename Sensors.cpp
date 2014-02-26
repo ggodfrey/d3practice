@@ -6,7 +6,8 @@
 
 // everything in inches
 
-Sensors::Sensors(uint8_t USMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
+Sensors::Sensors(main_robot* robot,
+                 uint8_t USMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
                  uint8_t ILMODNUMBER, uint32_t ILCHANNEL)
 {
     ultrasonic = new AnalogChannel(USMODNUMBER, USCHANNEL);

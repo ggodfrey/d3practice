@@ -13,12 +13,12 @@
 class Shooter
 {
 public:
-    Shooter(uint8_t axisCan,
-                 uint8_t attractMod, uint32_t attractChan,
-                 uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
-                 uint8_t wormCan,
-                 uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
-                 uint8_t bobMod);
+    Shooter(main_robot* robot, uint8_t axisCan,
+            uint8_t attractMod, uint32_t attractChan,
+            uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
+            uint8_t wormCan,
+            uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
+            uint8_t bobMod);
     ~Shooter();
     enum Clamp {down, up};
     Clamp clamp;
@@ -48,7 +48,8 @@ public:
     bool isPitchingDown;
     bool wormIsPulling;
     bool autoPulling;
-    bool isPickingUpStopping;
+    bool hasTilted;
+    //bool isPickingUpStopping;
     double currentPitch;
     double destinationPitch;
     double originPitch;

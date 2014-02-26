@@ -5,10 +5,12 @@
 #include "Pneumatics.h"
 #include "controls.h"
 
+class main_robot;
+
 class Shifter
 {
 public:
-    Shifter(uint8_t mod,uint32_t chanF,uint32_t chanR);
+    Shifter(main_robot* r, uint8_t mod,uint32_t chanF,uint32_t chanR);
     ~Shifter();
     void shiftGear();
     void setHigh();
@@ -18,6 +20,7 @@ public:
     Gear gear;
     const static double TIME= 0.1;
     static void buttonHelper(void* objPtr, uint32_t button);
+    main_robot* robot;
 };
 
 

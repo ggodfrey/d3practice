@@ -4,6 +4,8 @@
 #include <AnalogChannel.h>
 #include "ports.h"
 
+class main_robot;
+
 class Sensors
 {
 public:
@@ -11,7 +13,8 @@ public:
     AnalogChannel* infraredShooter;
     AnalogChannel* infraredLoad;
 
-    Sensors(uint8_t ISMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
+    Sensors(main_robot* robot,
+            uint8_t ISMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
             uint8_t ILMODNUMBER, uint32_t ILCHANNEL);
     ~Sensors();
 
