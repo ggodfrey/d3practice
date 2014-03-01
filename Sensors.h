@@ -12,15 +12,19 @@ public:
     AnalogChannel* ultrasonic;
     AnalogChannel* infraredShooter;
     AnalogChannel* infraredLoad;
+    static const int vpmShooter = 7.38976; //volate per meter shooter
 
     Sensors(main_robot* robot,
             uint8_t ISMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
             uint8_t ILMODNUMBER, uint32_t ILCHANNEL);
     ~Sensors();
 
+    float getVoltsInf();//Get volts from infered shooter
+    float getVoltsUltra();//Get volts from ultra sonic
     float getInfraredShooter();
     bool getInfraredLoad();
     float getUltrasonic();
+    
 
     static void updateHelper(void* instName);
 
