@@ -107,7 +107,10 @@ void Shooter::clampUp()
 void Shooter::wormPull()
 {
     currentSpeed = SPEED_WORM;
-    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    if(!wormIsPulling)
+    {
+        robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    }
     wormIsPulling = true;
 }
 
@@ -213,13 +216,13 @@ void Shooter::update()
         {
             pitchAngle(SHOOTING_POSITION);
             isPickingUp = false;
-            //isPickingUpStopping = true;
+            isPickingUpStopping = true;
         }
-        if (!isPitchingUp /*&& isPickingUpStopping*/) // tilt at shooting position
+        if (!isPitchingUp && isPickingUpStopping) // tilt at shooting position
         {
             clampUp();
             pullStop();
-            //isPickingUpStopping = false;
+            isPickingUpStopping = false;
         }
     }
 
