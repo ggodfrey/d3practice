@@ -61,11 +61,11 @@ const uint32_t GUNNER_JOY_PORT = 2;
 
 // Sensors
 const static uint8_t USMODNUMBER = 1; //ultrasonic modual number
-const static uint32_t USCHANNEL  = 2; //ultrasonic Channel
+const static uint32_t USCHANNEL  = 3; //ultrasonic Channel
 const static uint8_t ISMODNUMBER = 1; //infrared Shooter Modual Number
-const static uint32_t ISCHANNEL  = 3; //Infrared Shooter Channel
+const static uint32_t ISCHANNEL  = 4; //Infrared Shooter Channel
 const static uint8_t ILMODNUMBER = 1; //Infrared Load Modual Number
-const static uint32_t ILCHANNEL  = 4; //Infrared Load Channel
+const static uint32_t ILCHANNEL  = 5; //Infrared Load Channel
 //have no idea how this is supposed to work...
 
 #endif
