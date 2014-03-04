@@ -34,13 +34,9 @@ bool Sensors::getInfraredLoad()
 {
     float loadDistance = infraredLoad->GetVoltage() * 7.38976;
     if(loadDistance < LOAD_THRESHOLD)
-    {
         return true;
-    }
     else
-    {
         return false;
-    }
 }
 
 float Sensors::getUltrasonic()
