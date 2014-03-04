@@ -234,7 +234,7 @@ void Shooter::update()
         else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
             wormStop();*/
         wormGear->Set(SPEED_WORM);
-        if (robot->sensors->getInfraredLoad) //checks if loader has reached its position.
+        if (!(wormGear -> GetForwardLimitOK())) //checks if loader has reached farthest position
             wormStop();
     }
 }
