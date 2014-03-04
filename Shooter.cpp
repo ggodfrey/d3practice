@@ -4,7 +4,6 @@
 #include "main.h"
 
 const double Shooter::SPEED_AXISPOWER = 0.5;
-const double Shooter::SPEED_WORM = 0.4;
 
 Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
@@ -79,17 +78,18 @@ void Shooter::pullStop()
     attractor->Set(0);
 }
 
+void Shooter::repel()
+{
+    attractor->Set(-SPEED_ATTRACTOR);
+}
+
 //@param goClamp moves clamper, off says to stop clamper
 void Shooter::autoClamp()
 {
     if(clamp == up)
-    {
         clampDown();
-    }
     else
-    {
         clampUp();
-    }
 }
 
 void Shooter::clampDown()
@@ -106,7 +106,6 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    currentSpeed = SPEED_WORM;
     if(!wormIsPulling)
     {
         robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
@@ -118,7 +117,7 @@ void Shooter::wormStop()
 {
     wormGear -> Set(0);
     wormIsPulling = false;
-    currentSpeed = SPEED_WORM;
+    //currentSpeed = SPEED_WORM;
 }
 
 void Shooter::punch()
@@ -130,9 +129,7 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
     Shooter* shooterObj=(Shooter*)objPtr;
     if(button==CLAMP)
-    {
         shooterObj->autoClamp();
-    }
 }
 
 // TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
@@ -226,27 +223,21 @@ void Shooter::update()
         }
     }
 
-    // increasing worm drive speed
     if(wormIsPulling)
     {
-        if(currentSpeed <= WORM_LIMIT)
+        // increasing worm drive speed
+        /*if(currentSpeed <= WORM_LIMIT)
         {
             currentSpeed += INCREMENT;
             wormGear->Set(currentSpeed);
         }
         else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
+            wormStop();*/
+        wormGear->Set(SPEED_WORM);
+        if (robot->sensors->getInfraredLoad) //checks if loader has reached its position.
             wormStop();
     }
 }
-
-    // FIXME whoever wrote this, what was its intended purpose?
-/*    if (wormIsPulling){
-        if (robot -> sensors -> getInfraredLoad())
-        {
-            wormStop();
-        }
-    }
-*/
 
 void Shooter::updateHelper(void* instName)
 {
