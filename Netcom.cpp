@@ -6,6 +6,7 @@ const std::string Netcom::PATH = "612NetworkVariables";
 const std::string Netcom::PRIMEKEY = "PrimeLocation";
 const std::string Netcom::RUMBLEKEY = "ShouldRumble";
 const std::string Netcom::HOTKEY = "HotGoalOn";
+const std::string Netcom::DISTKEY = "Distance";
 
 Netcom::Netcom()
 {
@@ -29,6 +30,7 @@ void Netcom::primeLocation(double distance)
         bool idealDistance = false;
         nwt612 -> PutBoolean(PRIMEKEY, idealDistance);
     }
+    nwt612 -> PutNumber(DISTKEY, distance);
 }
 
 void Netcom::joyRumble(bool rumble)

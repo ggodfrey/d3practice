@@ -14,6 +14,7 @@ public:
     const static std::string PRIMEKEY;
     const static std::string RUMBLEKEY;
     const static std::string HOTKEY;
+    const static std::string DISTKEY;
 
     Netcom();
     ~Netcom();
