@@ -21,6 +21,7 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
@@ -130,6 +131,8 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     Shooter* shooterObj=(Shooter*)objPtr;
     if(button==CLAMP)
         shooterObj->autoClamp();
+    if(button==FIRE)
+        shooterObj->punch();
 }
 
 // TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
@@ -155,7 +158,7 @@ void Shooter::update()
         pull();
     else
         pullStop();
-    if(shooterJoy -> GetTriggerState() == LOCKANDLOAD)
+    if(shooterJoy -> GetTriggerState() == ENERGIZE)
     {
         autoPulling = true;
         wormPull();
@@ -164,10 +167,8 @@ void Shooter::update()
     {
         autoPulling = false;
         wormStop();
-        punch();
     }
 
-    // auto pitch angle
     if (isPitchingUp)
     {
         if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
