@@ -26,9 +26,9 @@ public:
     void pitchDown();
     void pitchStop();
     void pitchAngle(double newPitch);
-    void pull();//Wheel pulls ball
-    void pullStop();
-    void repel();
+    void rollerPull();//Wheel pulls ball
+    void rollerStop();
+    void rollerRepel();
     void autoClamp();
     void clampDown();//Clamps down on ball & pulls
     void clampUp();//opens clamp
