@@ -12,7 +12,7 @@ public:
     AnalogChannel* ultrasonic;
     AnalogChannel* infraredShooter;
     AnalogChannel* infraredLoad;
-    static const int vpmShooter = 7.38976; //volate per meter shooter
+    static const int VPMSHOOTER = 7.38976; //volate per meter shooter
 
     Sensors(main_robot* robot,
             uint8_t ISMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
