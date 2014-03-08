@@ -4,6 +4,7 @@
 #include "main.h"
 
 const double Shooter::SPEED_AXISPOWER = 0.5;
+const double Shooter::SPEED_ATTRACTOR = 1.0;
 
 Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
