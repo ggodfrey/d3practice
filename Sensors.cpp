@@ -38,12 +38,12 @@ float Sensors::getVoltsUltra()
 float Sensors::getInfraredShooter()
 {
     // 18.77cm/V = 7.38976in/V
-    return (getVoltsInf() * VPMSHOOTER);
+    return (getVoltsInf() * VPMINF );
 }
 
 bool Sensors::getInfraredLoad()
 {
-    float loadDistance = getVoltsInf() * VPMSHOOTER;
+    float loadDistance = getVoltsInf() * VPMINF ;
     if(loadDistance < LOAD_THRESHOLD)
     {
         return true;
