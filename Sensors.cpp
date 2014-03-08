@@ -24,7 +24,12 @@ Sensors::~Sensors()
 	delete infraredLoad;
 }
 
-float Sensors::getVoltsInf()
+float Sensors::getVoltsInfShooter()
+{
+	return infraredShooter->GetVoltage();
+}
+
+float Sensors::getVoltsInfLoad()
 {
 	return infraredShooter->GetVoltage();
 }
@@ -38,12 +43,12 @@ float Sensors::getVoltsUltra()
 float Sensors::getInfraredShooter()
 {
     // 18.77cm/V = 7.38976in/V
-    return (getVoltsInf() * VPMINF );
+    return (getVoltsInfShooter() * VPMINF );
 }
 
 bool Sensors::getInfraredLoad()
 {
-    float loadDistance = getVoltsInf() * VPMINF ;
+    float loadDistance = getVoltsInfLoad() * VPMINF ;
     if(loadDistance < LOAD_THRESHOLD)
     {
         return true;

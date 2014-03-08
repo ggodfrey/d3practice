@@ -20,7 +20,8 @@ public:
             uint8_t ILMODNUMBER, uint32_t ILCHANNEL);
     ~Sensors();
 
-    float getVoltsInf();//Get volts from infered shooter
+    float getVoltsInfShooter();//Get volts from infered shooter
+    float getVoltsInfLoad();//get volts inf load
     float getVoltsUltra();//Get volts from ultra sonic
     float getInfraredShooter();
     bool getInfraredLoad();
