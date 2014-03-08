@@ -31,7 +31,7 @@ float Sensors::getVoltsInfShooter()
 
 float Sensors::getVoltsInfLoad()
 {
-	return infraredShooter->GetVoltage();
+	return infraredLoad->GetVoltage();
 }
 
 float Sensors::getVoltsUltra()
