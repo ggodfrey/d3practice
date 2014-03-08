@@ -31,7 +31,7 @@ float Sensors::getVoltsInf()
 
 float Sensors::getVoltsUltra()
 {
-	 return ((ultrasonic->GetVoltage()) / 0.0098);
+	 return ((ultrasonic->GetVoltage()) / VPMULTRA);
 }
 //all values are in centemeters
 
@@ -57,7 +57,7 @@ bool Sensors::getInfraredLoad()
 float Sensors::getUltrasonic()
 {
     // 9.8mV/in = 0.0098V/in
-    return (getVoltsUltra() / 0.0098);
+    return (getVoltsUltra() / VPMULTRA);
 }
 
 
