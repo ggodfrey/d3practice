@@ -37,7 +37,7 @@ void main_robot::RobotInit()
                         WORM_JAG_CAN,
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
-    sensors = new Sensors(this, USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL);
+    sensors = new Sensors(this, USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL, GYMOD, GYCHAN);
     printf("Welcome to 612-2014 AERIAL ASSIST\n");
     netcom = new Netcom();
 }
