@@ -69,17 +69,17 @@ void Shooter::pitchAngle(double newPitch)
     }
 }
 
-void Shooter::pull()
+void Shooter::rollerPull()
 {
     attractor->Set(SPEED_ATTRACTOR);
 }
 
-void Shooter::pullStop()
+void Shooter::rollerStop()
 {
     attractor->Set(0);
 }
 
-void Shooter::repel()
+void Shooter::rollerRepel()
 {
     attractor->Set(-SPEED_ATTRACTOR);
 }
@@ -153,9 +153,9 @@ void Shooter::update()
         pitchUp();
 
     if(shooterJoy -> GetSmoothButton(ROLLERS))
-        pull();
+        rollerPull();
     else
-        pullStop();
+        rollerStop();
     if(shooterJoy -> GetTriggerState() == LOCKANDLOAD)
     {
         autoPulling = true;
@@ -205,7 +205,7 @@ void Shooter::update()
         if(!isPitchingDown) // tilt at pickup position
         {
             clampDown();
-            pull();
+            rollerPull();
         }
     }
     else // let go of button
@@ -219,7 +219,7 @@ void Shooter::update()
         if (!isPitchingUp && isPickingUpStopping) // tilt at shooting position
         {
             clampUp();
-            pullStop();
+            rollerStop();
             isPickingUpStopping = false;
         }
     }
