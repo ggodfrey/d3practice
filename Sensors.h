@@ -14,8 +14,8 @@ public:
     AnalogChannel* infraredLoad;
 
     Sensors(main_robot* robot,
-            uint8_t ISMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
-            uint8_t ILMODNUMBER, uint32_t ILCHANNEL);
+            uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
+            uint8_t ilMod, uint32_t ilChan);
     ~Sensors();
 
     float getInfraredShooter();
