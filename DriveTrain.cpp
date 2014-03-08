@@ -8,7 +8,7 @@ const double DriveTrain::SPEED=0.8;
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
 
-DriveTrain::DriveTrain(main_robot* robot,
+DriveTrain::DriveTrain(main_robot* r,
                        uint8_t modFL,uint32_t chanFL,
                        uint8_t modRL,uint32_t chanRL,
                        uint8_t modFR,uint32_t chanFR,
@@ -21,11 +21,11 @@ DriveTrain::DriveTrain(main_robot* robot,
             isTurningL(false),isTurningR(false),
             hasDriven(false), hasTurned(false)
 {
+    robot = r;
     encode = new EncodeDistance(ENCODER_LMODULE_A, ENCODER_LCHANNEL_A,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,
                                 ENCODER_RMODULE_A, ENCODER_RCHANNEL_A,
                                 ENCODER_RMODULE_B, ENCODER_RCHANNEL_B);
-
     robot -> update -> addFunctions(&updateHelper, (void*) this);
 }
 
@@ -37,19 +37,20 @@ DriveTrain::~DriveTrain()
 void DriveTrain::autoDrive(double distance)
 {
     stopAuto();
-    NeededDist = distance;
+    neededDist = distance;
     TankDrive(SPEED, SPEED);
     isMovingL = true;
     isMovingR = true;
-    encode->EncoderL->Start();
-    encode->EncoderR->Start();
+    //encode->EncoderL->Start();
+    //encode->EncoderR->Start();
+    originUltraDist = (double)robot->sensors->getUltrasonic();
 }
 void DriveTrain::autoTurn(double degrees)           // any degrees less than zero (0) will turn right; basically the unit circle
 {
     stopAuto();
     double degrees2Radians = degrees * (PI/180);
     double arcLength = ROBOTRAD * degrees2Radians;  // checks the length of the arc in feet
-    NeededDist = arcLength;
+    neededDist = arcLength;
     if (degrees > 0){
         TankDrive(-SPEED, SPEED);
         isTurningL = true;
@@ -79,7 +80,19 @@ void DriveTrain::update()
     if (isMovingL || isMovingR)
     {
         speedL = SPEED;
-        if (encode->getLDistance() >= NeededDist)
+        speedR = SPEED;
+        double varUltraDist = (double)robot->sensors->getUltrasonic();
+        if (originUltraDist-varUltraDist >= neededDist)
+        {
+            originUltraDist = -8999;
+            isMovingL = false;
+            isMovingR = false;
+            speedL = 0.0f;
+            speedR = 0.0f;
+        }
+        TankDrive(speedL, speedR);
+        /*speedL = SPEED;
+        if (encode->getLDistance() >= neededDist)
         {
             encode->EncoderL->Stop();
             encode->EncoderL->Reset();
@@ -87,7 +100,7 @@ void DriveTrain::update()
             speedL = 0.0f;
         }
         speedR = SPEED;
-        if (encode->getRDistance() >= NeededDist)
+        if (encode->getRDistance() >= neededDist)
         {
             encode->EncoderR->Stop();
             encode->EncoderR->Reset();
@@ -96,19 +109,19 @@ void DriveTrain::update()
         }
         if (speedL == 0.0f && speedR == 0.0f)
             hasDriven = true;
-        TankDrive(speedL, speedR);
+        TankDrive(speedL, speedR);*/
     }
     if (isTurningL) // NeededDist is positive
     {
         speedL = SPEED;
-        if (encode->getLDistance() <= -NeededDist)
+        if (encode->getLDistance() <= -neededDist)
         {
             encode->EncoderL->Stop();
             encode->EncoderL->Reset();
             speedL = 0.0f;
         }
         speedR = SPEED;
-        if (encode->getRDistance() >= NeededDist)
+        if (encode->getRDistance() >= neededDist)
         {
             encode->EncoderR->Stop();
             encode->EncoderR->Reset();
@@ -123,14 +136,14 @@ void DriveTrain::update()
     else if (isTurningR)
     {
         speedL = SPEED;
-        if (encode->getLDistance() >= -NeededDist)
+        if (encode->getLDistance() >= -neededDist)
         {
             encode->EncoderL->Stop();
             encode->EncoderL->Reset();
             speedL = 0.0f;
         }
         speedR = SPEED;
-        if (encode->getRDistance() <= NeededDist)
+        if (encode->getRDistance() <= neededDist)
         {
             encode->EncoderR->Stop();
             encode->EncoderR->Reset();

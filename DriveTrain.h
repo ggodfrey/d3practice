@@ -4,6 +4,7 @@
 #include <RobotDrive.h>
 #include "EncodeDistance.h"
 #include "ports.h"
+#include "Sensors.h"
 
 class main_robot;
 
@@ -25,13 +26,16 @@ public:
     bool isAuto();
     void stopAuto();
     EncodeDistance* encode;
+    Sensors* sensor;
+    main_robot* robot;
     bool isMovingL;
     bool isMovingR;
     bool isTurningL;
     bool isTurningR;
     bool hasDriven;
     bool hasTurned;
-    double NeededDist;
+    double neededDist;
+    double originUltraDist;
     static const double SPEED;
     static const double PI=3.14159265;
     static const double ROBOTRAD = 3.0;

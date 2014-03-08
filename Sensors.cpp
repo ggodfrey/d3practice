@@ -7,22 +7,24 @@
 // everything in inches
 
 Sensors::Sensors(main_robot* robot,
-                 uint8_t USMODNUMBER, uint32_t USCHANNEL, uint8_t ISMODNUMBER, uint32_t ISCHANNEL,
-                 uint8_t ILMODNUMBER, uint32_t ILCHANNEL)
+                 uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
+                 uint8_t ilMod, uint32_t ilChan)
 {
-    ultrasonic = new AnalogChannel(USMODNUMBER, USCHANNEL);
-    infraredShooter = new AnalogChannel(ISMODNUMBER, ISCHANNEL);
-    infraredLoad = new AnalogChannel(ILMODNUMBER, ILCHANNEL);
+    ultrasonic = new AnalogChannel(usMod, usChan);
+    infraredShooter = new AnalogChannel(isMod, isChan);
+    infraredLoad = new AnalogChannel(ilMod, ilChan);
 
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
 Sensors::~Sensors()
 {
-
+    delete ultrasonic;
+    delete infraredShooter;
+    delete infraredLoad;
 }
 
-//all values are in centemeters
+//all values are in inches
 
 float Sensors::getInfraredShooter()
 {
