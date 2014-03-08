@@ -37,6 +37,7 @@ const static uint8_t ROLLERS      = BUTTON_Y;
 
 //Automatic shooter controls
 const static uint8_t PICKUP = BUTTON_X;
-const static trigStates LOCKANDLOAD  = TRIG_R;
+const static trigStates ENERGIZE  = TRIG_R;
+const static uint8_t FIRE = BUTTON_RB;
 
 #endif
