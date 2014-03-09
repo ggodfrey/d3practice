@@ -50,10 +50,10 @@ const uint8_t  ENCODER_RMODULE_A  = 1;
 const uint8_t  ENCODER_LMODULE_B  = 1;
 const uint8_t  ENCODER_RMODULE_B  = 1;
 // Drive Train Encoder Channels
-const uint32_t ENCODER_LCHANNEL_A = 1;
-const uint32_t ENCODER_RCHANNEL_A = 2;
-const uint32_t ENCODER_LCHANNEL_B = 3;
-const uint32_t ENCODER_RCHANNEL_B = 4;
+const uint32_t ENCODER_RCHANNEL_A = 1;
+const uint32_t ENCODER_RCHANNEL_B = 2;
+const uint32_t ENCODER_LCHANNEL_A = 3;
+const uint32_t ENCODER_LCHANNEL_B = 4;
 
 // Joystick
 const uint32_t DRIVER_JOY_PORT = 1;
