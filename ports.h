@@ -3,9 +3,9 @@
 
 
 // DriveTrain Channels
-const static uint32_t TALON_FL_CHANNEL = 3;
+const static uint32_t TALON_FL_CHANNEL = 4;
 const static uint32_t TALON_FR_CHANNEL = 1;
-const static uint32_t TALON_RL_CHANNEL = 4;
+const static uint32_t TALON_RL_CHANNEL = 3;
 const static uint32_t TALON_RR_CHANNEL = 2;
 // DriveTrain Modules
 const static uint8_t  TALON_FL_MODULE  = 1;
@@ -40,8 +40,6 @@ const static uint8_t  PUNCH_SLNOID_MODULE = 1; // dog clutch piston
 const static uint32_t PUNCH_SLNOID_FCHAN  = 3;
 const static uint32_t PUNCH_SLNOID_RCHAN  = 4;
 
-const static uint8_t  BOBMOD              = 6;
-
 const static uint8_t  SHOOT_ACCEL_MODULE  = 1; // accelerometer I2C sidecar module
 
 // Encoder Modules
@@ -66,6 +64,5 @@ const static uint8_t ISMODNUMBER = 1; //infrared Shooter Modual Number
 const static uint32_t ISCHANNEL  = 4; //Infrared Shooter Channel
 const static uint8_t ILMODNUMBER = 1; //Infrared Load Modual Number
 const static uint32_t ILCHANNEL  = 5; //Infrared Load Channel
-//have no idea how this is supposed to work...
 
 #endif
