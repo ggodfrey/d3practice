@@ -26,15 +26,30 @@ Sensors::~Sensors()
 
 //all values are in inches
 
+float Sensors::getVoltsInfShooter()
+{
+    return infraredShooter->GetVoltage();
+}
+
+float Sensors::getVoltsInfLoad()
+{
+    return infraredLoad->GetVoltage();
+}
+
+float Sensors::getVoltsUltra()
+{
+    return ((ultrasonic->GetVoltage()));
+}
+
 float Sensors::getInfraredShooter()
 {
     // 18.77cm/V = 7.38976in/V
-    return (infraredShooter->GetVoltage() * 7.38976);
+    return (getVoltsInfShooter() * VPMINF );
 }
 
 bool Sensors::getInfraredLoad()
 {
-    float loadDistance = infraredLoad->GetVoltage() * 7.38976;
+    float loadDistance = getVoltsInfLoad() * VPMINF ;
     if(loadDistance < LOAD_THRESHOLD)
         return true;
     else
@@ -44,8 +59,9 @@ bool Sensors::getInfraredLoad()
 float Sensors::getUltrasonic()
 {
     // 9.8mV/in = 0.0098V/in
-    return ((ultrasonic->GetVoltage()) / 0.0098);
+    return (getVoltsUltra() / VPIULTRA);
 }
+
 
 void Sensors::updateHelper(void* instName)
 {
