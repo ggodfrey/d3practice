@@ -22,7 +22,6 @@ public:
     void autoTurn(double degrees);
     void teleTurn(Dir direction, double power);
     void update();
-    static void updateHelper(void* instName);
     bool isAuto();
     void stopAuto();
     EncodeDistance* encode;

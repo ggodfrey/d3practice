@@ -79,6 +79,8 @@ void main_robot::AutonomousPeriodic()
         autoBot->stage = Autonomous::AIMING;
     if (shoot->hasTilted)
         autoBot->stage = Autonomous::SHOOTING;
+
+    drive->update();
 }
 
 void main_robot::DisabledPeriodic()
