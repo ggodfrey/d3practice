@@ -31,7 +31,6 @@ public:
     bool isMovingR;
     bool isTurningL;
     bool isTurningR;
-    bool iamprogramming;
     bool hasDriven;
     bool hasTurned;
     double neededDist;

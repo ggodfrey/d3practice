@@ -17,7 +17,7 @@ public:
     Sensors(main_robot* robot,
             uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
             uint8_t ilMod, uint32_t ilChan,
-            uint8_t GYMOD, uint32_t GYCHAN);
+            uint8_t gyMod, uint32_t gyChan);
     ~Sensors();
 
     float getInfraredShooter();
