@@ -8,7 +8,7 @@ class Autonomous
 public:
     Autonomous(main_robot* robot);
     ~Autonomous();
-    void moveForward();
+    void moveForward(double dist);
     void turn();
     void tilt();
     void releaseClamp();
@@ -24,7 +24,7 @@ public:
     State stage;
     State previousStage;
 
-    void update();
+    void updateBasic();
 
     static const double DISTANCE = 10;
     static const double DEGREES_TURN = 25;
