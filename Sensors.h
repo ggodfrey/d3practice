@@ -12,8 +12,8 @@ public:
     AnalogChannel* ultrasonic;
     AnalogChannel* infraredShooter;
     AnalogChannel* infraredLoad;
-    static const int VPMINF = 7.38976; //volate per meter shooter
-    static const int VPIULTRA = 0.0098;
+    static const double VPMINF = 7.38976; //volate per meter shooter
+    static const double VPIULTRA = 0.0098;
 
     Sensors(main_robot* robot,
             uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
