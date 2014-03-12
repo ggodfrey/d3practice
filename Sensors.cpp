@@ -16,8 +16,6 @@ Sensors::Sensors(main_robot* robot,
     infraredLoad = new AnalogChannel(ilMod, ilChan);
     gyro612 = new Gyro(GYMOD, GYCHAN);
 
-    vpdps = 1.0f;  //Default Gyro sensitivity
-
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
@@ -74,7 +72,7 @@ void Sensors::gyroReset()
     gyro612->Reset();
 }
 
-void Sensors::setGyroSens(float vpdps)
+void Sensors::setGyroSens(float vpdps /*Volts Per Degree Per Second*/)
 {
     gyro612->SetSensitivity(vpdps);
 }

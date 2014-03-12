@@ -69,7 +69,7 @@ void DriveTrain::teleTurn(Dir direction, double power)
         stopAuto();
     if (direction == RIGHT)
         TankDrive(power,-1*power);
-    else if (direction == LEFT)
+    else if (direction == LEFT) //jank yo!
         TankDrive(-1*power,power);
 }
 

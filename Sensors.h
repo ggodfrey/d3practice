@@ -25,7 +25,6 @@ public:
     float getUltrasonic();
 
     Gyro* gyro612;
-    static float vpdps; //Volts Per Degree Per Second
 
     float getGyroAngle();
     double getGyroRate();

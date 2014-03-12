@@ -5,6 +5,7 @@
 #include <Joystick.h>
 #include "ports.h"
 #include "Netcom.h"
+#include "Sensors.h"
 
 main_robot* robot=NULL;
 
@@ -38,6 +39,7 @@ void main_robot::RobotInit()
                         PUNCH_SLNOID_MODULE, PUNCH_SLNOID_FCHAN, PUNCH_SLNOID_RCHAN,
                         SHOOT_ACCEL_MODULE);
     sensors = new Sensors(this, USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL, GYMOD, GYCHAN);
+    sensors->setGyroSens(1.0f); //default sensitivity
     printf("Welcome to 612-2014 AERIAL ASSIST\n");
     netcom = new Netcom();
 }
