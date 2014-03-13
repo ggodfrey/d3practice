@@ -157,10 +157,13 @@ void Shooter::update()
     else
         pitchUp();
 
-    if(shooterJoy -> GetSmoothButton(ROLLERS))
+    if(shooterJoy -> IsAxisZero(ROLLERS))
+        rollerStop();
+    else if(shooterJoy -> GetRawAxis(ROLLERS) < 0) // push down = pull, push up = repel
         rollerPull();
     else
-        rollerStop();
+        rollerRepel();
+
     if(shooterJoy -> GetTriggerState() == ENERGIZE)
     {
         autoPulling = true;

@@ -33,7 +33,7 @@ const static uint8_t SHIFT_HIGH = BUTTON_RB;
 //Manual shooter controls
 const static uint8_t TILT         = AXIS_L_Y;
 const static uint8_t CLAMP        = BUTTON_B;
-const static uint8_t ROLLERS      = BUTTON_Y;
+const static uint8_t ROLLERS      = AXIS_R_Y;
 
 //Automatic shooter controls
 const static uint8_t PICKUP = BUTTON_X;
