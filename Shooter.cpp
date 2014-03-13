@@ -11,7 +11,9 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
                  uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
-                 uint8_t bobMod)
+                 uint8_t bobMod):isPickingUp(false),isPitchingUp(false),
+                 isPitchingDown(false),wormIsPulling(false),autoPulling(false),
+                 hasTilted(false),isPickingUpStopping(false)
 {
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
