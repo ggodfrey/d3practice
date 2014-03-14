@@ -74,7 +74,7 @@ void Shooter::pitchAngle(double newPitch)
 
 void Shooter::rollerPull()
 {
-    attractor->Set(SPEED_ATTRACTOR);
+    attractor->Set(-SPEED_ATTRACTOR); // apparently its supposed to be negative to pull
 }
 
 void Shooter::rollerStop()
@@ -84,7 +84,7 @@ void Shooter::rollerStop()
 
 void Shooter::rollerRepel()
 {
-    attractor->Set(-SPEED_ATTRACTOR);
+    attractor->Set(SPEED_ATTRACTOR);
 }
 
 //@param goClamp moves clamper, off says to stop clamper
