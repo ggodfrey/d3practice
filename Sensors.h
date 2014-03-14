@@ -2,6 +2,7 @@
 #define SENSORS_H
 
 #include <AnalogChannel.h>
+#include <Gyro.h>
 #include "ports.h"
 
 class main_robot;
@@ -17,7 +18,8 @@ public:
 
     Sensors(main_robot* robot,
             uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
-            uint8_t ilMod, uint32_t ilChan);
+            uint8_t ilMod, uint32_t ilChan,
+            uint8_t gyMod, uint32_t gyChan);
     ~Sensors();
 
     float getVoltsInfShooter();//Get volts from infered shooter
@@ -27,6 +29,14 @@ public:
     bool getInfraredLoad();
     float getUltrasonic();
     
+
+    Gyro* gyro612;
+
+    float getGyroAngle();
+    double getGyroRate();
+    void gyroReset();
+    void setGyroSens(float vpdps); //Set the Gyro Sensitivitutbgsvi sh
+
 
     static void updateHelper(void* instName);
 

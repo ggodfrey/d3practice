@@ -26,7 +26,6 @@ DriveTrain::DriveTrain(main_robot* r,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,
                                 ENCODER_RMODULE_A, ENCODER_RCHANNEL_A,
                                 ENCODER_RMODULE_B, ENCODER_RCHANNEL_B);
-    robot -> update -> addFunctions(&updateHelper, (void*) this);
 }
 
 DriveTrain::~DriveTrain()
@@ -69,7 +68,7 @@ void DriveTrain::teleTurn(Dir direction, double power)
         stopAuto();
     if (direction == RIGHT)
         TankDrive(power,-1*power);
-    else if (direction == LEFT)
+    else if (direction == LEFT) //jank yo!
         TankDrive(-1*power,power);
 }
 
@@ -157,11 +156,11 @@ void DriveTrain::update()
     }
 }
 
-void DriveTrain::updateHelper(void* instName)
+/*void DriveTrain::updateHelper(void* instName)
 {
     DriveTrain* driveObj = (DriveTrain*)instName;
     driveObj->update();
-}
+}*/
 
 bool DriveTrain::isAuto()
 {

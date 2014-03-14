@@ -64,5 +64,7 @@ const static uint8_t ISMODNUMBER = 1; //infrared Shooter Modual Number
 const static uint32_t ISCHANNEL  = 4; //Infrared Shooter Channel
 const static uint8_t ILMODNUMBER = 1; //Infrared Load Modual Number
 const static uint32_t ILCHANNEL  = 5; //Infrared Load Channel
+const static uint8_t GYMOD       = 1;
+const static uint32_t GYCHAN     = 1;
 
 #endif
