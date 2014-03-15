@@ -8,11 +8,13 @@
 
 Sensors::Sensors(main_robot* robot,
                  uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
-                 uint8_t ilMod, uint32_t ilChan)
+                 uint8_t ilMod, uint32_t ilChan,
+                 uint8_t gyMod, uint32_t gyChan)
 {
     ultrasonic = new AnalogChannel(usMod, usChan);
     infraredShooter = new AnalogChannel(isMod, isChan);
     infraredLoad = new AnalogChannel(ilMod, ilChan);
+    gyro612 = new Gyro(GYMOD, GYCHAN);
 
     robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -67,4 +69,26 @@ void Sensors::updateHelper(void* instName)
 {
     Sensors* sensorsObj = (Sensors*)instName;
     robot -> netcom -> primeLocation(sensorsObj -> getUltrasonic());
+}
+
+float Sensors::getGyroAngle()
+{
+    float gyAngle = gyro612->GetAngle();
+    return gyAngle;
+}
+
+double Sensors::getGyroRate()
+{
+    double gyRate = gyro612->GetRate();
+    return gyRate;
+}
+
+void Sensors::gyroReset()
+{
+    gyro612->Reset();
+}
+
+void Sensors::setGyroSens(float vpdps /*Volts Per Degree Per Second*/)
+{
+    gyro612->SetSensitivity(vpdps);
 }
