@@ -44,6 +44,7 @@ void DriveTrain::autoDrive(double distance)
     //encode->EncoderR->Start();
     originUltraDist = (double)robot->sensors->getUltrasonic();
 }
+
 void DriveTrain::autoTurn(double degrees)           // any degrees less than zero (0) will turn right; basically the unit circle
 {
     stopAuto();
@@ -72,10 +73,8 @@ void DriveTrain::teleTurn(Dir direction, double power)
         TankDrive(-1*power,power);
 }
 
-void DriveTrain::update()
+void DriveTrain::updateDrive()
 {
-    float speedL;
-    float speedR;
     if (isMovingL || isMovingR)
     {
         speedL = SPEED;
@@ -89,8 +88,10 @@ void DriveTrain::update()
             speedL = 0.0f;
             speedR = 0.0f;
         }
+        if (speedL = 0.0f && speedR == 0.0f)
+            hasDriven = true;
         TankDrive(speedL, speedR);
-        /*speedL = SPEED;
+        /*speedL = SPEED;           //USING ENCODERS
         if (encode->getLDistance() >= neededDist)
         {
             encode->EncoderL->Stop();
@@ -110,6 +111,10 @@ void DriveTrain::update()
             hasDriven = true;
         TankDrive(speedL, speedR);*/
     }
+}
+
+void DriveTrain::updateTurn()
+{
     if (isTurningL) // NeededDist is positive
     {
         speedL = SPEED;
@@ -154,6 +159,12 @@ void DriveTrain::update()
             hasTurned = true;
         TankDrive(-speedL, speedR);
     }
+}
+
+void DriveTrain::update()
+{
+    updateDrive();
+    updateTurn();
 }
 
 /*void DriveTrain::updateHelper(void* instName)

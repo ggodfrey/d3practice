@@ -23,12 +23,6 @@ void Autonomous::moveForward(double dist)
     	previousStage = DRIVING;
         robot->drive->autoDrive(dist);
     }
-    if(stage == DRIVING){
-    	if(!(robot->drive->isMovingL) && !(robot->drive->isMovingR))
-    	{
-    		stage = AIMING;
-    	}
-    }
 }
 
 void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
@@ -79,13 +73,10 @@ void Autonomous::updateBasic()
             break;
         case DRIVING:
             moveForward(DISTANCE);
-            break;
-        case SHOOTING://nope.avi
+            if (robot->drive->hasDriven)
+                stage = IDLE;
             break;
         default:
             break;
     }
 }
-
-
-
