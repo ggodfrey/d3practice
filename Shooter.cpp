@@ -3,7 +3,10 @@
 #include "SmoothJoystick.h"
 #include "main.h"
 
-const double Shooter::SPEED_AXISPOWER = 0.5;
+const double Shooter::SPEED_AXISPOWER_LOW = 0.15;
+const double Shooter::SPEED_AXISPOWER_HIGH = 0.35;
+const double Shooter::ANGLE_PITCHUP = -3;
+const double Shooter::ANGLE_PITCHDOWN = 35;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 
 Shooter::Shooter(main_robot* robot,uint8_t axisCan,
@@ -40,12 +43,19 @@ Shooter::~Shooter()
 
 void Shooter::pitchUp()
 {
-    axis->Set(SPEED_AXISPOWER);
+    if (currentPitch < ANGLE_PITCHUP)
+        axis->Set(-SPEED_AXISPOWER_HIGH);
+    else
+        axis->Set(-SPEED_AXISPOWER_LOW);
 }
+
 
 void Shooter::pitchDown()
 {
-    axis->Set(-SPEED_AXISPOWER);
+    if (currentPitch > ANGLE_PITCHDOWN)
+        axis->Set(SPEED_AXISPOWER_HIGH);
+    else
+        axis->Set(SPEED_AXISPOWER_LOW);
 }
 
 void Shooter::pitchStop()
@@ -110,6 +120,10 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
+    if(!(wormGear -> GetForwardLimitOK()))
+    {
+        return;
+    }
     if(!wormIsPulling)
     {
         robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
@@ -177,6 +191,7 @@ void Shooter::update()
 
     if (isPitchingUp)
     {
+        pitchUp();
         if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
         {
             pitchStop();
@@ -185,6 +200,7 @@ void Shooter::update()
     }
     if (isPitchingDown)
     {
+        pitchDown();
         if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
         {
             pitchStop();
