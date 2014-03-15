@@ -4,32 +4,27 @@
 #include "612.h"
 
 
-Autonomous::Autonomous(main_robot* robot)
+Autonomous::Autonomous(main_robot* r)
 {
+	robot = r;
     timer = new Timer();
     previousStage = IDLE;
 }
+
 Autonomous::~Autonomous()
 {
     delete timer;
 }
-void Autonomous::moveForward()
+
+void Autonomous::moveForward(double dist)
 {
     if (previousStage != DRIVING)
     {
-        robot->drive->autoDrive(DISTANCE);
-        previousStage = DRIVING;
+    	previousStage = DRIVING;
+        robot->drive->autoDrive(dist);
     }
 }
 
-void Autonomous::turn()
-{
-    if (previousStage != TURNING)
-    {
-        robot->drive->autoTurn(DEGREES_TURN);
-        previousStage = TURNING;
-    }
-}
 void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
 {
     if (previousStage != AIMING)
@@ -38,6 +33,7 @@ void Autonomous::tilt()        // needs to tilt a certain degrees, probably star
         previousStage = AIMING;
     }
 }
+
 void Autonomous::releaseClamp()
 {
     if (previousStage != SHOOTING)
@@ -68,28 +64,19 @@ double Autonomous::getTime()
 {
 }
 */
-void Autonomous::update()
+void Autonomous::updateBasic()
 {
     switch (stage)
     {
-        case DRIVING:
-            moveForward();
-            break;
-        case TURNING:
-            turn();
-            break;
-        case AIMING:
-            tilt();
-            break;
-        case SHOOTING:
-            releaseClamp();
-            shootBall();
-            break;
         case IDLE:
+        //to be backup
+            break;
+        case DRIVING:
+            moveForward(DISTANCE);
+            if (robot->drive->hasDriven)
+                stage = IDLE;
             break;
         default:
             break;
     }
 }
-
-

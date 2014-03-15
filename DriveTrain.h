@@ -21,6 +21,8 @@ public:
     void autoDrive(double distance);
     void autoTurn(double degrees);
     void teleTurn(Dir direction, double power);
+    void updateDrive();
+    void updateTurn();
     void update();
     bool isAuto();
     void stopAuto();
@@ -35,8 +37,10 @@ public:
     bool hasTurned;
     double neededDist;
     double originUltraDist;
+    float speedL;
+    float speedR;
     static const double SPEED;
-    static const double PI=3.14159265;
+    static const double PI = 3.14159265;
     static const double ROBOTRAD = 3.0;
     static const double CIRCUMROBOT;
     static const double ZEROTEST = 0.001;
