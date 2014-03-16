@@ -14,6 +14,8 @@
 #include "Netcom.h"
 #include "Autonomous.h"
 
+#include "vision/vision.h"
+
 class main_robot: public IterativeRobot
 {
 public:
@@ -38,6 +40,11 @@ public:
     Sensors* sensors;
     Netcom* netcom;
     Autonomous* autoBot;
+    
+    vision* engine;
+    void init_vision();
+    void stop_vision();
+    
 };
 
 
