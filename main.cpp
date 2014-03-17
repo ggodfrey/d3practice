@@ -60,7 +60,7 @@ void main_robot::AutonomousInit()
 }
 void main_robot::TestInit()
 {
-
+    init_vision();
 }
 void main_robot::DisabledInit()
 {
@@ -84,12 +84,29 @@ void main_robot::AutonomousPeriodic()
 
 void main_robot::DisabledPeriodic()
 {
-
+    stop_vision();
 }
 void main_robot::TestPeriodic()
 {
+    printf("%d", engine->getHotGoal());
     pnum->checkPressure();
     pnum->updateSolenoid();
+}
+
+void main_robot::init_vision() {
+    std::printf("init vision\n");
+    engine = new vision();
+}
+
+void main_robot::stop_vision() {
+    std::printf("stop vision\n");
+    if(engine!=NULL) {
+        if(engine->isContinuousRunning()) {
+            engine->stopContinuous();
+        }
+        delete engine;
+        engine=NULL;
+    }
 }
 
 START_ROBOT_CLASS(main_robot)
