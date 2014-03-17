@@ -3,32 +3,31 @@
 #include "DriveTrain.h"
 #include "Shooter.h"
 #include <Timer.h>
+
+// the auto methods return true when completed
+
 class Autonomous
 {
 public:
     Autonomous(main_robot* robot);
     ~Autonomous();
-    void moveForward(double dist);
-    void turn();
-    void tilt();
-    void releaseClamp();
-    void shootBall();
+    bool moveForward(double dist);
+    bool turn();
+    bool tilt();
+    bool releaseClamp();
+    bool shootBall();
 
     bool timePassed(float time);        //time measured in seconds
-//  void vision();                      //probably connected to tilt
-//  double getTime();                   // might not be needed at the moment
-//    DriveTrain* drive;
-//    Shooter* shoot;
     Timer* timer;
-    enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE};
+    enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE, DONE};
     State stage;
     State previousStage;
 
     void updateBasic();
 
-    static const double DISTANCE = 10;
+    static const double DISTANCE = 69;
     static const double DEGREES_TURN = 25;
-    static const double POSITION_TILT = 25;
+    static const double POSITION_TILT = 45;
 
 };
 #endif //AUTONOMOUS_H

@@ -3,12 +3,11 @@
 #include "ports.h"
 #include "612.h"
 
-
 Autonomous::Autonomous(main_robot* r)
 {
-	robot = r;
+    robot = r;
     timer = new Timer();
-    previousStage = IDLE;
+    previousStage = stage = IDLE;
 }
 
 Autonomous::~Autonomous()
@@ -16,39 +15,43 @@ Autonomous::~Autonomous()
     delete timer;
 }
 
-void Autonomous::moveForward(double dist)
+bool Autonomous::moveForward(double dist)
 {
-    if (previousStage != DRIVING)
+    if (previousStage != stage)
     {
-    	previousStage = DRIVING;
+        previousStage = stage;
         robot->drive->autoDrive(dist);
     }
+    return !(robot->drive->isAuto());
 }
 
-void Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
+bool Autonomous::tilt()        // needs to tilt a certain degrees, probably starting from below going up
 {
-    if (previousStage != AIMING)
+    if (previousStage != stage)
     {
+        previousStage = stage;
         robot->shoot->pitchAngle(POSITION_TILT);
-        previousStage = AIMING;
     }
+    return robot->shoot->hasTilted;
 }
 
-void Autonomous::releaseClamp()
+bool Autonomous::releaseClamp()
 {
-    if (previousStage != SHOOTING)
+    if (previousStage != stage)
     {
+        previousStage = stage;
         robot->shoot->clampUp();
-        previousStage = SHOOTING;
     }
+    return false;
 }
-void Autonomous::shootBall()
+bool Autonomous::shootBall()
 {
-    if (previousStage != IDLE)
+    if (previousStage != stage)
     {
+        previousStage = stage;
         robot->shoot->wormPull();
-        previousStage = IDLE;
     }
+    return false;
 }
 /*
 void Autonomous::vision()
@@ -69,12 +72,20 @@ void Autonomous::updateBasic()
     switch (stage)
     {
         case IDLE:
-        //to be backup
+            printf("AUTO switch to AIMING\n");
+            stage = AIMING;
             break;
         case DRIVING:
-            moveForward(DISTANCE);
-            if (robot->drive->hasDriven)
-                stage = IDLE;
+            if(moveForward(DISTANCE))
+                printf("AUTO done driving\n");
+                stage = DONE;
+            break;
+        case AIMING:
+            if(tilt())
+                printf("AUTO done tilting\n");
+                stage = DONE;
+        case DONE:
+            robot->drive->TankDrive(0.0,0.0);
             break;
         default:
             break;
