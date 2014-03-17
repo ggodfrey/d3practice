@@ -42,15 +42,21 @@ void main_robot::RobotInit()
     sensors->setGyroSens(1.0f); //default sensitivity
     printf("Welcome to 612-2014 AERIAL ASSIST\n");
     netcom = new Netcom();
+    autoBot = new Autonomous(this);
 }
 void main_robot::TeleopInit()
 {
-
+    drive->stopAuto();
+    shoot->pitchStop();
+    shoot->rollerStop();
+    shoot->wormStop();
 }
 void main_robot::AutonomousInit()
 {
-    autoBot = new Autonomous(this);
-    autoBot->stage = Autonomous::IDLE;
+    drive->stopAuto();
+    shoot->pitchStop();
+    shoot->rollerStop();
+    shoot->wormStop();
 }
 void main_robot::TestInit()
 {
@@ -72,15 +78,8 @@ void main_robot::TeleopPeriodic()
 void main_robot::AutonomousPeriodic()
 {
     update -> updateFunctions();
-    autoBot->stage = Autonomous::DRIVING;
-    if (drive->hasDriven)
-        autoBot->stage = Autonomous::TURNING;
-    if (drive->hasTurned)
-        autoBot->stage = Autonomous::AIMING;
-    if (shoot->hasTilted)
-        autoBot->stage = Autonomous::SHOOTING;
-
-    drive->update();
+    drive -> update();
+    autoBot -> updateBasic();
 }
 
 void main_robot::DisabledPeriodic()
