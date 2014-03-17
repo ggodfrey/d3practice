@@ -19,7 +19,8 @@ public:
     Encoder* EncoderL;
     Encoder* EncoderR;
 private:
-    static const double DISTPERPULSE = 1.0;
+    static const double DISTPERPULSE_L = 0.070;
+    static const double DISTPERPULSE_R = 0.093;
 };
 
 #endif // ENCODEDISTANCE_H
