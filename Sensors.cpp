@@ -61,7 +61,7 @@ bool Sensors::getInfraredLoad()
 float Sensors::getUltrasonic()
 {
     // 9.8mV/in = 0.0098V/in
-    return (getVoltsUltra() / VPIULTRA);
+    return ((getVoltsUltra() / VPIULTRA) + ULTRA_YINT);
 }
 
 
