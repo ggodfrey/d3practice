@@ -3,7 +3,7 @@
 #include "612.h"
 #include "main.h"
 
-const double DriveTrain::SPEED=0.8;
+const double DriveTrain::SPEED=0.5;
 
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
@@ -40,9 +40,9 @@ void DriveTrain::autoDrive(double distance)
     TankDrive(SPEED, SPEED);
     isMovingL = true;
     isMovingR = true;
-    //encode->EncoderL->Start();
-    //encode->EncoderR->Start();
-    originUltraDist = (double)robot->sensors->getUltrasonic();
+    encode->EncoderL->Start();
+    encode->EncoderR->Start();
+//    originUltraDist = (double)robot->sensors->getUltrasonic();
 }
 
 void DriveTrain::autoTurn(double degrees)           // any degrees less than zero (0) will turn right; basically the unit circle
@@ -51,14 +51,15 @@ void DriveTrain::autoTurn(double degrees)           // any degrees less than zer
     double degrees2Radians = degrees * (PI/180);
     double arcLength = ROBOTRAD * degrees2Radians;  // checks the length of the arc in feet
     neededDist = arcLength;
-    if (degrees > 0){
+    if (degrees > 0) {
         TankDrive(-SPEED, SPEED);
         isTurningL = true;
     }
-    if (degrees < 0){
+    if (degrees < 0) {
         TankDrive(SPEED, -SPEED);
         isTurningR = true;
     }
+    hasTurned = false;
     encode->EncoderL->Start();
     encode->EncoderR->Start();
 }
@@ -77,7 +78,7 @@ void DriveTrain::updateDrive()
 {
     if (isMovingL || isMovingR)
     {
-        speedL = SPEED;
+/*        speedL = SPEED;
         speedR = SPEED;
         double varUltraDist = (double)robot->sensors->getUltrasonic();
         if (originUltraDist-varUltraDist >= neededDist)
@@ -90,8 +91,8 @@ void DriveTrain::updateDrive()
         }
         if (speedL = 0.0f && speedR == 0.0f)
             hasDriven = true;
-        TankDrive(speedL, speedR);
-        /*speedL = SPEED;           //USING ENCODERS
+        TankDrive(speedL, speedR);*/
+        speedL = SPEED;           //USING ENCODERS
         if (encode->getLDistance() >= neededDist)
         {
             encode->EncoderL->Stop();
@@ -107,9 +108,9 @@ void DriveTrain::updateDrive()
             isMovingR = false;
             speedR = 0.0f;
         }
-        if (speedL == 0.0f && speedR == 0.0f)
+        if (!isMovingL && !isMovingR)
             hasDriven = true;
-        TankDrive(speedL, speedR);*/
+        TankDrive(speedL, speedR);
     }
 }
 
@@ -189,4 +190,5 @@ void DriveTrain::stopAuto()
     isMovingR = false;
     isTurningL = false;
     isTurningR = false;
+    hasDriven = false;
 }
