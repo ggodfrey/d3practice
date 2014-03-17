@@ -64,7 +64,7 @@ void main_robot::TestInit()
 }
 void main_robot::DisabledInit()
 {
-
+    stop_vision();
 }
 void main_robot::TeleopPeriodic()
 {
@@ -84,11 +84,10 @@ void main_robot::AutonomousPeriodic()
 
 void main_robot::DisabledPeriodic()
 {
-    stop_vision();
 }
 void main_robot::TestPeriodic()
 {
-    printf("%d", engine->getHotGoal());
+//    printf("%d", engine->getHotGoal());
     pnum->checkPressure();
     pnum->updateSolenoid();
 }
