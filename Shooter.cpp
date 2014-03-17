@@ -3,11 +3,13 @@
 #include "SmoothJoystick.h"
 #include "main.h"
 
-const double Shooter::SPEED_AXISPOWER_LOW = 0.15;
-const double Shooter::SPEED_AXISPOWER_HIGH = 0.35;
+const double Shooter::SPEED_AXISPOWER_LOW = 0.25;
+const double Shooter::SPEED_AXISPOWER_HIGH_UP = 0.40;
+const double Shooter::SPEED_AXISPOWER_HIGH_DOWN = 0.45;
 const double Shooter::ANGLE_PITCHUP = -3;
 const double Shooter::ANGLE_PITCHDOWN = 35;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
+const double Shooter::SPEED_WORM = 0.4;
 
 Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
@@ -44,7 +46,7 @@ Shooter::~Shooter()
 void Shooter::pitchUp()
 {
     if (currentPitch < ANGLE_PITCHUP)
-        axis->Set(-SPEED_AXISPOWER_HIGH);
+        axis->Set(-SPEED_AXISPOWER_HIGH_UP);
     else
         axis->Set(-SPEED_AXISPOWER_LOW);
 }
@@ -53,13 +55,15 @@ void Shooter::pitchUp()
 void Shooter::pitchDown()
 {
     if (currentPitch > ANGLE_PITCHDOWN)
-        axis->Set(SPEED_AXISPOWER_HIGH);
+        axis->Set(SPEED_AXISPOWER_HIGH_DOWN);
     else
         axis->Set(SPEED_AXISPOWER_LOW);
 }
 
 void Shooter::pitchStop()
 {
+    isPitchingUp = false;
+    isPitchingDown = false;
     axis->Set(0);
 }
 
@@ -72,13 +76,13 @@ void Shooter::pitchAngle(double newPitch)
     hasTilted = false;
     if (newPitch < originPitch)
     {
-        pitchUp();
-        isPitchingUp = true;
+        pitchDown();
+        isPitchingDown = true;
     }
     if (newPitch > originPitch)
     {
         pitchDown();
-        isPitchingDown = true;
+        isPitchingUp = true;
     }
 }
 
