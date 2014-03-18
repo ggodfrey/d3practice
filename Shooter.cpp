@@ -9,7 +9,7 @@ const double Shooter::SPEED_AXISPOWER_HIGH_DOWN = 0.45;
 const double Shooter::ANGLE_PITCHUP = -3;
 const double Shooter::ANGLE_PITCHDOWN = 35;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
-const double Shooter::SPEED_WORM = 0.4;
+const double Shooter::SPEED_WORM = 1.0;
 
 Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
@@ -130,7 +130,7 @@ void Shooter::wormPull()
     }
     if(!wormIsPulling)
     {
-        robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
+        robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
     }
     wormIsPulling = true;
 }
@@ -144,7 +144,7 @@ void Shooter::wormStop()
 
 void Shooter::punch()
 {
-    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
 }
 
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
