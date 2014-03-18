@@ -3,7 +3,8 @@
 #include "SmoothJoystick.h"
 #include "main.h"
 
-const double Shooter::SPEED_AXISPOWER = 0.75;
+const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
+const double Shooter::SPEED_AXISPOWER_AUTO = 0.35;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
@@ -41,13 +42,27 @@ Shooter::~Shooter()
 
 void Shooter::pitchUp()
 {
-        axis->Set(SPEED_AXISPOWER);
+    if(isPitchingUp || isPitchingDown)
+    {
+        axis->Set(SPEED_AXISPOWER_AUTO);
+    }
+    else
+    {
+        axis->Set(SPEED_AXISPOWER_TELEOP);
+    }
 }
 
 
 void Shooter::pitchDown()
 {
-        axis->Set(-SPEED_AXISPOWER);
+    if(isPitchingUp || isPitchingDown)
+    {
+        axis->Set(-SPEED_AXISPOWER_AUTO);
+    }
+    else
+    {
+        axis->Set(-SPEED_AXISPOWER_TELEOP);
+    }
 }
 
 void Shooter::pitchStop()

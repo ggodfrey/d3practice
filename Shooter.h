@@ -56,7 +56,8 @@ public:
     double originPitch;
     //double currentSpeed;
 
-    static const double SPEED_AXISPOWER;
+    static const double SPEED_AXISPOWER_TELEOP;
+    static const double SPEED_AXISPOWER_AUTO;
     static const double SPEED_ATTRACTOR;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
