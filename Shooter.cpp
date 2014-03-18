@@ -3,11 +3,7 @@
 #include "SmoothJoystick.h"
 #include "main.h"
 
-const double Shooter::SPEED_AXISPOWER_LOW = 0.25;
-const double Shooter::SPEED_AXISPOWER_HIGH_UP = 0.40;
-const double Shooter::SPEED_AXISPOWER_HIGH_DOWN = 0.45;
-const double Shooter::ANGLE_PITCHUP = -3;
-const double Shooter::ANGLE_PITCHDOWN = 35;
+const double Shooter::SPEED_AXISPOWER = 0.75;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
@@ -45,19 +41,13 @@ Shooter::~Shooter()
 
 void Shooter::pitchUp()
 {
-    if (currentPitch < ANGLE_PITCHUP)
-        axis->Set(-SPEED_AXISPOWER_HIGH_UP);
-    else
-        axis->Set(-SPEED_AXISPOWER_LOW);
+        axis->Set(SPEED_AXISPOWER);
 }
 
 
 void Shooter::pitchDown()
 {
-    if (currentPitch > ANGLE_PITCHDOWN)
-        axis->Set(SPEED_AXISPOWER_HIGH_DOWN);
-    else
-        axis->Set(SPEED_AXISPOWER_LOW);
+        axis->Set(-SPEED_AXISPOWER);
 }
 
 void Shooter::pitchStop()
@@ -88,7 +78,7 @@ void Shooter::pitchAngle(double newPitch)
 
 void Shooter::rollerPull()
 {
-    attractor->Set(-SPEED_ATTRACTOR); // apparently its supposed to be negative to pull
+    attractor->Set(SPEED_ATTRACTOR); // apparently its supposed to be negative to pull
 }
 
 void Shooter::rollerStop()
@@ -98,7 +88,7 @@ void Shooter::rollerStop()
 
 void Shooter::rollerRepel()
 {
-    attractor->Set(SPEED_ATTRACTOR);
+    attractor->Set(-SPEED_ATTRACTOR);
 }
 
 //@param goClamp moves clamper, off says to stop clamper
