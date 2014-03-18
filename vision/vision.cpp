@@ -72,7 +72,7 @@ int vision::getHotGoal() {
     if(!available) {
         return 0;
     }
-    int whichGoal = (int)table->GetNumber("1/HotGoal",0);
+    int whichGoal = (int)table->GetNumber("HotGoal",0);
     return whichGoal;
 }
 
