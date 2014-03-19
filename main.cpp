@@ -53,6 +53,7 @@ void main_robot::TeleopInit()
 }
 void main_robot::AutonomousInit()
 {
+    autoBot -> stage = Autonomous::IDLE;
     drive->stopAuto();
     shoot->pitchStop();
     shoot->rollerStop();
