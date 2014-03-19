@@ -34,6 +34,7 @@ public:
     void clampUp();//opens clamp
     void wormPull();
     void wormStop();
+    bool wormDone();
     void punch();
 
     CANJaguar* axis;

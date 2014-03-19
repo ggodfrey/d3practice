@@ -4,7 +4,7 @@
 #include "main.h"
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
-const double Shooter::SPEED_AXISPOWER_AUTO = 0.35;
+const double Shooter::SPEED_AXISPOWER_AUTO = 0.45;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
@@ -86,7 +86,7 @@ void Shooter::pitchAngle(double newPitch)
     }
     if (newPitch > originPitch)
     {
-        pitchDown();
+        pitchUp();
         isPitchingUp = true;
     }
 }
@@ -129,7 +129,7 @@ void Shooter::clampUp()
 
 void Shooter::wormPull()
 {
-    if(!(wormGear -> GetForwardLimitOK()))
+    if(wormDone())
     {
         return;
     }
@@ -145,6 +145,11 @@ void Shooter::wormStop()
     wormGear -> Set(0);
     wormIsPulling = false;
     //currentSpeed = SPEED_WORM;
+}
+
+bool Shooter::wormDone()
+{
+    return !(wormGear -> GetForwardLimitOK());
 }
 
 void Shooter::punch()
@@ -173,12 +178,15 @@ void Shooter::update()
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
 
     // manual controls
-    if(shooterJoy -> IsAxisZero(TILT))
-        pitchStop();
-    else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
-        pitchDown();
-    else
-        pitchUp();
+    if(!isPitchingUp && !isPitchingDown)
+    {
+        if(shooterJoy -> IsAxisZero(TILT))
+            pitchStop();
+        else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
+            pitchDown();
+        else
+            pitchUp();
+    }
 
     if(shooterJoy -> IsAxisZero(ROLLERS))
         rollerStop();
@@ -201,7 +209,7 @@ void Shooter::update()
     if (isPitchingUp)
     {
         pitchUp();
-        if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
+        if (currentPitch >= destinationPitch || !(axis->GetForwardLimitOK()))
         {
             pitchStop();
             isPitchingUp = false;
@@ -210,7 +218,7 @@ void Shooter::update()
     if (isPitchingDown)
     {
         pitchDown();
-        if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
+        if (currentPitch <= destinationPitch || !(axis->GetReverseLimitOK()))
         {
             pitchStop();
             isPitchingDown = false;
@@ -266,7 +274,7 @@ void Shooter::update()
         else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
             wormStop();*/
         wormGear->Set(SPEED_WORM);
-        if (!(wormGear -> GetForwardLimitOK())) //checks if loader has reached farthest position
+        if (wormDone()) //checks if loader has reached farthest position
             wormStop();
     }
 }
