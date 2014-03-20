@@ -13,19 +13,20 @@ public:
     ~Autonomous();
     bool moveForward(double dist);
     bool turn();
-    bool tilt();
+    bool tilt(double);
     bool releaseClamp();
-    bool shootBall();
+    bool wormPull();
+    bool fire();
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
-    enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE, DONE};
+    enum State {DRIVE_AIM_WINCH, CLAMP, FIRE, IDLE, DONE};
     State stage;
     State previousStage;
 
     void updateBasic();
 
-    static const double DISTANCE = 69;
+    static const double DISTANCE = 30;
     static const double DEGREES_TURN = 25;
     static const double POSITION_TILT = 45;
 
