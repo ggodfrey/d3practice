@@ -20,13 +20,14 @@ public:
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
-    enum State {DRIVE_AIM_WINCH, CLAMP, FIRE, IDLE, DONE};
+    enum State {DRIVE_AIM_WINCH, CLAMP, FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
 
-    void updateBasic();
+    void updateHighGoal();
+    void updateBasicDrive();
 
-    static const double DISTANCE = 30;
+    static const double DISTANCE = 100;
     static const double DEGREES_TURN = 25;
     static const double POSITION_TILT = 45;
 

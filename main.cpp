@@ -81,7 +81,8 @@ void main_robot::AutonomousPeriodic()
 {
     update -> updateFunctions();
     drive -> update();
-    autoBot -> updateBasic();
+    autoBot -> updateBasicDrive();
+//    autoBot -> updateHighGoal();
 }
 
 void main_robot::DisabledPeriodic()

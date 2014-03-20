@@ -41,7 +41,7 @@ bool Autonomous::releaseClamp()
         timer->Reset();
         timer->Start();
     }
-    return timer->HasPeriodPassed(Shooter::TIME);
+    return timePassed(Shooter::TIME);
 }
 bool Autonomous::wormPull()
 {
@@ -74,8 +74,9 @@ double Autonomous::getTime()
 {
 }
 */
-void Autonomous::updateBasic()
+void Autonomous::updateHighGoal()
 {
+    static int output=0;
     switch (stage)
     {
         case IDLE:
@@ -86,6 +87,10 @@ void Autonomous::updateBasic()
             bool driveDone=moveForward(DISTANCE);
             bool aimDone=tilt(POSITION_TILT);
             bool winchDone=wormPull();
+            if(output%20==0)
+            {
+                printf("drive: %i, aim: %i, winch: %i\n",driveDone,aimDone,winchDone);
+            }
             if(driveDone && aimDone && winchDone)
             {
                 printf("AUTO switch to CLAMP\n");
@@ -98,12 +103,14 @@ void Autonomous::updateBasic()
                 printf("AUTO switch to FIRE\n");
                 stage = FIRE;
             }
+            break;
         case FIRE:
             if(fire())
             {
                 printf("AUTO done\n");
                 stage = DONE;
             }
+            break;
         case DONE:
             robot->drive->TankDrive(0.0,0.0);
             break;
@@ -111,4 +118,28 @@ void Autonomous::updateBasic()
             break;
     }
     previousStage = stage;
+    output++;
+}
+
+void Autonomous::updateBasicDrive()
+{
+    switch (stage)
+    {
+        case IDLE:
+            printf("AUTO switch to BASIC_DRIVE\n");
+            stage = BASIC_DRIVE;
+            break;
+        case BASIC_DRIVE:
+            if(moveForward(DISTANCE))
+            {
+                printf("AUTO done\n");
+                stage = DONE;
+            }
+            break;
+        case DONE:
+            robot->drive->TankDrive(0.0,0.0);
+            break;
+        default:
+            break;
+    }
 }
