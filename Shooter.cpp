@@ -135,7 +135,7 @@ void Shooter::wormPull()
     }
     if(!wormIsPulling)
     {
-        robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
+        robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
     }
     wormIsPulling = true;
 }
@@ -154,7 +154,7 @@ bool Shooter::wormDone()
 
 void Shooter::punch()
 {
-    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kForward);
+    robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
 }
 
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
