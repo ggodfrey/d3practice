@@ -182,10 +182,10 @@ void Shooter::update()
     {
         if(shooterJoy -> IsAxisZero(TILT))
             pitchStop();
-        else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
-            pitchDown();
-        else
+        else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt up
             pitchUp();
+        else
+            pitchDown();
     }
 
     if(shooterJoy -> IsAxisZero(ROLLERS))
