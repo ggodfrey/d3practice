@@ -14,8 +14,8 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod):isPickingUp(false),isPitchingUp(false),
-                 isPitchingDown(false),wormIsPulling(false),autoPulling(false),
-                 hasTilted(false),isPickingUpStopping(false)
+                 isPitchingDown(false),wormIsPulling(false),winching(false),
+                 hasTilted(false),isPickingUpStopping(false),autoPulling(false)
 {
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
@@ -195,15 +195,18 @@ void Shooter::update()
     else
         rollerRepel();
 
-    if(shooterJoy -> GetTriggerState() == ENERGIZE)
+    if(!autoPulling)
     {
-        autoPulling = true;
-        wormPull();
-    }
-    else if(autoPulling)
-    {
-        autoPulling = false;
-        wormStop();
+        if(shooterJoy -> GetTriggerState() == ENERGIZE)
+        {
+            winching = true;
+            wormPull();
+        }
+        else if(winching)
+        {
+            winching = false;
+            wormStop();
+        }
     }
 
     if (isPitchingUp)

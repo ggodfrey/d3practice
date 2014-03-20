@@ -49,9 +49,10 @@ public:
     bool isPitchingUp;
     bool isPitchingDown;
     bool wormIsPulling;
-    bool autoPulling;
+    bool winching;
     bool hasTilted;
     bool isPickingUpStopping;
+    bool autoPulling;
     double currentPitch;
     double destinationPitch;
     double originPitch;

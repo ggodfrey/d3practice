@@ -47,9 +47,15 @@ bool Autonomous::wormPull()
 {
     if (previousStage != stage)
     {
+        robot->shoot->autoPulling=true;
         robot->shoot->wormPull();
     }
-    return robot->shoot->wormDone();
+    bool wormDone = robot->shoot->wormDone();
+    if(wormDone)
+    {
+        robot->shoot->autoPulling=false;
+    }
+    return wormDone;
 }
 /*
 void Autonomous::vision()
