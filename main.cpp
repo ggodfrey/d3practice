@@ -46,6 +46,7 @@ void main_robot::RobotInit()
 }
 void main_robot::TeleopInit()
 {
+    drive->SetSafetyEnabled(true);
     drive->stopAuto();
     shoot->pitchStop();
     shoot->rollerStop();
@@ -53,6 +54,7 @@ void main_robot::TeleopInit()
 }
 void main_robot::AutonomousInit()
 {
+    drive->SetSafetyEnabled(false);
     autoBot -> stage = Autonomous::IDLE;
     drive->stopAuto();
     shoot->pitchStop();
@@ -80,8 +82,9 @@ void main_robot::TeleopPeriodic()
 void main_robot::AutonomousPeriodic()
 {
     update -> updateFunctions();
-    drive -> update();
-    autoBot -> updateBasicDrive();
+    drive -> TankDrive(0.0,0.0);
+//    drive -> update();
+//    autoBot -> updateBasicDrive();
 //    autoBot -> updateHighGoal();
 }
 
