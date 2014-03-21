@@ -68,9 +68,10 @@ public:
     static const double SPEED_ATTRACTOR;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
+    static const double SMARTFIRE_TIME = 0.25;
     static const double PI = 3.14159;
     static const double CATCHING_POSITION = 81.89;
-    static const double HIGHGOAL_POSITION = 37; // 82 inches
+    static const double HIGHGOAL_POSITION = 43; // 82 inches
     static const double PICKUP_POSITION   = -25;
     static const double LOWGOAL_POSITION  = 49;
     static const double SPEED_WORM; //What we start at

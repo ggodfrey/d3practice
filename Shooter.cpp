@@ -4,7 +4,7 @@
 #include "main.h"
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
-const double Shooter::SPEED_AXISPOWER_AUTO = 0.45;
+const double Shooter::SPEED_AXISPOWER_AUTO = 0.60;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
@@ -18,7 +18,6 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
                  hasTilted(false),isPickingUpStopping(false),autoPulling(false),
                  smartFiring(false),smartFireTimer(new Timer())
 {
-    printf("Shooter construct\n");
     robot = r;
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
@@ -29,6 +28,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,ENERGIZE);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_LOWGOAL);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_HIGHGOAL);
@@ -172,12 +172,6 @@ void Shooter::smartFire()
         smartFireTimer->Reset();
         smartFireTimer->Start();
     }
-    else if(smartFireTimer->HasPeriodPassed(TIME))
-    {
-        punch();
-        smartFiring = false;
-        smartFireTimer->Stop();
-    }
 }
 
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
@@ -186,6 +180,10 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     if(button==CLAMP)
     {
         shooterObj->autoClamp();
+    }
+    if(button==ENERGIZE)
+    {
+        shooterObj->wormPull();
     }
     if(button==FIRE)
     {
@@ -220,11 +218,11 @@ void Shooter::update()
     output++;
 
     // angle presets, triggers
-    if(shooterJoy -> GetTriggerState() == AUTO_PICKUP && fabs(destinationPitch - PICKUP_POSITION) < FLOAT_THRESH)
+    if(shooterJoy -> GetTriggerState() == AUTO_PICKUP && fabs(destinationPitch - PICKUP_POSITION) > FLOAT_THRESH)
     {
         pitchAngle(PICKUP_POSITION);
     }
-    else if(shooterJoy -> GetTriggerState() == AUTO_VERTICAL && fabs(destinationPitch - CATCHING_POSITION) < FLOAT_THRESH)
+    else if(shooterJoy -> GetTriggerState() == AUTO_VERTICAL && fabs(destinationPitch - CATCHING_POSITION) > FLOAT_THRESH)
     {
         pitchAngle(CATCHING_POSITION);
     }
@@ -246,20 +244,6 @@ void Shooter::update()
         rollerPull();
     else
         rollerRepel();
-
-    if(!autoPulling)
-    {
-        if(shooterJoy -> GetSmoothButton(ENERGIZE))
-        {
-            winching = true;
-            wormPull();
-        }
-        else if(winching)
-        {
-            winching = false;
-            wormStop();
-        }
-    }
 
     if (isPitchingUp)
     {
@@ -312,6 +296,13 @@ void Shooter::update()
         }
     }*/
 
+    if(smartFiring && smartFireTimer->HasPeriodPassed(SMARTFIRE_TIME))
+    {
+        punch();
+        smartFiring = false;
+        smartFireTimer->Stop();
+    }
+    
     if(wormIsPulling)
     {
         wormGear->Set(SPEED_WORM);
