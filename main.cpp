@@ -152,13 +152,13 @@ void main_robot::init_vision() {
 
 void main_robot::stop_vision() {
     std::printf("stop vision\n");
-    if(engine!=NULL) {
+/*    if(engine!=NULL) {
         if(engine->isContinuousRunning()) {
             engine->stopContinuous();
         }
         delete engine;
         engine=NULL;
-    }
+    }*/
 }
 
 START_ROBOT_CLASS(main_robot)
