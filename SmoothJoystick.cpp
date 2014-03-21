@@ -9,6 +9,7 @@
 
 SmoothJoystick::SmoothJoystick(main_robot* robot, uint32_t port): Joystick(port)
 {
+    printf("SmoothJoystick construct\n");
      addButtons();
      robot -> update -> addFunctions(&updateHelper, (void*)this);
 }

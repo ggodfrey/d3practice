@@ -14,6 +14,7 @@ Pneumatics::Pneumatics(main_robot* r,
                        uint8_t digitalMod, uint32_t digitalChannel,
                        uint8_t compModuleNumber, uint32_t compChannel)
 {
+    printf("Pneumatics construct\n");
     robot = r;
     switchObject = new DigitalInput(digitalMod, digitalChannel);
     compressor = new Relay(compModuleNumber, compChannel, Relay::kForwardOnly);

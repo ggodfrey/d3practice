@@ -5,7 +5,7 @@
 #include <Relay.h>
 #include <Joystick.h>
 #include "ports.h"
-#include "Netcom.h"
+//#include "Netcom.h"
 #include "Sensors.h"
 
 main_robot::main_robot()
@@ -20,6 +20,7 @@ main_robot::~main_robot()
 
 void main_robot::RobotInit()
 {
+    printf("RobotInit entry\n");
     update = new FunctionRegistry();
     driverJoy = new SmoothJoystick(this, DRIVER_JOY_PORT);
     gunnerJoy = new SmoothJoystick(this, GUNNER_JOY_PORT);
@@ -39,7 +40,7 @@ void main_robot::RobotInit()
     sensors = new Sensors(this, USMODNUMBER, USCHANNEL, ISMODNUMBER, ISCHANNEL, ILMODNUMBER, ILCHANNEL, GYMOD, GYCHAN);
     sensors->setGyroSens(1.0f); //default sensitivity
     printf("Welcome to 612-2014 AERIAL ASSIST\n");
-    netcom = new Netcom();
+//    netcom = new Netcom();
     autoBot = new Autonomous(this);
 }
 void main_robot::TeleopInit()

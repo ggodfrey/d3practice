@@ -91,7 +91,7 @@ void Autonomous::updateHighGoal()
             return;
         case DRIVE_AIM_WINCH:
             bool driveDone=moveForward(DISTANCE);
-            bool aimDone=tilt(Shooter::SHOOTING_POSITION);
+            bool aimDone=tilt(Shooter::HIGHGOAL_POSITION);
             bool winchDone=wormPull();
             if(output%20==0)
             {

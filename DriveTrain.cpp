@@ -21,6 +21,7 @@ DriveTrain::DriveTrain(main_robot* r,
             isTurningL(false),isTurningR(false),
             hasDriven(false), hasTurned(false)
 {
+    printf("DriveTrain construct\n");
     robot = r;
     encode = new EncodeDistance(ENCODER_LMODULE_A, ENCODER_LCHANNEL_A,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,

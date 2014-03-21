@@ -18,6 +18,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
                  hasTilted(false),isPickingUpStopping(false),autoPulling(false),
                  smartFiring(false),smartFireTimer(new Timer())
 {
+    printf("Shooter construct\n");
     robot = r;
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);

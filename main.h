@@ -11,7 +11,7 @@
 #include "Shooter.h"
 #include "FunctionRegistry.h"
 #include "Sensors.h"
-#include "Netcom.h"
+//#include "Netcom.h"
 #include "Autonomous.h"
 
 #include "vision/vision.h"
