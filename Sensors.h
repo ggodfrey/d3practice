@@ -5,8 +5,6 @@
 #include <Gyro.h>
 #include "ports.h"
 
-class main_robot;
-
 class Sensors
 {
 public:
@@ -17,7 +15,7 @@ public:
     static const double VPIULTRA = 0.0097361;
     static const double ULTRA_YINT = 0.7008307562;
 
-    Sensors(main_robot* robot,
+    Sensors(class main_robot* robot,
             uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
             uint8_t ilMod, uint32_t ilChan,
             uint8_t gyMod, uint32_t gyChan);
@@ -32,7 +30,7 @@ public:
     void updatedNetcom();
 
     Gyro* gyro612;
-    main_robot* robot;
+    class main_robot* robot;
 
     float getGyroAngle();
     double getGyroRate();

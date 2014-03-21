@@ -9,12 +9,10 @@
 #include <DoubleSolenoid.h>
 #include "DriveTrain.h"
 
-class main_robot;
-
 class Pneumatics
 {
     public:
-        Pneumatics(main_robot* r,
+        Pneumatics(class main_robot* r,
                    uint8_t digitalMod, uint32_t digitalChannel,
                    uint8_t compModuleNumber, uint32_t compChannel);
         void checkPressure();
@@ -27,6 +25,6 @@ class Pneumatics
         std::vector<double> time;
         std::vector<Timer*> timerObject;
         std::vector<DoubleSolenoid*> solenoid;
-        main_robot* robot;
+        class main_robot* robot;
 };
 #endif

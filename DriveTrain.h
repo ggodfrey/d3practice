@@ -6,12 +6,10 @@
 #include "ports.h"
 #include "Sensors.h"
 
-class main_robot;
-
 class DriveTrain : public RobotDrive
 {
 public:
-    DriveTrain(main_robot* robot,
+    DriveTrain(class main_robot* robot,
                uint8_t modFL,uint32_t chanFL,
                uint8_t modRL,uint32_t chanRL,
                uint8_t modFR,uint32_t chanFR,
@@ -28,7 +26,7 @@ public:
     void stopAuto();
     EncodeDistance* encode;
     Sensors* sensor;
-    main_robot* robot;
+    class main_robot* robot;
     bool isMovingL;
     bool isMovingR;
     bool isTurningL;
