@@ -36,7 +36,7 @@ public:
     void gyroReset();
     void setGyroSens(float vpdps); //Set the Gyro Sensitivitutbgsvi sh
 
-    static void updateHelper(void* instName);
+//    static void updateHelper(void* instName);
 
     static const float LOAD_THRESHOLD = 10;
 };

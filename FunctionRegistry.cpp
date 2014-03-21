@@ -3,7 +3,6 @@
 
 FunctionRegistry::FunctionRegistry()
 {
-    printf("FunctionRegistry construct\n");
 }
 
 FunctionRegistry::~FunctionRegistry()

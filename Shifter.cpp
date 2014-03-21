@@ -4,7 +4,6 @@
 
 Shifter::Shifter(main_robot* r, uint8_t mod,uint32_t chanF,uint32_t chanR)
 {
-    printf("Shifter construct\n");
     robot = r;
     shifter=new DoubleSolenoid(mod,chanF,chanR);
     robot -> driverJoy -> addJoyFunctions(&buttonHelper,(void*)this,SHIFT_LOW);

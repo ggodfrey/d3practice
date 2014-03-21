@@ -21,7 +21,6 @@ DriveTrain::DriveTrain(main_robot* r,
             isTurningL(false),isTurningR(false),
             hasDriven(false), hasTurned(false)
 {
-    printf("DriveTrain construct\n");
     robot = r;
     encode = new EncodeDistance(ENCODER_LMODULE_A, ENCODER_LCHANNEL_A,
                                 ENCODER_LMODULE_B, ENCODER_LCHANNEL_B,
@@ -96,16 +95,16 @@ void DriveTrain::updateDrive()
         speedL = SPEED;           //USING ENCODERS
         if (encode->getLDistance() >= neededDist)
         {
-            encode->EncoderL->Stop();
-            encode->EncoderL->Reset();
+//            encode->EncoderL->Stop();
+//            encode->EncoderL->Reset();
             isMovingL = false;
             speedL = 0.0f;
         }
         speedR = SPEED;
-        if (encode->getRDistance() >= neededDist)
+        if (encode->getLDistance() >= neededDist)
         {
-            encode->EncoderR->Stop();
-            encode->EncoderR->Reset();
+            encode->EncoderL->Stop();
+            encode->EncoderL->Reset();
             isMovingR = false;
             speedR = 0.0f;
         }

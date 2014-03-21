@@ -11,7 +11,6 @@ Sensors::Sensors(main_robot* r,
                  uint8_t ilMod, uint32_t ilChan,
                  uint8_t gyMod, uint32_t gyChan)
 {
-    printf("Sensors construct\n");
     robot = r;
 
     ultrasonic = new AnalogChannel(usMod, usChan);
@@ -19,7 +18,7 @@ Sensors::Sensors(main_robot* r,
     infraredLoad = new AnalogChannel(ilMod, ilChan);
     gyro612 = new Gyro(GYMOD, GYCHAN);
 
-    robot -> update -> addFunctions(&updateHelper, (void*)this);
+//    robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
 Sensors::~Sensors()
