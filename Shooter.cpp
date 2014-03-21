@@ -29,6 +29,8 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_LOWGOAL);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_HIGHGOAL);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
     smartFireTimer->Stop();
 }
@@ -181,10 +183,20 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
     Shooter* shooterObj=(Shooter*)objPtr;
     if(button==CLAMP)
+    {
         shooterObj->autoClamp();
+    }
     if(button==FIRE)
     {
         shooterObj->smartFire();
+    }
+    if(button==AUTO_LOWGOAL)
+    {
+        shooterObj->pitchAngle(LOWGOAL_POSITION);
+    }
+    if(button==AUTO_HIGHGOAL)
+    {
+        shooterObj->pitchAngle(HIGHGOAL_POSITION);
     }
 }
 
@@ -198,13 +210,23 @@ void Shooter::update()
     double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
-    
+
     static int output = 0;
     if(output%20 == 0)
     {
         printf("Tilt Angle: %f\n",currentPitch);
     }
     output++;
+
+    // angle presets, triggers
+    if(shooterJoy -> GetTriggerState() == AUTO_PICKUP && fabs(destinationPitch - PICKUP_POSITION) < FLOAT_THRESH)
+    {
+        pitchAngle(PICKUP_POSITION);
+    }
+    else if(shooterJoy -> GetTriggerState() == AUTO_VERTICAL && fabs(destinationPitch - CATCHING_POSITION) < FLOAT_THRESH)
+    {
+        pitchAngle(CATCHING_POSITION);
+    }
 
     // manual controls
     if(!isPitchingUp && !isPitchingDown)
