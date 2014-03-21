@@ -28,7 +28,7 @@ public:
     void updateHighGoal();
     void updateBasicDrive();
 
-    static const double DISTANCE = 100;
+    static const double DISTANCE = 84;
     static const double DEGREES_TURN = 25;
 
 };
