@@ -36,6 +36,7 @@ public:
     void wormStop();
     bool wormDone();
     void punch();
+    void smartFire();
 
     CANJaguar* axis;
     Talon* attractor;
@@ -53,9 +54,11 @@ public:
     bool hasTilted;
     bool isPickingUpStopping;
     bool autoPulling;
+    bool smartFiring;
     double currentPitch;
     double destinationPitch;
     double originPitch;
+    Timer* smartFireTimer;
     //double currentSpeed;
 
     static const double SPEED_AXISPOWER_TELEOP;
@@ -64,9 +67,9 @@ public:
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
     static const double PI = 3.14159;
-    static const double CATCHING_POSITION = 85;
-    static const double SHOOTING_POSITION = 45;
-    static const double PICKUP_POSITION   = -20;
+    static const double CATCHING_POSITION = 81.89;
+    static const double SHOOTING_POSITION = 50;
+    static const double PICKUP_POSITION   = -25;
     static const double SPEED_WORM; //What we start at
     static const double INCREMENT  = 0.0000001;
     static const double WORM_LIMIT = 1.0;

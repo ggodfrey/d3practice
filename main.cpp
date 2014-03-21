@@ -1,3 +1,4 @@
+#include <cmath>
 #include "main.h"
 #include "612.h"
 #include <DigitalInput.h>
@@ -70,6 +71,7 @@ void main_robot::DisabledInit()
 {
     stop_vision();
 }
+
 void main_robot::TeleopPeriodic()
 {
     update->updateFunctions();
@@ -77,14 +79,61 @@ void main_robot::TeleopPeriodic()
     float right = driverJoy->GetRawAxis(5);
     // up is negative, down is positive
     drive->TankDrive(-left, -right);
+/*    static int loopLeft = 0;
+    static int loopRight = 0;
+    static float prevLeft = 0.0f;
+    static float prevRight = 0.0f;
+
+    float rawleft = driverJoy->GetRawAxis(2);
+    float rawright = driverJoy->GetRawAxis(5);
+
+    if (fabs(rawleft) < SmoothJoystick::DEADZONE)
+    {
+        prevLeft = 0.0f;
+        loopLeft = 0;
+    }
+    
+    if (loopLeft > 0)
+    {
+        --loopLeft;
+        rawleft = prevLeft;
+    }
+    
+    if (fabs(rawleft - prevLeft) > GLIDE_THRESHOLD)
+    {
+        rawleft = prevLeft + GLIDE_INCREMENT;
+        loopLeft = GLIDE_ITERATIONS;
+    }
+    
+    prevLeft = rawleft;
+    
+    if (fabs(rawright) < SmoothJoystick::DEADZONE)
+    {
+        prevRight = 0.0f;
+        loopRight = 0;
+    }
+    
+    if (loopRight > 0)
+    {
+        --loopRight;
+        rawright = prevRight;
+    }
+    
+    if (fabs(rawright - prevRight) > GLIDE_THRESHOLD)
+    {
+        rawright = prevRight + GLIDE_INCREMENT;
+        loopRight = GLIDE_ITERATIONS;
+    }
+    
+    prevRight = rawRight;*/
 }
 
 void main_robot::AutonomousPeriodic()
 {
     update -> updateFunctions();
-    drive -> TankDrive(0.0,0.0);
-//    drive -> update();
-//    autoBot -> updateBasicDrive();
+//    drive -> TankDrive(0.0,0.0);
+    drive -> update();
+    autoBot -> updateBasicDrive();
 //    autoBot -> updateHighGoal();
 }
 

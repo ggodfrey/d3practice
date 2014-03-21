@@ -15,7 +15,8 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
                  uint8_t bobMod):isPickingUp(false),isPitchingUp(false),
                  isPitchingDown(false),wormIsPulling(false),winching(false),
-                 hasTilted(false),isPickingUpStopping(false),autoPulling(false)
+                 hasTilted(false),isPickingUpStopping(false),autoPulling(false),
+                 smartFiring(false),smartFireTimer(new Timer())
 {
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
@@ -28,6 +29,7 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
+    smartFireTimer->Stop();
 }
 
 Shooter::~Shooter()
@@ -44,11 +46,11 @@ void Shooter::pitchUp()
 {
     if(isPitchingUp || isPitchingDown)
     {
-        axis->Set(SPEED_AXISPOWER_AUTO);
+        axis->Set(-SPEED_AXISPOWER_AUTO);
     }
     else
     {
-        axis->Set(SPEED_AXISPOWER_TELEOP);
+        axis->Set(-SPEED_AXISPOWER_TELEOP);
     }
 }
 
@@ -57,11 +59,11 @@ void Shooter::pitchDown()
 {
     if(isPitchingUp || isPitchingDown)
     {
-        axis->Set(-SPEED_AXISPOWER_AUTO);
+        axis->Set(SPEED_AXISPOWER_AUTO);
     }
     else
     {
-        axis->Set(-SPEED_AXISPOWER_TELEOP);
+        axis->Set(SPEED_AXISPOWER_TELEOP);
     }
 }
 
@@ -157,13 +159,32 @@ void Shooter::punch()
     robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
 }
 
+void Shooter::smartFire()
+{
+    if(!smartFiring)
+    {
+        clampUp();
+        smartFiring = true;
+        smartFireTimer->Reset();
+        smartFireTimer->Start();
+    }
+    else if(smartFireTimer->HasPeriodPassed(TIME))
+    {
+        punch();
+        smartFiring = false;
+        smartFireTimer->Stop();
+    }
+}
+
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
     Shooter* shooterObj=(Shooter*)objPtr;
     if(button==CLAMP)
         shooterObj->autoClamp();
     if(button==FIRE)
-        shooterObj->punch();
+    {
+        shooterObj->smartFire();
+    }
 }
 
 // TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
@@ -176,16 +197,23 @@ void Shooter::update()
     double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
+    
+    static int output = 0;
+    if(output%20 == 0)
+    {
+        printf("Tilt Angle: %f\n",currentPitch);
+    }
+    output++;
 
     // manual controls
     if(!isPitchingUp && !isPitchingDown)
     {
         if(shooterJoy -> IsAxisZero(TILT))
             pitchStop();
-        else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt up
-            pitchUp();
-        else
+        else if(shooterJoy -> GetRawAxis(TILT) < 0) // push up = negative values = tilt down
             pitchDown();
+        else
+            pitchUp();
     }
 
     if(shooterJoy -> IsAxisZero(ROLLERS))
@@ -197,7 +225,7 @@ void Shooter::update()
 
     if(!autoPulling)
     {
-        if(shooterJoy -> GetTriggerState() == ENERGIZE)
+        if(shooterJoy -> GetSmoothButton(ENERGIZE))
         {
             winching = true;
             wormPull();
@@ -212,7 +240,7 @@ void Shooter::update()
     if (isPitchingUp)
     {
         pitchUp();
-        if (currentPitch >= destinationPitch || !(axis->GetForwardLimitOK()))
+        if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
         {
             pitchStop();
             isPitchingUp = false;
@@ -221,7 +249,7 @@ void Shooter::update()
     if (isPitchingDown)
     {
         pitchDown();
-        if (currentPitch <= destinationPitch || !(axis->GetReverseLimitOK()))
+        if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
         {
             pitchStop();
             isPitchingDown = false;
@@ -230,13 +258,7 @@ void Shooter::update()
     if (!isPitchingDown && !isPitchingUp)
         hasTilted = true;
 
-    // smart pickup control
-    // sequence:
-    // clamp up, tilt down
-    // when tilt at pickup position, clamp down, rollers pull
-    // when let go, tilt up
-    // when tilt at shoot position, clamp up, rollers stop
-    if(shooterJoy -> GetSmoothButton(PICKUP)) // holding down button
+    /*if(shooterJoy -> GetSmoothButton(PICKUP)) // holding down button
     {
         if (!isPickingUp) // hasn't started sequence yet
         {
@@ -264,18 +286,10 @@ void Shooter::update()
             rollerStop();
             isPickingUpStopping = false;
         }
-    }
+    }*/
 
     if(wormIsPulling)
     {
-        // increasing worm drive speed
-        /*if(currentSpeed <= WORM_LIMIT)
-        {
-            currentSpeed += INCREMENT;
-            wormGear->Set(currentSpeed);
-        }
-        else if(currentSpeed > WORM_LIMIT || !(wormGear->GetForwardLimitOK()))
-            wormStop();*/
         wormGear->Set(SPEED_WORM);
         if (wormDone()) //checks if loader has reached farthest position
             wormStop();

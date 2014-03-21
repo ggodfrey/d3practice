@@ -29,7 +29,6 @@ public:
 
     static const double DISTANCE = 100;
     static const double DEGREES_TURN = 25;
-    static const double POSITION_TILT = 45;
 
 };
 #endif //AUTONOMOUS_H

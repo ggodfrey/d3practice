@@ -88,10 +88,10 @@ void Autonomous::updateHighGoal()
         case IDLE:
             printf("AUTO switch to DRIVE_AIM_WINCH\n");
             stage = DRIVE_AIM_WINCH;
-            break;
+            return;
         case DRIVE_AIM_WINCH:
             bool driveDone=moveForward(DISTANCE);
-            bool aimDone=tilt(POSITION_TILT);
+            bool aimDone=tilt(Shooter::SHOOTING_POSITION);
             bool winchDone=wormPull();
             if(output%20==0)
             {
@@ -134,9 +134,10 @@ void Autonomous::updateBasicDrive()
         case IDLE:
             printf("AUTO switch to BASIC_DRIVE\n");
             stage = BASIC_DRIVE;
-            break;
+            return; // so it doesn't set the previous stage
         case BASIC_DRIVE:
             if(moveForward(DISTANCE))
+//            if(tilt(Shooter::SHOOTING_POSITION))
             {
                 printf("AUTO done\n");
                 stage = DONE;
@@ -148,4 +149,5 @@ void Autonomous::updateBasicDrive()
         default:
             break;
     }
+    previousStage = stage;
 }

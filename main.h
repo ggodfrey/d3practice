@@ -19,6 +19,10 @@
 class main_robot: public IterativeRobot
 {
 public:
+    static const int GLIDE_THRESHOLD=30;
+    static const int GLIDE_INCREMENT=20;
+    static const int GLIDE_ITERATIONS=2;
+
     main_robot();
     ~main_robot();
     void RobotInit();
