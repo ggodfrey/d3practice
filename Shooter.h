@@ -45,6 +45,7 @@ public:
     CANJaguar* wormGear;
     DoubleSolenoid* puncher;
     ADXL345_I2C* bobTheAccelerometer;
+    main_robot* robot;
 
     bool isPickingUp;
     bool isPitchingUp;

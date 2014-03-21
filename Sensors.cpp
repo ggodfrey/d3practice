@@ -6,11 +6,13 @@
 
 // everything in inches
 
-Sensors::Sensors(main_robot* robot,
+Sensors::Sensors(main_robot* r,
                  uint8_t usMod, uint32_t usChan, uint8_t isMod, uint32_t isChan,
                  uint8_t ilMod, uint32_t ilChan,
                  uint8_t gyMod, uint32_t gyChan)
 {
+    robot = r;
+
     ultrasonic = new AnalogChannel(usMod, usChan);
     infraredShooter = new AnalogChannel(isMod, isChan);
     infraredLoad = new AnalogChannel(ilMod, ilChan);
@@ -68,7 +70,7 @@ float Sensors::getUltrasonic()
 void Sensors::updateHelper(void* instName)
 {
     Sensors* sensorsObj = (Sensors*)instName;
-    robot -> netcom -> primeLocation(sensorsObj -> getUltrasonic());
+    sensorsObj -> robot -> netcom -> primeLocation(sensorsObj -> getUltrasonic());
 }
 
 float Sensors::getGyroAngle()

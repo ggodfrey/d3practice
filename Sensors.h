@@ -29,15 +29,15 @@ public:
     float getInfraredShooter();
     bool getInfraredLoad();
     float getUltrasonic();
-    
+    void updatedNetcom();
 
     Gyro* gyro612;
+    main_robot* robot;
 
     float getGyroAngle();
     double getGyroRate();
     void gyroReset();
     void setGyroSens(float vpdps); //Set the Gyro Sensitivitutbgsvi sh
-
 
     static void updateHelper(void* instName);
 

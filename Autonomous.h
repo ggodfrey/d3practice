@@ -23,6 +23,7 @@ public:
     enum State {DRIVE_AIM_WINCH, CLAMP, FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
+    main_robot* robot;
 
     void updateHighGoal();
     void updateBasicDrive();

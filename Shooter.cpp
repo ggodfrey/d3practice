@@ -8,7 +8,7 @@ const double Shooter::SPEED_AXISPOWER_AUTO = 0.45;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
-Shooter::Shooter(main_robot* robot,uint8_t axisCan,
+Shooter::Shooter(main_robot* r,uint8_t axisCan,
                  uint8_t attractMod, uint32_t attractChan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
                  uint8_t wormCan,
@@ -18,6 +18,7 @@ Shooter::Shooter(main_robot* robot,uint8_t axisCan,
                  hasTilted(false),isPickingUpStopping(false),autoPulling(false),
                  smartFiring(false),smartFireTimer(new Timer())
 {
+    robot = r;
     axis = new CANJaguar(axisCan);
     attractor = new Talon(attractMod, attractChan);
     clamper = new DoubleSolenoid(clampMod, clampFChan, clampRChan);
