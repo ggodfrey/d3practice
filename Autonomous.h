@@ -14,13 +14,12 @@ public:
     bool moveForward(double dist);
     bool turn();
     bool tilt(double);
-    bool releaseClamp();
     bool wormPull();
-    bool fire();
+    bool smartFire();
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
-    enum State {DRIVE_AIM_WINCH, CLAMP, FIRE, BASIC_DRIVE, IDLE, DONE};
+    enum State {DRIVE_AIM_WINCH, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
     main_robot* robot;

@@ -33,16 +33,6 @@ bool Autonomous::tilt(double angle)        // needs to tilt a certain degrees, p
     return robot->shoot->hasTilted;
 }
 
-bool Autonomous::releaseClamp()
-{
-    if (previousStage != stage)
-    {
-        robot->shoot->clampUp();
-        timer->Reset();
-        timer->Start();
-    }
-    return timePassed(Shooter::TIME);
-}
 bool Autonomous::wormPull()
 {
     if (previousStage != stage)
@@ -67,11 +57,11 @@ bool Autonomous::timePassed(float time)
     return (timer->HasPeriodPassed(time));
 }
 
-bool Autonomous::fire()
+bool Autonomous::smartFire()
 {
     if (previousStage != stage)
     {
-        robot->shoot->punch();
+        robot->shoot->smartFire();
     }
     return true;
 }
@@ -99,19 +89,12 @@ void Autonomous::updateHighGoal()
             }
             if(driveDone && aimDone && winchDone)
             {
-                printf("AUTO switch to CLAMP\n");
-                stage = CLAMP;
+                printf("AUTO switch to SMART_FIRE\n");
+                stage = SMART_FIRE;
             }
             break;
-        case CLAMP:
-            if(releaseClamp())
-            {
-                printf("AUTO switch to FIRE\n");
-                stage = FIRE;
-            }
-            break;
-        case FIRE:
-            if(fire())
+        case SMART_FIRE:
+            if(smartFire())
             {
                 printf("AUTO done\n");
                 stage = DONE;
