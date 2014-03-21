@@ -8,13 +8,10 @@
 #include "Netcom.h"
 #include "Sensors.h"
 
-main_robot* robot=NULL;
-
 main_robot::main_robot()
 {
     printf("Hello\n");
     printf("World\n");
-    robot=this;
 }
 
 main_robot::~main_robot()

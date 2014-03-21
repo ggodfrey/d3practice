@@ -42,7 +42,7 @@ public:
     Shooter* shoot;
     FunctionRegistry* update;
     Sensors* sensors;
-    Netcom* netcom;
+//    Netcom* netcom;
     Autonomous* autoBot;
     
     vision* engine;

@@ -67,11 +67,11 @@ float Sensors::getUltrasonic()
 }
 
 
-void Sensors::updateHelper(void* instName)
+/*void Sensors::updateHelper(void* instName)
 {
     Sensors* sensorsObj = (Sensors*)instName;
     sensorsObj -> robot -> netcom -> primeLocation(sensorsObj -> getUltrasonic());
-}
+}*/
 
 float Sensors::getGyroAngle()
 {
