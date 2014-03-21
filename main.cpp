@@ -50,6 +50,7 @@ void main_robot::TeleopInit()
     shoot->pitchStop();
     shoot->rollerStop();
     shoot->wormStop();
+    shift->setHigh();
 }
 void main_robot::AutonomousInit()
 {
@@ -59,6 +60,7 @@ void main_robot::AutonomousInit()
     shoot->pitchStop();
     shoot->rollerStop();
     shoot->wormStop();
+    shift->setLow();
 }
 void main_robot::TestInit()
 {
