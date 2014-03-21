@@ -38,9 +38,9 @@ const static uint8_t ENERGIZE     = BUTTON_B;
 const static uint8_t FIRE         = BUTTON_X; // release clamp, wait, disengage clutch
 
 //Angle presets
-const static trigStates AUTO_PICKUP   = TRIG_L;
-const static trigStates AUTO_VERTICAL = TRIG_R;
-const static uint8_t AUTO_LOWGOAL     = BUTTON_LB;
-const static uint8_t AUTO_HIGHGOAL    = BUTTON_RB;
+const static uint8_t AUTO_PICKUP      = BUTTON_RB;
+const static uint8_t AUTO_VERTICAL    = BUTTON_LB;
+const static trigStates AUTO_LOWGOAL  = TRIG_L;
+const static trigStates AUTO_HIGHGOAL = TRIG_R;
 
 #endif
