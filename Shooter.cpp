@@ -4,7 +4,8 @@
 #include "main.h"
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
-const double Shooter::SPEED_AXISPOWER_AUTO = 0.60;
+const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.60;
+const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
 
@@ -46,29 +47,34 @@ Shooter::~Shooter()
     delete puncher;
 }
 
-void Shooter::pitchUp()
+double Shooter::getPitchSpeed()
 {
     if(isPitchingUp || isPitchingDown)
     {
-        axis->Set(-SPEED_AXISPOWER_AUTO);
+        if(fabs(originPitch - destinationPitch) > AXIS_SPEED_THRESH)
+        {
+            return SPEED_AXISPOWER_AUTO_FAST;
+        }
+        else
+        {
+            return SPEED_AXISPOWER_AUTO_SLOW;
+        }
     }
     else
     {
-        axis->Set(-SPEED_AXISPOWER_TELEOP);
+        return SPEED_AXISPOWER_TELEOP;
     }
+}
+
+void Shooter::pitchUp()
+{
+    axis->Set(-getPitchSpeed());
 }
 
 
 void Shooter::pitchDown()
 {
-    if(isPitchingUp || isPitchingDown)
-    {
-        axis->Set(SPEED_AXISPOWER_AUTO);
-    }
-    else
-    {
-        axis->Set(SPEED_AXISPOWER_TELEOP);
-    }
+    axis->Set(SPEED_AXISPOWER_TELEOP);
 }
 
 void Shooter::pitchStop()
