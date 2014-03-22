@@ -133,8 +133,8 @@ void main_robot::AutonomousPeriodic()
     update -> updateFunctions();
 //    drive -> TankDrive(0.0,0.0);
     drive -> update();
-    autoBot -> updateBasicDrive();
-//    autoBot -> updateHighGoal();
+//    autoBot -> updateBasicDrive();
+    autoBot -> updateHighGoal();
 }
 
 void main_robot::DisabledPeriodic()
