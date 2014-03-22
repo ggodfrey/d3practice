@@ -63,7 +63,7 @@ bool Autonomous::smartFire()
     {
         robot->shoot->smartFire();
     }
-    return true;
+    return !robot->shoot->smartFiring;
 }
 /*
 double Autonomous::getTime()
@@ -91,6 +91,7 @@ void Autonomous::updateHighGoal()
             {
                 printf("AUTO switch to SMART_FIRE\n");
                 stage = SMART_FIRE;
+                return;
             }
             break;
         case SMART_FIRE:
@@ -98,6 +99,7 @@ void Autonomous::updateHighGoal()
             {
                 printf("AUTO done\n");
                 stage = DONE;
+                return;
             }
             break;
         case DONE:
@@ -124,6 +126,7 @@ void Autonomous::updateBasicDrive()
             {
                 printf("AUTO done\n");
                 stage = DONE;
+                return;
             }
             break;
         case DONE:
