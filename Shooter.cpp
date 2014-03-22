@@ -17,7 +17,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
                  uint8_t bobMod):isPickingUp(false),isPitchingUp(false),
                  isPitchingDown(false),wormIsPulling(false),winching(false),
                  hasTilted(false),isPickingUpStopping(false),autoPulling(false),
-                 smartFiring(false),smartFireTimer(new Timer())
+                 smartFiring(false),accelWorking(true),smartFireTimer(new Timer())
 {
     robot = r;
     axis = new CANJaguar(axisCan);
@@ -86,6 +86,10 @@ void Shooter::pitchStop()
 
 void Shooter::pitchAngle(double newPitch)
 {
+    if(!accelWorking)
+    {
+        return;
+    }
     originPitch = currentPitch;
     destinationPitch = newPitch;
     isPickingUp = false;
@@ -93,12 +97,10 @@ void Shooter::pitchAngle(double newPitch)
     hasTilted = false;
     if (newPitch < originPitch)
     {
-        pitchDown();
         isPitchingDown = true;
     }
     if (newPitch > originPitch)
     {
-        pitchUp();
         isPitchingUp = true;
     }
 }
@@ -180,6 +182,11 @@ void Shooter::smartFire()
     }
 }
 
+bool Shooter::doubleEqual(double a,double b)
+{
+    return fabs(a-b) < FLOAT_THRESH;
+}
+
 void Shooter::buttonHelper(void* objPtr, uint32_t button)
 {
     Shooter* shooterObj=(Shooter*)objPtr;
@@ -214,6 +221,12 @@ void Shooter::update()
     double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
     double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+    accelWorking = !(doubleEqual(bobX,0.0) && doubleEqual(bobY,0.0) && doubleEqual(bobZ,0.0));
+    if(!accelWorking)
+    {
+        isPitchingUp = false;
+        isPitchingDown = false;
+    }
     currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
 
     static int output = 0;
@@ -224,11 +237,11 @@ void Shooter::update()
     output++;
 
     // angle presets, triggers
-    if(shooterJoy -> GetTriggerState() == AUTO_LOWGOAL && fabs(destinationPitch - LOWGOAL_POSITION) > FLOAT_THRESH)
+    if(shooterJoy -> GetTriggerState() == AUTO_LOWGOAL && !doubleEqual(destinationPitch, LOWGOAL_POSITION))
     {
         pitchAngle(LOWGOAL_POSITION);
     }
-    else if(shooterJoy -> GetTriggerState() == AUTO_HIGHGOAL && fabs(destinationPitch - HIGHGOAL_POSITION) > FLOAT_THRESH)
+    else if(shooterJoy -> GetTriggerState() == AUTO_HIGHGOAL && !doubleEqual(destinationPitch, HIGHGOAL_POSITION))
     {
         pitchAngle(HIGHGOAL_POSITION);
     }

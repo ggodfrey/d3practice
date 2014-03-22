@@ -39,6 +39,7 @@ public:
     bool wormDone();
     void punch();
     void smartFire();
+    bool doubleEqual(double a,double b);
 
     CANJaguar* axis;
     Talon* attractor;
@@ -58,6 +59,7 @@ public:
     bool isPickingUpStopping;
     bool autoPulling;
     bool smartFiring;
+    bool accelWorking;
     double currentPitch;
     double destinationPitch;
     double originPitch;
