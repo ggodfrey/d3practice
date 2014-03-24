@@ -2,6 +2,7 @@
 #include "612.h"
 #include "SmoothJoystick.h"
 #include "main.h"
+#include "ADXL345_I2C_612.h"
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
 const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.60;
@@ -25,7 +26,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     clamper = new DoubleSolenoid(clampMod, clampFChan, clampRChan);
     wormGear = new CANJaguar(wormCan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
-    bobTheAccelerometer = new ADXL345_I2C(bobMod);
+    bobTheAccelerometer = new ADXL345_I2C_612(bobMod);
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
@@ -218,9 +219,9 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
 
 void Shooter::update()
 {
-    double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
-    double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
-    double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+    double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_X);
+    double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Y);
+    double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Z);
     accelWorking = !(doubleEqual(bobX,0.0) && doubleEqual(bobY,0.0) && doubleEqual(bobZ,0.0));
     if(!accelWorking)
     {

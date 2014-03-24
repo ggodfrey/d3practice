@@ -4,7 +4,7 @@
 #include <CANJaguar.h>
 #include <Talon.h>
 #include <DoubleSolenoid.h>
-#include <ADXL345_I2C.h>
+#include "ADXL345_I2C_612.h"
 #include <cmath>
 #include "controls.h"
 #include "Pneumatics.h"
@@ -47,7 +47,7 @@ public:
     SmoothJoystick* shooterJoy;
     CANJaguar* wormGear;
     DoubleSolenoid* puncher;
-    ADXL345_I2C* bobTheAccelerometer;
+    ADXL345_I2C_612* bobTheAccelerometer;
     main_robot* robot;
 
     bool isPickingUp;
