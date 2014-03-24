@@ -30,6 +30,10 @@ bool Autonomous::tilt(double angle)        // needs to tilt a certain degrees, p
     {
         robot->shoot->pitchAngle(angle);
     }
+    if(!robot->shoot->accelWorking)
+    {
+        return false;
+    }
     return robot->shoot->hasTilted;
 }
 
@@ -81,7 +85,7 @@ void Autonomous::updateHighGoal()
             return;
         case DRIVE_AIM_WINCH:
             bool driveDone=moveForward(DISTANCE);
-            bool aimDone=tilt(Shooter::HIGHGOAL_POSITION);
+            bool aimDone=tilt(HIGHGOAL_AUTOANGLE);
             bool winchDone=wormPull();
             if(output%20==0)
             {
