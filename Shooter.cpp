@@ -4,6 +4,8 @@
 #include "main.h"
 #include "ADXL345_I2C_612.h"
 
+std::string SHOOTER_TABLE_NAME="PCVision";
+
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
 const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.60;
 const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
@@ -15,10 +17,12 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
                  uint8_t clampMod, uint32_t clampFChan, uint32_t clampRChan,
                  uint8_t wormCan,
                  uint8_t punchMod,uint32_t punchFChan,uint32_t punchRChan,
-                 uint8_t bobMod):isPickingUp(false),isPitchingUp(false),
+                 uint8_t bobMod)
+                 :isPickingUp(false),isPitchingUp(false),
                  isPitchingDown(false),wormIsPulling(false),winching(false),
                  hasTilted(false),isPickingUpStopping(false),autoPulling(false),
-                 smartFiring(false),accelWorking(true),smartFireTimer(new Timer())
+                 smartFiring(false),accelWorking(true),smartFireTimer(new Timer()),
+                 table(NetworkTable::GetTable(SHOOTER_TABLE_NAME))
 {
     robot = r;
     axis = new CANJaguar(axisCan);
@@ -174,7 +178,8 @@ void Shooter::punch()
 
 void Shooter::smartFire()
 {
-    if(!smartFiring)
+    int isClose=table->GetBoolean("1/isClose",0);
+    if(!smartFiring && isClose==1)
     {
         clampUp();
         smartFiring = true;
