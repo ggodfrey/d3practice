@@ -3,7 +3,6 @@
 
 FunctionRegistry::FunctionRegistry()
 {
-
 }
 
 FunctionRegistry::~FunctionRegistry()

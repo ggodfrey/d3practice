@@ -9,8 +9,8 @@
 
 SmoothJoystick::SmoothJoystick(main_robot* robot, uint32_t port): Joystick(port)
 {
-     addButtons();
-     robot -> update -> addFunctions(&updateHelper, (void*)this);
+    addButtons();
+    robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
 
 SmoothJoystick::~SmoothJoystick()

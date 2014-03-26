@@ -4,11 +4,12 @@
 #include <CANJaguar.h>
 #include <Talon.h>
 #include <DoubleSolenoid.h>
-#include <ADXL345_I2C.h>
+#include "ADXL345_I2C_612.h"
 #include <cmath>
 #include "controls.h"
 #include "Pneumatics.h"
 #include "SmoothJoystick.h"
+//#include "main.h"
 
 class Shooter
 {
@@ -26,6 +27,7 @@ public:
     void pitchDown();
     void pitchStop();
     void pitchAngle(double newPitch);
+    double getPitchSpeed();
     void rollerPull();//Wheel pulls ball
     void rollerStop();
     void rollerRepel();
@@ -36,6 +38,8 @@ public:
     void wormStop();
     bool wormDone();
     void punch();
+    void smartFire();
+    bool doubleEqual(double a,double b);
 
     CANJaguar* axis;
     Talon* attractor;
@@ -43,32 +47,42 @@ public:
     SmoothJoystick* shooterJoy;
     CANJaguar* wormGear;
     DoubleSolenoid* puncher;
-    ADXL345_I2C* bobTheAccelerometer;
+    ADXL345_I2C_612* bobTheAccelerometer;
+    main_robot* robot;
 
     bool isPickingUp;
     bool isPitchingUp;
     bool isPitchingDown;
     bool wormIsPulling;
-    bool autoPulling;
+    bool winching;
     bool hasTilted;
     bool isPickingUpStopping;
+    bool autoPulling;
+    bool smartFiring;
+    bool accelWorking;
     double currentPitch;
     double destinationPitch;
     double originPitch;
+    Timer* smartFireTimer;
     //double currentSpeed;
 
     static const double SPEED_AXISPOWER_TELEOP;
-    static const double SPEED_AXISPOWER_AUTO;
+    static const double SPEED_AXISPOWER_AUTO_SLOW;
+    static const double SPEED_AXISPOWER_AUTO_FAST;
+    static const double AXIS_SPEED_THRESH = 60.0;
     static const double SPEED_ATTRACTOR;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;
+    static const double SMARTFIRE_TIME = 0.25;
     static const double PI = 3.14159;
-    static const double CATCHING_POSITION = 85;
-    static const double SHOOTING_POSITION = 45;
-    static const double PICKUP_POSITION   = -20;
+    static const double VERTICAL_POSITION = 81.89;
+    static const double HIGHGOAL_POSITION = 36; // suppoed to be 43, 82 inches
+    static const double PICKUP_POSITION   = -25;
+    static const double LOWGOAL_POSITION  = 49;
     static const double SPEED_WORM; //What we start at
     static const double INCREMENT  = 0.0000001;
     static const double WORM_LIMIT = 1.0;
+    static const double FLOAT_THRESH = 0.001;
 
     static void buttonHelper(void* objPtr, uint32_t button);
     void update();

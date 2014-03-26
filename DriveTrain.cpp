@@ -3,7 +3,7 @@
 #include "612.h"
 #include "main.h"
 
-const double DriveTrain::SPEED=0.5;
+const double DriveTrain::SPEED=0.75;
 
 // all in feet
 const double DriveTrain::CIRCUMROBOT = 2 * PI * ROBOTRAD;
@@ -95,16 +95,16 @@ void DriveTrain::updateDrive()
         speedL = SPEED;           //USING ENCODERS
         if (encode->getLDistance() >= neededDist)
         {
-            encode->EncoderL->Stop();
-            encode->EncoderL->Reset();
+//            encode->EncoderL->Stop();
+//            encode->EncoderL->Reset();
             isMovingL = false;
             speedL = 0.0f;
         }
         speedR = SPEED;
-        if (encode->getRDistance() >= neededDist)
+        if (encode->getLDistance() >= neededDist)
         {
-            encode->EncoderR->Stop();
-            encode->EncoderR->Reset();
+            encode->EncoderL->Stop();
+            encode->EncoderL->Reset();
             isMovingR = false;
             speedR = 0.0f;
         }

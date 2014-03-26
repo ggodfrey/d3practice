@@ -32,12 +32,15 @@ const static uint8_t SHIFT_HIGH = BUTTON_RB;
 
 //Manual shooter controls
 const static uint8_t TILT         = AXIS_L_Y;
-const static uint8_t CLAMP        = BUTTON_B;
+const static uint8_t CLAMP        = BUTTON_A;
 const static uint8_t ROLLERS      = AXIS_R_Y;
+const static uint8_t ENERGIZE     = BUTTON_B;
+const static uint8_t FIRE         = BUTTON_X; // release clamp, wait, disengage clutch
 
-//Automatic shooter controls
-const static uint8_t PICKUP = BUTTON_X;
-const static trigStates ENERGIZE  = TRIG_R;
-const static uint8_t FIRE = BUTTON_RB;
+//Angle presets
+const static uint8_t AUTO_PICKUP      = BUTTON_RB;
+const static uint8_t AUTO_VERTICAL    = BUTTON_LB;
+const static trigStates AUTO_LOWGOAL  = TRIG_L;
+const static trigStates AUTO_HIGHGOAL = TRIG_R;
 
 #endif

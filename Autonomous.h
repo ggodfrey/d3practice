@@ -13,21 +13,23 @@ public:
     ~Autonomous();
     bool moveForward(double dist);
     bool turn();
-    bool tilt();
-    bool releaseClamp();
-    bool shootBall();
+    bool tilt(double);
+    bool wormPull();
+    bool smartFire();
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
-    enum State {DRIVING, TURNING, AIMING, SHOOTING, IDLE, DONE};
+    enum State {DRIVE_AIM_WINCH, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
+    main_robot* robot;
 
-    void updateBasic();
+    void updateHighGoal();
+    void updateBasicDrive();
 
-    static const double DISTANCE = 69;
+    static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;
-    static const double POSITION_TILT = 45;
+    static const double HIGHGOAL_AUTOANGLE = 53;
 
 };
 #endif //AUTONOMOUS_H

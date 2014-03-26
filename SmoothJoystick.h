@@ -6,8 +6,6 @@
 #include <vector>
 #include <bitset>
 
-class main_robot;
-
 class SmoothJoystick: public Joystick
 {
 private:
@@ -15,7 +13,7 @@ private:
     static const double DEADZONE = 0.1;
     static const double TRIGGER_TOLERANCE = 0.1;
 public:
-    SmoothJoystick(main_robot* robot, uint32_t port);
+    SmoothJoystick(class main_robot* robot, uint32_t port);
     ~SmoothJoystick();
     typedef void* joyfuncObjects;
     typedef void(*joyFunctions)(joyfuncObjects,uint32_t);

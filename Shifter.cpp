@@ -26,13 +26,13 @@ void Shifter::shiftGear()
 void Shifter::setHigh()
 {
     gear=high;
-    robot->pnum->setVectorValues(TIME, shifter, DoubleSolenoid::kForward);
+    robot->pnum->setVectorValues(TIME, shifter, DoubleSolenoid::kReverse);
 }
 
 void Shifter::setLow()
 {
     gear=low;
-    robot->pnum->setVectorValues(TIME, shifter, DoubleSolenoid::kReverse);
+    robot->pnum->setVectorValues(TIME, shifter, DoubleSolenoid::kForward);
 }
 
 void Shifter::buttonHelper(void* objPtr, uint32_t button)
