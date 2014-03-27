@@ -74,13 +74,15 @@ bool Autonomous::smartFire()
     return !robot->shoot->smartFiring;
 }
 
-bool determineHot() {
+bool Autonomous::determineHot() {
     if (previousStage != stage) {
-        bool isClose=table->GetBoolean("1/isClose",false);
-        if (shotTimer.hasPeriodPassed(5) || isClose) {
-            return true;
-        }
+        shotTimer->Start();
     }
+    if (shotTimer->HasPeriodPassed(5)) {
+        return true;
+    }
+    bool isClose=table->GetBoolean("1/isClose",false);
+    return isClose;
 }
 
 /*
@@ -107,13 +109,12 @@ void Autonomous::updateHighGoal()
             }
             if(driveDone && aimDone && winchDone)
             {
-                printf("AUTO switch to SMART_FIRE\n");
-                stage = SMART_FIRE;
+                printf("AUTO switch to IS_HOT\n");
+                stage = IS_HOT;
                 return;
             }
             break;
         case IS_HOT:
-            shotTimer.start();
             if (determineHot()) {
                 printf("goal is hot\n");
                 stage=SMART_FIRE;
