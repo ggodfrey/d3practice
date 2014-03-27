@@ -3,9 +3,9 @@
 
 #include <IterativeRobot.h>
 #include <Joystick.h>
-#include "DriveTrain.h"
 #include <DigitalInput.h>
 #include <Relay.h>
+#include "DriveTrain.h"
 #include "Pneumatics.h"
 #include "Shifter.h"
 #include "Shooter.h"
@@ -13,7 +13,6 @@
 #include "Sensors.h"
 //#include "Netcom.h"
 #include "Autonomous.h"
-
 #include "vision/vision.h"
 
 class main_robot: public IterativeRobot
