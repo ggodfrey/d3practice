@@ -16,9 +16,11 @@ public:
     bool tilt(double);
     bool wormPull();
     bool smartFire();
+    bool determineHot();
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
+    Timer* shotTimer;
     enum State {DRIVE_AIM_WINCH, IS_HOT, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;

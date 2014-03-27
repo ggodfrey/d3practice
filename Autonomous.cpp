@@ -2,6 +2,7 @@
 #include "main.h"
 #include "ports.h"
 #include "612.h"
+#include "Timer.h"
 
 std::string AUTO_TABLE_NAME="PCVision";
 
@@ -9,6 +10,7 @@ Autonomous::Autonomous(main_robot* r):table(NetworkTable::GetTable(AUTO_TABLE_NA
 {
     robot = r;
     timer = new Timer();
+    shotTimer = new Timer();
     previousStage = stage = IDLE;
 }
 
@@ -71,6 +73,16 @@ bool Autonomous::smartFire()
     }
     return !robot->shoot->smartFiring;
 }
+
+bool determineHot() {
+    if (previousStage != stage) {
+        bool isClose=table->GetBoolean("1/isClose",false);
+        if (shotTimer.hasPeriodPassed(5) || isClose) {
+            return true;
+        }
+    }
+}
+
 /*
 double Autonomous::getTime()
 {
@@ -101,15 +113,14 @@ void Autonomous::updateHighGoal()
             }
             break;
         case IS_HOT:
-            bool isClose=table->GetBoolean("1/isClose",false);
-            if (isClose) {
+            shotTimer.start();
+            if (determineHot()) {
                 printf("goal is hot\n");
                 stage=SMART_FIRE;
                 return;
             }
             break;
         case SMART_FIRE:
-            
             if(smartFire())
             {
                 printf("AUTO done\n");
