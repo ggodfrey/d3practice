@@ -109,11 +109,18 @@ void Autonomous::updateHighGoal()
             }
             if(driveDone && aimDone)
             {
+                printf("AUTO switch to FINE_AIM\n");
+                stage = FINE_AIM;
+                return;
+            }
+            break;
+        case FINE_AIM:
+            if(tilt(HIGHGOAL_AUTOANGLE))
+            {
                 printf("AUTO switch to SMART_FIRE\n");
                 stage = SMART_FIRE;
                 return;
             }
-            break;
         case IS_HOT:
             if (determineHot()) {
                 printf("goal is hot\n");
