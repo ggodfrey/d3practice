@@ -3,7 +3,9 @@
 #include "ports.h"
 #include "612.h"
 
-Autonomous::Autonomous(main_robot* r)
+std::string AUTO_TABLE_NAME="PCVision";
+
+Autonomous::Autonomous(main_robot* r):table(NetworkTable::GetTable(AUTO_TABLE_NAME))
 {
     robot = r;
     timer = new Timer();
@@ -98,7 +100,16 @@ void Autonomous::updateHighGoal()
                 return;
             }
             break;
+        case IS_HOT:
+            bool isClose=table->GetBoolean("1/isClose",false);
+            if (isClose) {
+                printf("goal is hot\n");
+                stage=SMART_FIRE;
+                return;
+            }
+            break;
         case SMART_FIRE:
+            
             if(smartFire())
             {
                 printf("AUTO done\n");

@@ -52,7 +52,6 @@ public:
     DoubleSolenoid* puncher;
     ADXL345_I2C_612* bobTheAccelerometer;
     main_robot* robot;
-    NetworkTable* table;
 
     bool isPickingUp;
     bool isPitchingUp;
