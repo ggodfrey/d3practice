@@ -16,7 +16,7 @@ Sensors::Sensors(main_robot* r,
     ultrasonic = new AnalogChannel(usMod, usChan);
     infraredShooter = new AnalogChannel(isMod, isChan);
     infraredLoad = new AnalogChannel(ilMod, ilChan);
-    gyro612 = new Gyro(GYMOD, GYCHAN);
+    //gyro612 = new Gyro(GYMOD, GYCHAN);
 
 //    robot -> update -> addFunctions(&updateHelper, (void*)this);
 }
@@ -75,22 +75,22 @@ float Sensors::getUltrasonic()
 
 float Sensors::getGyroAngle()
 {
-    float gyAngle = gyro612->GetAngle();
+    float gyAngle = 4.20; //gyro612->GetAngle();
     return gyAngle;
 }
 
 double Sensors::getGyroRate()
 {
-    double gyRate = gyro612->GetRate();
+    double gyRate = 4.20; //gyro612->GetRate();
     return gyRate;
 }
 
 void Sensors::gyroReset()
 {
-    gyro612->Reset();
+    //gyro612->Reset();
 }
 
 void Sensors::setGyroSens(float vpdps /*Volts Per Degree Per Second*/)
 {
-    gyro612->SetSensitivity(vpdps);
+    //gyro612->SetSensitivity(vpdps);
 }

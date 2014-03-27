@@ -28,7 +28,7 @@ public:
     bool getInfraredLoad();
     float getUltrasonic();
 
-    Gyro* gyro612;
+    //Gyro* gyro612;
     class main_robot* robot;
 
     float getGyroAngle();
