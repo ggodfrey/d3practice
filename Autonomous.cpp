@@ -75,14 +75,15 @@ bool Autonomous::smartFire()
 }
 
 bool Autonomous::determineHot() {
-    if (previousStage != stage) {
+/*    if (previousStage != stage) {
         shotTimer->Start();
     }
     if (shotTimer->HasPeriodPassed(5)) {
         return true;
     }
     bool isClose=table->GetBoolean("1/isClose",false);
-    return isClose;
+    return isClose;*/
+    return true;
 }
 
 /*
@@ -102,15 +103,14 @@ void Autonomous::updateHighGoal()
         case DRIVE_AIM_WINCH:
             bool driveDone=moveForward(DISTANCE);
             bool aimDone=tilt(HIGHGOAL_AUTOANGLE);
-            bool winchDone=wormPull();
             if(output%20==0)
             {
-                printf("drive: %i, aim: %i, winch: %i\n",driveDone,aimDone,winchDone);
+                printf("drive: %i, aim: %i\n",driveDone,aimDone);
             }
-            if(driveDone && aimDone && winchDone)
+            if(driveDone && aimDone)
             {
-                printf("AUTO switch to IS_HOT\n");
-                stage = IS_HOT;
+                printf("AUTO switch to SMART_FIRE\n");
+                stage = SMART_FIRE;
                 return;
             }
             break;

@@ -32,7 +32,7 @@ public:
 
     static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;
-    static const double HIGHGOAL_AUTOANGLE = 53;
+    static const double HIGHGOAL_AUTOANGLE = 45;
 
 };
 #endif //AUTONOMOUS_H
