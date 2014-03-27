@@ -112,16 +112,20 @@ void Autonomous::updateHighGoal()
             stage = DRIVE_AIM_WINCH;
             return;
         case DRIVE_AIM_WINCH:
-            bool driveDone=moveForward(DISTANCE);
+//            bool driveDone=moveForward(DISTANCE);
             bool aimDone=tilt(HIGHGOAL_AUTOANGLE);
-            if(output%20==0)
+            if(/*driveDone && */aimDone)
             {
-                printf("drive: %i, aim: %i\n",driveDone,aimDone);
+                printf("AUTO switch to BASIC_DRIVE\n");
+                stage = BASIC_DRIVE;
+                return;
             }
-            if(driveDone && aimDone)
+            break;
+        case BASIC_DRIVE:
+            if(moveForward(DISTANCE))
             {
-                printf("AUTO switch to FINE_AIM_WAIT\n");
-                stage = FINE_AIM_WAIT;
+                printf("AUTO switch to SMART_FIRE\n");
+                stage = SMART_FIRE;
                 return;
             }
             break;
