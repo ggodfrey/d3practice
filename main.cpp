@@ -42,6 +42,7 @@ void main_robot::RobotInit()
     printf("Welcome to 612-2014 AERIAL ASSIST\n");
 //    netcom = new Netcom();
     autoBot = new Autonomous(this);
+    shift->setLow();
 }
 void main_robot::TeleopInit()
 {
@@ -60,7 +61,6 @@ void main_robot::AutonomousInit()
     shoot->pitchStop();
     shoot->rollerStop();
     shoot->wormStop();
-    shift->setLow();
 }
 void main_robot::TestInit()
 {

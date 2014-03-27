@@ -5,7 +5,7 @@
 #include "ADXL345_I2C_612.h"
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
-const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.60;
+const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.40;
 const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
@@ -229,7 +229,9 @@ void Shooter::update()
         isPitchingUp = false;
         isPitchingDown = false;
     }
-    currentPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
+    double newPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
+//    if(fabs(newPitch-currentPitch) < 10)
+        currentPitch = newPitch;
 
     static int output = 0;
     if(output%20 == 0)
