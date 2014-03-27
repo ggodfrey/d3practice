@@ -71,8 +71,10 @@ public:
 
     static const double SPEED_AXISPOWER_TELEOP;
     static const double SPEED_AXISPOWER_AUTO_SLOW;
+    static const double SPEED_AXISPOWER_AUTO_VERY_SLOW;
     static const double SPEED_AXISPOWER_AUTO_FAST;
-    static const double AXIS_SPEED_THRESH = 70.0;
+    static const double AXIS_SPEED_FAR_THRESH = 70.0;
+    static const double AXIS_SPEED_CLOSE_THRESH = 10.0;
     static const double SPEED_ATTRACTOR;
     static const double TIME = 0.1;
     static const double PUNCH_TIME = 0.1;

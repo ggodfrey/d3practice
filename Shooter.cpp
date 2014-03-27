@@ -6,6 +6,7 @@
 
 const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
 const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.40;
+const double Shooter::SPEED_AXISPOWER_AUTO_VERY_SLOW = 0.25;
 const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
 const double Shooter::SPEED_ATTRACTOR = 1.0;
 const double Shooter::SPEED_WORM = 1.0;
@@ -53,13 +54,20 @@ double Shooter::getPitchSpeed()
 {
     if(isPitchingUp || isPitchingDown)
     {
-        if(fabs(originPitch - destinationPitch) > AXIS_SPEED_THRESH)
+        if(fabs(originPitch - destinationPitch) > AXIS_SPEED_FAR_THRESH)
         {
             return SPEED_AXISPOWER_AUTO_FAST;
         }
         else
         {
-            return SPEED_AXISPOWER_AUTO_SLOW;
+            if(fabs(currentPitch - destinationPitch) < AXIS_SPEED_CLOSE_THRESH)
+            {
+                return SPEED_AXISPOWER_AUTO_VERY_SLOW;
+            }
+            else
+            {
+                return SPEED_AXISPOWER_AUTO_SLOW;
+            }
         }
     }
     else
