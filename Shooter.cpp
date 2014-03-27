@@ -281,6 +281,7 @@ void Shooter::update()
         pitchUp();
         if (currentPitch >= destinationPitch || !(axis->GetReverseLimitOK()))
         {
+            printf("angle tilting STOP at %f\n",currentPitch);
             pitchStop();
             isPitchingUp = false;
         }
@@ -290,6 +291,7 @@ void Shooter::update()
         pitchDown();
         if (currentPitch <= destinationPitch || !(axis->GetForwardLimitOK()))
         {
+            printf("angle tilting STOP at %f\n",currentPitch);
             pitchStop();
             isPitchingDown = false;
         }

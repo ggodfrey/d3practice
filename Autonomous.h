@@ -33,7 +33,7 @@ public:
 
     static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;
-    static const double HIGHGOAL_AUTOANGLE = 39;
+    static const double HIGHGOAL_AUTOANGLE = 41;
     static const double FINE_AIM_TIME = 0.5;
 
 };
