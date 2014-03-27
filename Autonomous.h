@@ -17,11 +17,12 @@ public:
     bool wormPull();
     bool smartFire();
     bool determineHot();
+    bool wait(double);
 
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
     Timer* shotTimer;
-    enum State {DRIVE_AIM_WINCH, FINE_AIM, IS_HOT, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
+    enum State {DRIVE_AIM_WINCH, FINE_AIM_WAIT, FINE_AIM, IS_HOT, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
     main_robot* robot;
@@ -32,7 +33,8 @@ public:
 
     static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;
-    static const double HIGHGOAL_AUTOANGLE = 40;
+    static const double HIGHGOAL_AUTOANGLE = 43;
+    static const double FINE_AIM_TIME = 0.5;
 
 };
 #endif //AUTONOMOUS_H

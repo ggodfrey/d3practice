@@ -30,7 +30,7 @@ bool Autonomous::moveForward(double dist)
 
 bool Autonomous::tilt(double angle)        // needs to tilt a certain degrees, probably starting from below going up
 {
-    if (previousStage != stage)
+    if(previousStage != stage)
     {
         robot->shoot->pitchAngle(angle);
     }
@@ -86,6 +86,17 @@ bool Autonomous::determineHot() {
     return true;
 }
 
+bool Autonomous::wait(double time)
+{
+    if (previousStage != stage)
+    {
+        timer->Stop();
+        timer->Reset();
+        timer->Start();
+    }
+    return timer->HasPeriodPassed(time);
+}
+
 /*
 double Autonomous::getTime()
 {
@@ -109,6 +120,14 @@ void Autonomous::updateHighGoal()
             }
             if(driveDone && aimDone)
             {
+                printf("AUTO switch to FINE_AIM_WAIT\n");
+                stage = FINE_AIM_WAIT;
+                return;
+            }
+            break;
+        case FINE_AIM_WAIT:
+            if(wait(FINE_AIM_TIME))
+            {
                 printf("AUTO switch to FINE_AIM\n");
                 stage = FINE_AIM;
                 return;
@@ -121,6 +140,7 @@ void Autonomous::updateHighGoal()
                 stage = SMART_FIRE;
                 return;
             }
+            break;
         case IS_HOT:
             if (determineHot()) {
                 printf("goal is hot\n");
