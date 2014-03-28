@@ -84,7 +84,7 @@ void Shooter::pitchUp()
 
 void Shooter::pitchDown()
 {
-    axis->Set(SPEED_AXISPOWER_TELEOP);
+    axis->Set(getPitchSpeed());
 }
 
 void Shooter::pitchStop()

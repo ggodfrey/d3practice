@@ -22,7 +22,7 @@ public:
     bool timePassed(float time);        //time measured in seconds
     Timer* timer;
     Timer* shotTimer;
-    enum State {DRIVE_AIM_WINCH, FINE_AIM_WAIT, FINE_AIM, IS_HOT, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
+    enum State {COARSE_AIM, FINE_AIM_WAIT, FINE_AIM, IS_HOT, SMART_FIRE, BASIC_DRIVE, IDLE, DONE};
     State stage;
     State previousStage;
     main_robot* robot;
@@ -33,7 +33,7 @@ public:
 
     static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;
-    static const double HIGHGOAL_AUTOANGLE = 41;
+    static const double HIGHGOAL_AUTOANGLE = 39;
     static const double FINE_AIM_TIME = 0.5;
 
 };
