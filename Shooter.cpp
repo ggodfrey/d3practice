@@ -34,7 +34,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,ENERGIZE);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
-    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_PICKUP);
+    shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_HIGHGOAL);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_VERTICAL);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
     smartFireTimer->Stop();
@@ -212,9 +212,9 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     {
         shooterObj->smartFire();
     }
-    if(button==AUTO_PICKUP)
+    if(button==AUTO_HIGHGOAL)
     {
-        shooterObj->pitchAngle(PICKUP_POSITION);
+        shooterObj->pitchAngle(HIGHGOAL_POSITION);
     }
     if(button==AUTO_VERTICAL)
     {
@@ -253,9 +253,9 @@ void Shooter::update()
     {
         pitchAngle(LOWGOAL_POSITION);
     }
-    else if(shooterJoy -> GetTriggerState() == AUTO_HIGHGOAL && !doubleEqual(destinationPitch, HIGHGOAL_POSITION))
+    else if(shooterJoy -> GetTriggerState() == AUTO_PICKUP && !doubleEqual(destinationPitch, PICKUP_POSITION))
     {
-        pitchAngle(HIGHGOAL_POSITION);
+        pitchAngle(PICKUP_POSITION);
     }
 
     // manual controls
