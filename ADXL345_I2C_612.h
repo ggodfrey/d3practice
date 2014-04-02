@@ -1,52 +1,26 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
-
-#ifndef __ADXL345_I2C_h__
-#define __ADXL345_I2C_h__
+#ifndef ADXL345_I2C_612_h
+#define ADXL345_I2C_612_h
 
 #include <SensorBase.h>
+#include <ADXL345_I2C.h>
 
-class I2C;
+//Todo: Determine if setting of data format is necessary after initialization
 
 /**
- * ADXL345 Accelerometer on I2C.
- * 
- * This class alows access to a Analog Devices ADXL345 3-axis accelerometer on an I2C bus.
- * This class assumes the default (not alternate) sensor address of 0x3A (8-bit address).
+ *      Improved ADXL345 Accelerometer Class
+ * This class is an extension of the default ADXL345 class. It sends the start signal 
+ * before each reading so if the wire becomes loose it doesn't turn off until reinitialized
  */
-class ADXL345_I2C_612 : public SensorBase
+
+class ADXL345_I2C_612 : public ADXL345_I2C
 {
-protected:
-	static const uint8_t kAddress = 0x3A;
-	static const uint8_t kPowerCtlRegister = 0x2D;
-	static const uint8_t kDataFormatRegister = 0x31;
-	static const uint8_t kDataRegister = 0x32;
-	static constexpr double kGsPerLSB = 0.00390625;
-	enum PowerCtlFields {kPowerCtl_Link=0x20, kPowerCtl_AutoSleep=0x10, kPowerCtl_Measure=0x08, kPowerCtl_Sleep=0x04};
-	enum DataFormatFields {kDataFormat_SelfTest=0x80, kDataFormat_SPI=0x40, kDataFormat_IntInvert=0x20,
-		kDataFormat_FullRes=0x08, kDataFormat_Justify=0x04};
 public:
-	enum DataFormat_Range {kRange_2G=0x00, kRange_4G=0x01, kRange_8G=0x02, kRange_16G=0x03};
-	enum Axes {kAxis_X=0x00, kAxis_Y=0x02, kAxis_Z=0x04};
-	struct AllAxes
-	{
-		double XAxis;
-		double YAxis;
-		double ZAxis;
-	};
-
-public:
-        explicit ADXL345_I2C_612(uint8_t moduleNumber, DataFormat_Range range=kRange_2G);
-        virtual ~ADXL345_I2C_612();
-	virtual double GetAcceleration(Axes axis);
-	virtual AllAxes GetAccelerations();
-
-protected:
-	I2C* m_i2c;
-        DataFormat_Range RANGE;
+    ADXL345_I2C_612(uint8_t, ADXL345_I2C::DataFormat_Range=kRange_2G);
+    double GetAcceleration(ADXL345_I2C::Axes);
+    ADXL345_I2C::AllAxes GetAccelerations();
+    bool isConnected();
+private:
+    DataFormat_Range RANGE;
 };
 
 #endif
