@@ -36,6 +36,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_HIGHGOAL);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_VERTICAL);
+    shooterJoy -> addJoyFunctions(&setPickupHelper,(void*)this,PICKUP);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
     smartFireTimer->Stop();
 }
@@ -221,6 +222,23 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
         shooterObj->pitchAngle(VERTICAL_POSITION);
     }
 }
+
+/*
+ * 
+ * The following code is a shortcut of sorts for Ben so that he can press one button to do a bunch of stuff
+ * 
+ */ 
+
+void Shooter::setPickup() {
+    clampDown();
+    pitchAngle(PICKUP_POSITION);
+}
+
+void Shooter::setPickupHelper(void* instName, uint32_t button) {
+    Shooter* shooterObj = (Shooter*)instName;
+    shooterObj -> setPickup();
+}
+
 
 // TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
 //                 there because we hit the frame? Somehow we need to detect that

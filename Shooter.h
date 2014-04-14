@@ -43,6 +43,9 @@ public:
     void punch();
     void smartFire();
     bool doubleEqual(double a,double b);
+    
+    void setPickup();
+    static void setPickupHelper(void*, uint32_t);
 
     CANJaguar* axis;
     Talon* attractor;

@@ -43,4 +43,7 @@ const static uint8_t AUTO_VERTICAL    = BUTTON_LB;
 const static trigStates AUTO_LOWGOAL  = TRIG_L;
 const static trigStates AUTO_PICKUP   = TRIG_R;
 
+//pickup preset
+const static uint8_t PICKUP           = BUTTON_SRT;
+
 #endif
