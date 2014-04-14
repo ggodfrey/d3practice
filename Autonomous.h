@@ -30,6 +30,8 @@ public:
 
     void updateHighGoal();
     void updateBasicDrive();
+    
+    bool getHot();
 
     static const double DISTANCE = 151;
     static const double DEGREES_TURN = 25;

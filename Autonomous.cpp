@@ -75,15 +75,14 @@ bool Autonomous::smartFire()
 }
 
 bool Autonomous::determineHot() {
-/*    if (previousStage != stage) {
+    if (previousStage != stage) {
         shotTimer->Start();
     }
-    if (shotTimer->HasPeriodPassed(5)) {
-        return true;
+    if (table->GetBoolean("1/WeWait",false)) {
+        return shotTimer->HasPeriodPassed(3.0); 
+    } else {
+        return false;
     }
-    bool isClose=table->GetBoolean("1/isClose",false);
-    return isClose;*/
-    return true;
 }
 
 bool Autonomous::wait(double time)
@@ -97,11 +96,6 @@ bool Autonomous::wait(double time)
     return timer->HasPeriodPassed(time);
 }
 
-/*
-double Autonomous::getTime()
-{
-}
-*/
 void Autonomous::updateHighGoal()
 {
     static int output=0;
@@ -115,7 +109,7 @@ void Autonomous::updateHighGoal()
             if(tilt(HIGHGOAL_AUTOANGLE))
             {
                 printf("AUTO switch to FINE_AIM\n");
-                stage = FINE_AIM;
+                stage = IS_HOT;
                 return;
             }
             break;
