@@ -4,7 +4,7 @@
 #include "main.h"
 #include "ADXL345_I2C_612.h"
 
-const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
+const double Shooter::SPEED_AXISPOWER_TELEOP = 0.80;
 const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.40;
 const double Shooter::SPEED_AXISPOWER_AUTO_VERY_SLOW = 0.25;
 const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
