@@ -29,6 +29,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     wormGear = new CANJaguar(wormCan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     bobTheAccelerometer = new ADXL345_I2C_612(bobMod);
+//  bobThePot = new AnalogChannel(1,5);
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
@@ -223,6 +224,24 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     }
 }
 
+double Shooter::getAngle() {
+    double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_X);
+    double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Y);
+    double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Z);
+    accelWorking = !(doubleEqual(bobX,0.0) && doubleEqual(bobY,0.0) && doubleEqual(bobZ,0.0));
+    if(!accelWorking)
+    {
+        isPitchingUp = false;
+        isPitchingDown = false;
+    }
+    double newPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
+    //    if(fabs(newPitch-currentPitch) < 10)
+    currentPitch = newPitch;
+/*  double volts = bobThePot->GetVoltage();
+    currentPitch = bobThePot; // TODO get pot conversion */
+    return currentPitch;
+}
+
 /*
  * 
  * The following code is a shortcut of sorts for Ben so that he can press one button to do a bunch of stuff
@@ -246,18 +265,7 @@ void Shooter::setPickupHelper(void* instName, uint32_t button) {
 
 void Shooter::update()
 {
-    double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_X);
-    double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Y);
-    double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Z);
-    accelWorking = !(doubleEqual(bobX,0.0) && doubleEqual(bobY,0.0) && doubleEqual(bobZ,0.0));
-    if(!accelWorking)
-    {
-        isPitchingUp = false;
-        isPitchingDown = false;
-    }
-    double newPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
-//    if(fabs(newPitch-currentPitch) < 10)
-        currentPitch = newPitch;
+    getAngle();
 
     static int output = 0;
     if(output%20 == 0)

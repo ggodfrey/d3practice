@@ -4,6 +4,7 @@
 #include <CANJaguar.h>
 #include <Talon.h>
 #include <DoubleSolenoid.h>
+#include <AnalogChannel.h>
 #include "ADXL345_I2C_612.h"
 #include <cmath>
 #include "controls.h"
@@ -43,6 +44,7 @@ public:
     void punch();
     void smartFire();
     bool doubleEqual(double a,double b);
+    double getAngle();
     
     void setPickup();
     static void setPickupHelper(void*, uint32_t);
@@ -54,6 +56,7 @@ public:
     CANJaguar* wormGear;
     DoubleSolenoid* puncher;
     ADXL345_I2C_612* bobTheAccelerometer;
+//  AnalogChannel* bobThePot;
     main_robot* robot;
 
     bool isPickingUp;
