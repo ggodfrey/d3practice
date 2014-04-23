@@ -116,8 +116,8 @@ void Autonomous::updateHighGoal()
         case BASIC_DRIVE:
             if(moveForward(DISTANCE))
             {
-                printf("AUTO switch to IS_HOT\n");
-                stage = IS_HOT;
+                printf("AUTO switch to SMART_FIRE\n");
+                stage = SMART_FIRE;
                 return;
             }
             break;
@@ -132,16 +132,16 @@ void Autonomous::updateHighGoal()
         case FINE_AIM:
             if(tilt(HIGHGOAL_AUTOANGLE))
             {
-                printf("AUTO switch to BASIC_DRIVE\n");
-                stage = BASIC_DRIVE;
+                printf("AUTO switch to IS_HOT\n");
+                stage = IS_HOT;
                 return;
             }
             break;
         case IS_HOT:
             if (determineHot()) {
                 printf("goal is hot\n");
-                printf("AUTO switch to SMART_FIRE\n");
-                stage=SMART_FIRE;
+                printf("AUTO switch to BASIC_DRIVE\n");
+                stage=BASIC_DRIVE;
                 return;
             }
             break;
