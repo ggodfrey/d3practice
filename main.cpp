@@ -64,8 +64,8 @@ void main_robot::AutonomousInit()
 }
 void main_robot::TestInit()
 {
-    init_vision();
-    engine -> startContinuous();
+//    init_vision();
+//    engine -> startContinuous();
 }
 void main_robot::DisabledInit()
 {
@@ -142,6 +142,11 @@ void main_robot::DisabledPeriodic()
 }
 void main_robot::TestPeriodic()
 {
+    static int output=0;
+    if(output%20==0) {
+        printf("Supposed to wait: %i\n",autoBot->table->GetBoolean("1/WeWait",false));
+    }
+    output++;
 //    printf("%d", engine->getHotGoal());
 //    pnum->checkPressure();
 //    pnum->updateSolenoid();

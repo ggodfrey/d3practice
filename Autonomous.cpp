@@ -75,10 +75,18 @@ bool Autonomous::smartFire()
 }
 
 bool Autonomous::determineHot() {
+    static bool shouldWait = false;
     if (previousStage != stage) {
         shotTimer->Start();
+        shouldWait = table->GetBoolean("1/WeWait",false);
     }
-    if (table->GetBoolean("1/WeWait",false)) {
+    static int output=0;
+    if(output%5==0) {
+        printf("supposed to wait: %i\n",shouldWait);
+        printf("period passed: %i\n",shotTimer->HasPeriodPassed(3.0));
+    }
+    output++;
+    if (shouldWait) {
         return shotTimer->HasPeriodPassed(3.0); 
     } else {
         return true;
