@@ -83,11 +83,11 @@ bool Autonomous::determineHot() {
     static int output=0;
     if(output%5==0) {
         printf("supposed to wait: %i\n",shouldWait);
-        printf("period passed: %i\n",shotTimer->HasPeriodPassed(3.0));
+        printf("period passed: %i\n",shotTimer->HasPeriodPassed(1.0));
     }
     output++;
     if (shouldWait) {
-        return shotTimer->HasPeriodPassed(3.0); 
+        return shotTimer->HasPeriodPassed(1.0);
     } else {
         return true;
     }
