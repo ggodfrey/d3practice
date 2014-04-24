@@ -75,15 +75,22 @@ bool Autonomous::smartFire()
 }
 
 bool Autonomous::determineHot() {
-/*    if (previousStage != stage) {
+    static bool shouldWait = false;
+    if (previousStage != stage) {
         shotTimer->Start();
+        shouldWait = table->GetBoolean("1/WeWait",false);
     }
-    if (shotTimer->HasPeriodPassed(5)) {
+    static int output=0;
+    if(output%5==0) {
+        printf("supposed to wait: %i\n",shouldWait);
+        printf("period passed: %i\n",shotTimer->HasPeriodPassed(1.0));
+    }
+    output++;
+    if (shouldWait) {
+        return shotTimer->HasPeriodPassed(1.0);
+    } else {
         return true;
     }
-    bool isClose=table->GetBoolean("1/isClose",false);
-    return isClose;*/
-    return true;
 }
 
 bool Autonomous::wait(double time)
@@ -97,11 +104,6 @@ bool Autonomous::wait(double time)
     return timer->HasPeriodPassed(time);
 }
 
-/*
-double Autonomous::getTime()
-{
-}
-*/
 void Autonomous::updateHighGoal()
 {
     static int output=0;
@@ -138,15 +140,16 @@ void Autonomous::updateHighGoal()
         case FINE_AIM:
             if(tilt(HIGHGOAL_AUTOANGLE))
             {
-                printf("AUTO switch to BASIC_DRIVE\n");
-                stage = BASIC_DRIVE;
+                printf("AUTO switch to IS_HOT\n");
+                stage = IS_HOT;
                 return;
             }
             break;
         case IS_HOT:
             if (determineHot()) {
                 printf("goal is hot\n");
-                stage=SMART_FIRE;
+                printf("AUTO switch to BASIC_DRIVE\n");
+                stage=BASIC_DRIVE;
                 return;
             }
             break;

@@ -4,7 +4,7 @@
 #include "main.h"
 #include "ADXL345_I2C_612.h"
 
-const double Shooter::SPEED_AXISPOWER_TELEOP = 0.60;
+const double Shooter::SPEED_AXISPOWER_TELEOP = 0.80;
 const double Shooter::SPEED_AXISPOWER_AUTO_SLOW = 0.40;
 const double Shooter::SPEED_AXISPOWER_AUTO_VERY_SLOW = 0.25;
 const double Shooter::SPEED_AXISPOWER_AUTO_FAST = 0.80;
@@ -29,6 +29,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     wormGear = new CANJaguar(wormCan);
     puncher = new DoubleSolenoid(punchMod,punchFChan,punchRChan);
     bobTheAccelerometer = new ADXL345_I2C_612(bobMod);
+//  bobThePot = new AnalogChannel(1,5);
     isPickingUp = false;
     shooterJoy = robot -> gunnerJoy;
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,CLAMP);
@@ -36,6 +37,7 @@ Shooter::Shooter(main_robot* r,uint8_t axisCan,
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,FIRE);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_HIGHGOAL);
     shooterJoy -> addJoyFunctions(&buttonHelper,(void*)this,AUTO_VERTICAL);
+    shooterJoy -> addJoyFunctions(&setPickupHelper,(void*)this,PICKUP);
     robot -> update -> addFunctions(&updateHelper, (void*)this);
     smartFireTimer->Stop();
 }
@@ -222,12 +224,7 @@ void Shooter::buttonHelper(void* objPtr, uint32_t button)
     }
 }
 
-// TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
-//                 there because we hit the frame? Somehow we need to detect that
-//                 and set isPitchingDown to false if it hard stops
-
-void Shooter::update()
-{
+double Shooter::getAngle() {
     double bobX = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_X);
     double bobY = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Y);
     double bobZ = bobTheAccelerometer->GetAcceleration(ADXL345_I2C_612::kAxis_Z);
@@ -238,8 +235,37 @@ void Shooter::update()
         isPitchingDown = false;
     }
     double newPitch = (atan2(bobX, sqrt(bobY*bobY + bobZ*bobZ))*180.0)/PI;
-//    if(fabs(newPitch-currentPitch) < 10)
-        currentPitch = newPitch;
+    //    if(fabs(newPitch-currentPitch) < 10)
+    currentPitch = newPitch;
+/*  double volts = bobThePot->GetVoltage();
+    currentPitch = bobThePot; // TODO get pot conversion */
+    return currentPitch;
+}
+
+/*
+ * 
+ * The following code is a shortcut of sorts for Ben so that he can press one button to do a bunch of stuff
+ * 
+ */ 
+
+void Shooter::setPickup() {
+    clampDown();
+    pitchAngle(PICKUP_POSITION);
+}
+
+void Shooter::setPickupHelper(void* instName, uint32_t button) {
+    Shooter* shooterObj = (Shooter*)instName;
+    shooterObj -> setPickup();
+}
+
+
+// TODO IMPORTANT: What if we are pitching down to pickup angle, but we never reach
+//                 there because we hit the frame? Somehow we need to detect that
+//                 and set isPitchingDown to false if it hard stops
+
+void Shooter::update()
+{
+    getAngle();
 
     static int output = 0;
     if(output%20 == 0)
