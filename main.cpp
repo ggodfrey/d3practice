@@ -60,7 +60,7 @@ void main_robot::AutonomousInit()
     shoot->pitchStop();
     shoot->rollerStop();
     shoot->wormStop();
-    shift->setLow();
+    shift->setHigh();
 }
 void main_robot::TestInit()
 {
@@ -130,8 +130,13 @@ void main_robot::TeleopPeriodic()
 
 void main_robot::AutonomousPeriodic()
 {
+    static bool autoShifted = false;
+    if(!autoShifted)
+    {
+        shift->setHigh();
+        autoShifted = true;
+    }
     update -> updateFunctions();
-//    drive -> TankDrive(0.0,0.0);
     drive -> update();
 //    autoBot -> updateBasicDrive();
     autoBot -> updateHighGoal();
