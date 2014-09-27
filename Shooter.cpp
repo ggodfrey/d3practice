@@ -175,9 +175,22 @@ void Shooter::wormStop()
 
 bool Shooter::wormDone()
 {
-    return !(wormGear -> GetForwardLimitOK());
+    if (shooterJoy->GetSmoothButton(BUTTON_Y))
+    {
+        std::printf("Worm Drive OFF\n");
+        return true;
+    }
+    else
+    {
+        bool off = !(wormGear -> GetForwardLimitOK());
+        if (off == true)
+        {
+            std::printf("Worm Drive OFF\n");
+        }
+        return off;
+    }
 }
-
+ 
 void Shooter::punch()
 {
     robot -> pnum -> setVectorValues(PUNCH_TIME, puncher, DoubleSolenoid::kReverse);
