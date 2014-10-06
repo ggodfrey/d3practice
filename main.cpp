@@ -138,8 +138,18 @@ void main_robot::AutonomousPeriodic()
     }
     update -> updateFunctions();
     drive -> update();
-//    autoBot -> updateBasicDrive();
-    autoBot -> updateHighGoal();
+    autoBot -> updateBasicDrive();
+    //Comment out whichever procedure isn't going to be used
+    /*
+    if (!(shoot->bobTheAccelerometer->isConnected()))
+    {
+        autoBot->updateBasicDrive();
+    }
+    else
+    {
+        autoBot->updateHighGoal();
+    }
+    */
 }
 
 void main_robot::DisabledPeriodic()
